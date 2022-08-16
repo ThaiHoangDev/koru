@@ -17,7 +17,7 @@ interface IProps {
 const LoginContainer = (props: IProps) => {
   return (
     <View style={styles.root}>
-      <Text style={styles.textSignUp}>Login</Text>
+      <Text >Login</Text>
     </View>
   );
 };

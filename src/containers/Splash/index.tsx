@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { StyleSheet, View, StatusBar, Image, Text } from 'react-native';
+import { StyleSheet, View, StatusBar, Text, ImageBackground } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { useInjectReducer } from '@Utils/injectReducer';
@@ -8,9 +8,9 @@ import { useInjectSaga } from '@Utils/injectSaga';
 import reducer from '@Containers/App/store/reducers';
 import saga from '@Containers/App/store/sagas';
 import { AppActions } from '@Containers/App/store/actions';
-import { colors, fontSizes } from '@Theme/index';
 
-// assets
+import {WIDTH, HEIGHT} from '@Constants/app'
+import { colors, fontSizes, fontFamily } from '@Theme/index';
 
 const SplashContainer = () => {
   useInjectReducer({ key: 'global', reducer });
@@ -28,9 +28,11 @@ const SplashContainer = () => {
 
   return (
     <>
-      <StatusBar barStyle={'dark-content'} />
+      <StatusBar barStyle={'default'} />
       <View style={styles.container}>
-        <Text style={styles.text}>KORU</Text>
+        <ImageBackground source={require('@Assets/splash-background/splash_xxxh.png')}  style={styles.splash}>
+           <Text style={styles.text}>KORU</Text>
+        </ImageBackground>
       </View>
     </>
   );
@@ -39,13 +41,21 @@ const SplashContainer = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.black,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: '10%',
+  },
+  splash:{
+    backgroundColor: colors.black,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: WIDTH,
+    height: HEIGHT
   },
   text: {
+    fontFamily: fontFamily.bold,
     fontSize: fontSizes.xxl,
-    color: colors.black,
+    color: colors.white,
   }
 });
 

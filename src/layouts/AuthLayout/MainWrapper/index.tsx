@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import styles from './styles';
 
@@ -9,8 +10,8 @@ interface Props {
 
 export default function MainWrapper({ children }: Props) {
   return (
-    <View style={styles.mainWrapper}>
+    <SafeAreaView style={styles.mainWrapper} edges={['left', 'right', 'bottom']}>
       {children}
-    </View>
+    </SafeAreaView>
   );
 }

@@ -17,8 +17,7 @@ interface Props {
 
 const AppNavigator = ({ isInitializing, isAuthenticated }: Props) => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <>
+    <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
         {isInitializing ? (
           <Stack.Screen name="Splash" component={SplashScreen} />
         ) : isAuthenticated ? (
@@ -26,7 +25,6 @@ const AppNavigator = ({ isInitializing, isAuthenticated }: Props) => {
         ) : (
           <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
         )}
-      </>
     </Stack.Navigator>
   );
 };
@@ -36,6 +34,6 @@ const mapStateToProps = createStructuredSelector({
   isAuthenticated: makeSelectIsLoggedIn(),
 });
 
-const withConnect = connect(mapStateToProps);
+;
 
-export default withConnect(AppNavigator);
+export default connect(mapStateToProps)(AppNavigator);

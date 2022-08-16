@@ -1,13 +1,13 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { Text } from 'react-native';
+import { BottomTabNavigator } from './bottomNavigator';
 
 const MainStack = createStackNavigator();
 
 const MainNavigator = () => {
   return (
-    <MainStack.Navigator initialRouteName="Dashboard" >
-      <MainStack.Screen name="Dashboard" component={() => <Text>Dashboard</Text>}/>
+    <MainStack.Navigator initialRouteName="TabBar" >
+      <MainStack.Screen name="TabBar" component={BottomTabNavigator} />
     </MainStack.Navigator>
   );
 };

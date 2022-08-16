@@ -14,4 +14,5 @@ export default {
   gray02: '#727675',
   gray03: '#9D9D9D',
   text: '#727675',
+  gray04: "#0C100B"
 };
