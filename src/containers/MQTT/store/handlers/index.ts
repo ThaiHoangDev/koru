@@ -13,10 +13,10 @@ class mqttClientSetHandler {
   };
 
   mqttClientGetHandler = (topic: string) => {
-    console.log("xxxxxx", topic, this.handlers[0].topicFormat.test(topic))
+    console.log('xxxxxx', topic, this.handlers[0].topicFormat.test(topic));
     for (let i = 0; i < this.handlers.length; i++) {
       if (this.handlers[i].topicFormat.test(topic)) {
-        console.log('xxxx')
+        console.log('xxxx');
         return this.handlers[i];
       }
     }

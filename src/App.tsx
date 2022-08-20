@@ -7,7 +7,7 @@ import createStore from './store';
 
 const { store, persistor } = createStore();
 
-export { store }
+export { store };
 
 const App = () => (
   <Provider store={store}>

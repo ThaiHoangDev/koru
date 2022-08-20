@@ -17,26 +17,18 @@ function subscribe() {
       const data = JSON.parse(message.toString());
       try {
         if (/\$aws\/things\/ESN-\w{3,}\/shadow\/update\/accepted/.test(topic)) {
-          console.log('1')
+          console.log('1');
           const thing = topic.split('/')[2];
           // emit(upgradeThingAccepted(thing, JSON.parse(message.toString())));
         }
-        if (
-          /\$aws\/events\/jobExecution\/Continuous-Job-Firmware-\w{4,5}-\w{1,}\/succeeded/.test(
-            topic
-          )
-        ) {
+        if (/\$aws\/events\/jobExecution\/Continuous-Job-Firmware-\w{4,5}-\w{1,}\/succeeded/.test(topic)) {
           const data = JSON.parse(message.toString());
         }
-        if (
-          /\$aws\/events\/jobExecution\/Continuous-Job-Firmware-\w{4,5}-\w{1,}\/failed/.test(
-            topic
-          )
-        ) {
+        if (/\$aws\/events\/jobExecution\/Continuous-Job-Firmware-\w{4,5}-\w{1,}\/failed/.test(topic)) {
           const data = JSON.parse(message.toString());
         }
         if (/ESN-\w{3,}\/reboot/.test(topic)) {
-          console.log('3')
+          console.log('3');
         }
       } catch (e) {
         console.log('Error format message ', e);
@@ -44,20 +36,19 @@ function subscribe() {
     });
 
     MQTTClient.attachConnectHandler(() => {
-      emit(AppActions.connectedMQTT(true))
+      emit(AppActions.connectedMQTT(true));
     });
 
     MQTTClient.attachErrorHandler(() => {
-      emit(AppActions.connectedMQTT(false))
+      emit(AppActions.connectedMQTT(false));
     });
 
     MQTTClient.attachOfflineHandler(() => {
-      emit(AppActions.connectedMQTT(false))
+      emit(AppActions.connectedMQTT(false));
     });
 
     return unsubscribe;
   });
-
 }
 
 function* disconnect() {
@@ -75,16 +66,14 @@ function* read(socket: any) {
 }
 
 const connect = async () => {
-    return await MQTTClient.connect(MQTTConfig);
+  return await MQTTClient.connect(MQTTConfig);
 };
-
 
 function* initMQTTSaga() {
   try {
     const websocketInstance = yield connect();
     yield fork(handleMQTT, websocketInstance);
   } catch (error) {
-
     console.log('INIT_MQTT_REQUESTED', 'ERROR', error);
   }
 }
@@ -95,8 +84,8 @@ export function* handleMQTT(socket: any) {
 }
 
 function* mqttPublishSaga(action: any) {
-    const { topic, message } = action.payload;
-    MQTTClient.publish(topic, message);
+  const { topic, message } = action.payload;
+  MQTTClient.publish(topic, message);
 }
 
 export default function* watchWebsocket() {

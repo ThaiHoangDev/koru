@@ -68,7 +68,7 @@ class AxiosClient {
     this.axiosClient.defaults.headers['x-myapp-authorization'] = `Bearer ${userToken}`;
     this.axiosClient.defaults.headers.common.Authorization = `Bearer ${userToken}`;
   }
-  
+
   async clearToken() {
     this.axiosClient.defaults.headers.common.Authorization = '';
     this.axiosClient.defaults.headers['x-myapp-authorization'] = ``;

@@ -6,7 +6,7 @@ import asyncStorage from '@Utils/asyncStorage';
 import { REFRESH_TOKEN, TOKEN_NAME } from '@Constants/app';
 import i18n from '@I18N';
 
-import { AppActions } from '@Containers/App/store/actions'
+import { AppActions } from '@Containers/App/store/actions';
 import * as apiService from '../services';
 import { AuthActions } from '../actions';
 import { LoginAction } from '../../interfaces';
@@ -23,7 +23,9 @@ function* loginSaga({ payload }: LoginAction) {
     yield put(AuthActions.login.success());
     yield put(AppActions.fetchProfile.request());
   } catch (error) {
-    const { data: { message } } = error;
+    const {
+      data: { message },
+    } = error;
     Alert.alert(i18n.t('common:error'), i18n.t(`auth:${message.trim()}`));
     yield put(AuthActions.login.fail(error));
   }

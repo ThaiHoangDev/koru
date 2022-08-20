@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import {fontFamily, colors, fontSizes} from '@Theme/index';
+import { fontFamily, colors, fontSizes } from '@Theme/index';
 
 export default StyleSheet.create({
   root: {
@@ -8,8 +8,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     height: 50,
   },
-  title:{
+  title: {
     fontFamily: fontFamily.medium,
     fontSize: fontSizes.xl,
-  }
+  },
 });

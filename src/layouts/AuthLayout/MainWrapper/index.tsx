@@ -10,7 +10,7 @@ interface Props {
 
 export default function MainWrapper({ children }: Props) {
   return (
-    <SafeAreaView style={styles.mainWrapper} edges={['left', 'right', 'bottom']}>
+    <SafeAreaView style={styles.mainWrapper} edges={['left', 'right']}>
       {children}
     </SafeAreaView>
   );

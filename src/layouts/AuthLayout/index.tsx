@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import MainWrapper from './MainWrapper';
 import styles from './styles';
@@ -10,8 +10,8 @@ interface Props {
 
 export default function AuthLayout({ children }: Props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['left', 'right']}>
       <MainWrapper>{children}</MainWrapper>
-    </View>
+    </SafeAreaView>
   );
 }

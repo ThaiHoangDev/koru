@@ -9,7 +9,7 @@ import reducer from '@Containers/App/store/reducers';
 import saga from '@Containers/App/store/sagas';
 import { AppActions } from '@Containers/App/store/actions';
 
-import {WIDTH, HEIGHT} from '@Constants/app'
+import { WIDTH, HEIGHT } from '@Constants/app';
 import { colors, fontSizes, fontFamily } from '@Theme/index';
 
 const SplashContainer = () => {
@@ -30,8 +30,8 @@ const SplashContainer = () => {
     <>
       <StatusBar barStyle={'default'} />
       <View style={styles.container}>
-        <ImageBackground source={require('@Assets/splash-background/splash_xxxh.png')}  style={styles.splash}>
-           <Text style={styles.text}>KORU</Text>
+        <ImageBackground source={require('@Assets/splash-background/splash_xxxh.png')} style={styles.splash}>
+          <Text style={styles.text}>KORU</Text>
         </ImageBackground>
       </View>
     </>
@@ -45,18 +45,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  splash:{
+  splash: {
     backgroundColor: colors.black,
     justifyContent: 'center',
     alignItems: 'center',
     width: WIDTH,
-    height: HEIGHT
+    height: HEIGHT,
   },
   text: {
     fontFamily: fontFamily.bold,
     fontSize: fontSizes.xxl,
     color: colors.white,
-  }
+  },
 });
 
 export default SplashContainer;

@@ -10,7 +10,10 @@ export type LoginPayload = {
   username: string;
   password: string;
 };
-
+export interface StepProps {
+  step: number;
+}
+export type LginType = 'FACBOOK' | 'GOOGLE' | 'EMAIL';
 
 export interface LoginAction extends IAction {
   payload: LoginPayload;

@@ -1,6 +1,6 @@
 import produce from 'immer';
 
-import {AppActions} from '../actions';
+import { AppActions } from '../actions';
 
 export const initialState: any = {
   isLoading: false,
@@ -10,7 +10,7 @@ export const initialState: any = {
   isLoggedIn: false,
 };
 
-const appReducer = (state = initialState, {type, payload}: any) =>
+const appReducer = (state = initialState, { type, payload }: any) =>
   produce(state, (draft: any) => {
     switch (type) {
       case AppActions.Types.INIT_APP.begin:

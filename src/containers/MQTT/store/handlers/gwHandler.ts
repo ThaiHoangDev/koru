@@ -12,15 +12,12 @@ class GwHandler {
 
   messageHandler = (payload: any) => {
     const dataMessage = JSON.parse(payload.toString());
-    console.log(
-      '🚀 ~ file: gwHandler.ts ~ line 16 ~ GwHandler ~ dataMessage',
-      dataMessage
-    );
+    console.log('🚀 ~ file: gwHandler.ts ~ line 16 ~ GwHandler ~ dataMessage', dataMessage);
     const beacons: any = {};
     const gateways: any = {};
     // const sensors:any = {}
     map(dataMessage, ({ mac, type, ...res }) => {
-      console.log("🚀 ~ file: gwHandler.ts ~ line 23 ~ GwHandler ~ map ~ mac, type, ...res", mac, type, ...res)
+      console.log('🚀 ~ file: gwHandler.ts ~ line 23 ~ GwHandler ~ map ~ mac, type, ...res', mac, type, ...res);
       // switch (type) {
       //   default:
       //     if (res.rssi) {

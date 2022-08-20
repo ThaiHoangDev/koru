@@ -1,10 +1,10 @@
-import {takeLatest, put} from 'redux-saga/effects';
+import { takeLatest, put } from 'redux-saga/effects';
 
-import {AppActions} from '../actions';
+import { AppActions } from '../actions';
 
 function* initializeSaga() {
   try {
-    yield put(AppActions.initApp.success({isLoggedIn: false}));
+    yield put(AppActions.initApp.success({ isLoggedIn: false }));
   } catch (error) {
     console.log(error);
   }

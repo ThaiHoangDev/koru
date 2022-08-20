@@ -10,9 +10,4 @@ const makeSelectIsInitializing = () => createSelector(globalState, state => stat
 
 const makeSelectIsLoggedIn = () => createSelector(globalState, state => state.isLoggedIn);
 
-
-export {
-  makeSelectIsRequesting,
-  makeSelectIsInitializing,
-  makeSelectIsLoggedIn,
-};
+export { makeSelectIsRequesting, makeSelectIsInitializing, makeSelectIsLoggedIn };

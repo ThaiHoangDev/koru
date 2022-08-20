@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { AuthLayout } from '@Layouts/index';
-import StartContainer from '@Containers/Auth/screens/Start'
+import StartContainer from '@Containers/Auth/screens/Start';
 
-const LoginScreen = () => {
+const StartScreen = () => {
   return (
     <AuthLayout>
       <StartContainer />
@@ -11,4 +11,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default StartScreen;
