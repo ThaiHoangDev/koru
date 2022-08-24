@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TextStyle, View, KeyboardTypeOptions } from 'react-native';
+import { Text, TextStyle, View, KeyboardTypeOptions, TextInputProps } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import SkipIcon from '@Components/iconSvg/SkipIcon';
@@ -8,19 +8,20 @@ import { ButtonComp } from '@Components/button';
 
 import styles from './styles';
 import { colors } from '@Theme/index';
+import { rest } from 'lodash';
 
-interface IProps {
+interface IProps extends TextInputProps {
   data: any;
   stylesTxt?: TextStyle | TextStyle[];
   handleNext: () => void;
   title: string;
   type?: KeyboardTypeOptions;
+  setState: (txt: string) => void;
 }
 
-export const FormComp = ({ data, handleNext, stylesTxt, title, type }: IProps) => {
-  const [text, setText] = useState('');
+export const FormComp = ({ data, handleNext, stylesTxt, title, type, setState, ...rest }: IProps) => {
   const onChangeText = (text: string) => {
-    setText(text);
+    setState(text);
   };
 
   return (
@@ -34,13 +35,13 @@ export const FormComp = ({ data, handleNext, stylesTxt, title, type }: IProps) =
         overScrollMode="always"
         showsVerticalScrollIndicator={false}>
         <TextInputComp
-          value={text}
+          {...rest}
+          value={data}
           handleChangeText={onChangeText}
           stylesTxt={styles.txtContainer}
           autoFocus
           selectionColor={colors.black}
           keyboardType={type}
-          secureTextEntry={true}
         />
         <ButtonComp title={'Next'} handlePress={handleNext} icon={<SkipIcon />} stylesBtn={styles.btnStyle} />
       </KeyboardAwareScrollView>

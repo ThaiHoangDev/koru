@@ -5,11 +5,10 @@ export interface ILoginProps extends INavigation {
   isRequesting: boolean;
 }
 
-export type LoginPayload = {
-  fleetId: string;
+export interface LoginPayload {
   username: string;
   password: string;
-};
+}
 export interface StepProps {
   step: number;
 }
