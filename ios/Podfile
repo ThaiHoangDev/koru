@@ -21,6 +21,8 @@ target 'koru' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNAWSCognito', :path => '../node_modules/amazon-cognito-identity-js'
+
   target 'koruTests' do
     inherit! :complete
     # Pods for testing
