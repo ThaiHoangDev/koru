@@ -8,6 +8,7 @@ import FastSignUpScreen from '@Screens/FastSignUpScreen';
 import LetGoScreen from '@Screens/LetGoScreen';
 import PasswordScreen from '@Screens/PasswordScreen';
 import EmailScreen from '@Screens/EmailScreen';
+import VerifyEmailScreen from '@Screens/VerifyEmailScreen';
 import TopNavigationBar from '@Navigators/topNavigation';
 
 const Stack = createStackNavigator();
@@ -27,6 +28,7 @@ const AuthNavigator = () => {
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="Password" component={PasswordScreen} />
       <Stack.Screen name="Email" component={EmailScreen} />
+      <Stack.Screen name="VerifyEmail" component={VerifyEmailScreen} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 };

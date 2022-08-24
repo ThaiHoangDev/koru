@@ -27,14 +27,14 @@ const StartContainer = () => {
       toValue: 64,
       duration: 500,
       easing: Easing.ease,
-      delay: 500,
+      delay: 300,
       useNativeDriver: false,
     }).start();
     Animated.timing(opacity, {
       toValue: 1,
       duration: 500,
       easing: Easing.bounce,
-      delay: 500,
+      delay: 300,
       useNativeDriver: false,
     }).start();
   }, []);
@@ -49,31 +49,29 @@ const StartContainer = () => {
   };
 
   return (
-    <View style={styles.root}>
-      <ImageBackground source={require('@Assets/image-background/start-image.png')} style={styles.containerBackground}>
-        <Animated.View style={{ top: top, opacity: opacity }}>
-          <Text style={styles.textHeader}>KORU</Text>
-        </Animated.View>
-        <View style={styles.containerContent}>
-          <View style={styles.containerTitle}>
-            <Text style={styles.title}>Start planting air.</Text>
-            <Text style={styles.subTitle}>Your plants are waiting for you.</Text>
-          </View>
-          <ButtonComp
-            title="Get Started"
-            stylesBtn={[styles.buttonContainer, styles.buttonStart]}
-            stylesTitle={styles.buttonTitle}
-            handlePress={handleGetStarted}
-          />
-          <ButtonComp
-            title="Login"
-            stylesBtn={[styles.buttonContainer]}
-            stylesTitle={styles.buttonTitleLogin}
-            handlePress={handleLogin}
-          />
+    <ImageBackground source={require('@Assets/image-background/start-image.png')} style={styles.containerBackground}>
+      <Animated.View style={{ top: top, opacity: opacity }}>
+        <Text style={styles.textHeader}>KORU</Text>
+      </Animated.View>
+      <View style={styles.containerContent}>
+        <View style={styles.containerTitle}>
+          <Text style={styles.title}>Start planting air.</Text>
+          <Text style={styles.subTitle}>Your plants are waiting for you.</Text>
         </View>
-      </ImageBackground>
-    </View>
+        <ButtonComp
+          title="Get Started"
+          stylesBtn={[styles.buttonContainer, styles.buttonStart]}
+          stylesTitle={styles.buttonTitle}
+          handlePress={handleGetStarted}
+        />
+        <ButtonComp
+          title="Login"
+          stylesBtn={[styles.buttonContainer]}
+          stylesTitle={styles.buttonTitleLogin}
+          handlePress={handleLogin}
+        />
+      </View>
+    </ImageBackground>
   );
 };
 

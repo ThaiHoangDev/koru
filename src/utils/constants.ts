@@ -1,10 +1,10 @@
 export const AWSConfig = {
-  region: process.env.REACT_APP_AWS_REGION || 'us-east-1',
+  region: process.env.REACT_APP_AWS_REGION || 'eu-central-1',
   accessKey: process.env.REACT_APP_AWS_ACCESS_KEY || '',
   secretKey: process.env.REACT_APP_AWS_SECRET_KEY || '',
-  identityPoolId: process.env.REACT_APP_AWS_IDENTITY_POOL_ID || '3826184d-9374-454a-a940-b6a92c84d224',
-  poolID: process.env.REACT_APP_POOL_ID || 'us-east-1_vMZcdeYat',
-  appId: process.env.REACT_APP_ID || '6c7g3kaj1b1pspdtj1ld813fgh',
+  identityPoolId: process.env.REACT_APP_AWS_IDENTITY_POOL_ID || 'eu-central-1:3d2b82aa-bebf-40de-972d-e5660105a090',
+  poolID: process.env.REACT_APP_POOL_ID || 'eu-central-1_c2v9bclsp',
+  appId: process.env.REACT_APP_ID || '4u226n7elm0n8cs9l6qufp7kjl',
 };
 
 export const MQTTConfig = {

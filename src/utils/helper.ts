@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { Alert } from 'react-native';
 
 interface IProps {
   lastDay: number;
@@ -46,3 +47,83 @@ export function formatSecondsToDuration(seconds: number): string {
 
   return mins + 'm';
 }
+
+export const showErrorMessage = (e: any, completeHandler = () => {}) => {
+  Alert.alert(
+    'Error',
+    e.message,
+    [
+      {
+        text: 'Ok',
+        onPress: () => {
+          if (completeHandler) {
+            completeHandler();
+          }
+        },
+      },
+    ],
+    { cancelable: true },
+  );
+};
+
+export const showErrorWithString = (e: string, completeHandler = () => {}) => {
+  Alert.alert(
+    'Error',
+    e,
+    [
+      {
+        text: 'Ok',
+        onPress: () => {
+          if (completeHandler) {
+            completeHandler();
+          }
+        },
+      },
+    ],
+    { cancelable: true },
+  );
+};
+
+export const showAlert = (title = '', message: string, completeHandler = () => {}) => {
+  Alert.alert(
+    title,
+    message,
+    [
+      {
+        text: 'Ok',
+        onPress: () => {
+          if (completeHandler) {
+            completeHandler();
+          }
+        },
+      },
+    ],
+    { cancelable: true },
+  );
+};
+
+export const showConfirmationAlert = (
+  title = '',
+  message: string,
+  rejectHandler = () => {},
+  completeHandler = () => {},
+) => {
+  Alert.alert(title, message, [
+    {
+      text: 'Cancel',
+      onPress: () => {
+        if (rejectHandler) {
+          rejectHandler();
+        }
+      },
+    },
+    {
+      text: 'Ok',
+      onPress: () => {
+        if (completeHandler) {
+          completeHandler();
+        }
+      },
+    },
+  ]);
+};

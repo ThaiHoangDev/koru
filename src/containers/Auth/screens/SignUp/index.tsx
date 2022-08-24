@@ -7,7 +7,7 @@ import { useNavigation, useRoute, RouteProp, ParamListBase } from '@react-naviga
 
 // utils
 
-import { StepProps } from '@Containers/Auth/interfaces';
+import { LoginPayload, StepProps } from '@Containers/Auth/interfaces';
 import { makeSelectStepSignUp } from '@Containers/Auth/store/selectors';
 import { AuthActions } from '@Containers/Auth/store/actions';
 // components by self
@@ -24,6 +24,7 @@ const SignUpContainer = (props: Iprops) => {
   const navigation: any = useNavigation();
   const route: RouteProp<ParamListBase> | any = useRoute();
   const dispatch = useDispatch();
+  const [username, setUserName] = useState('');
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -37,16 +38,20 @@ const SignUpContainer = (props: Iprops) => {
     });
   }, [navigation]);
 
-  const [dataSignUp, setDataSignUp] = useState({});
-
   const handleNext = () => {
     !route.params?.isLogin && dispatch(AuthActions.stepSignUp.request(3));
-    navigation.navigate('Password', { isLogin: route.params?.isLogin });
+    navigation.navigate('Password', { isLogin: route.params?.isLogin, dataSignUp: { username: username } });
   };
 
   return (
     <View style={styles.root}>
-      <FormComp data={dataSignUp} handleNext={handleNext} title={'What is your name?'} type="default" />
+      <FormComp
+        data={username}
+        handleNext={handleNext}
+        title={'What is your name?'}
+        type="default"
+        setState={setUserName}
+      />
     </View>
   );
 };

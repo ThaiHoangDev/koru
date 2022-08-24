@@ -29,23 +29,16 @@ const SplashContainer = () => {
   return (
     <>
       <StatusBar barStyle={'default'} />
-      <View style={styles.container}>
-        <ImageBackground source={require('@Assets/splash-background/splash_xxxh.png')} style={styles.splash}>
-          <Text style={styles.text}>KORU</Text>
-        </ImageBackground>
-      </View>
+      <ImageBackground source={require('@Assets/splash-background/splash_xxxh.png')} style={styles.splash}>
+        <Text style={styles.text}>KORU</Text>
+      </ImageBackground>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.black,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   splash: {
+    flex: 1,
     backgroundColor: colors.black,
     justifyContent: 'center',
     alignItems: 'center',

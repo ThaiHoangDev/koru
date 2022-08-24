@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import { StepProps } from '@Containers/Auth/interfaces';
 import { makeSelectStepSignUp } from '@Containers/Auth/store/selectors';
 import { AuthActions } from '@Containers/Auth/store/actions';
+import { showErrorWithString } from '@Utils/helper';
 // components by self
 import { SliderComp } from '@Components/slider';
 import { FormComp } from '@Containers/Auth/components/formComp';
@@ -22,6 +23,7 @@ const SignUpContainer2 = (props: Iprops) => {
   const navigation: any = useNavigation();
   const route: any = useRoute();
   const dispatch = useDispatch();
+  const [password, setPassword] = useState('');
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -35,16 +37,28 @@ const SignUpContainer2 = (props: Iprops) => {
     });
   }, [navigation, route]);
 
-  const [dataSignUp, setDataSignUp] = useState({});
-
   const handleNext = () => {
-    !route.params?.isLogin && dispatch(AuthActions.stepSignUp.request(4));
-    navigation.navigate('Email', { isLogin: route.params?.isLogin });
+    if (!!password) {
+      !route.params?.isLogin && dispatch(AuthActions.stepSignUp.request(4));
+      navigation.navigate('Email', {
+        isLogin: route.params?.isLogin,
+        dataSignUp: { ...route.params.dataSignUp, password: password },
+      });
+    } else {
+      showErrorWithString('Please input password!');
+    }
   };
 
   return (
     <View style={styles.root}>
-      <FormComp data={dataSignUp} handleNext={handleNext} title="Choose your Passwort!" type="numeric" />
+      <FormComp
+        data={password}
+        handleNext={handleNext}
+        title="Choose your Passwort!"
+        type="default"
+        setState={setPassword}
+        secureTextEntry
+      />
     </View>
   );
 };
