@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
-import { StyleSheet, View, StatusBar, Text, ImageBackground } from 'react-native';
+import { StyleSheet, View, StatusBar, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { useInjectReducer } from '@Utils/injectReducer';
 import { useInjectSaga } from '@Utils/injectSaga';
@@ -8,9 +9,7 @@ import { useInjectSaga } from '@Utils/injectSaga';
 import reducer from '@Containers/App/store/reducers';
 import saga from '@Containers/App/store/sagas';
 import { AppActions } from '@Containers/App/store/actions';
-
-import { WIDTH, HEIGHT } from '@Constants/app';
-import { colors, fontSizes, fontFamily } from '@Theme/index';
+import LauchLogo from '@Components/iconSvg/LauchLogo';
 
 const SplashContainer = () => {
   useInjectReducer({ key: 'global', reducer });
@@ -29,26 +28,22 @@ const SplashContainer = () => {
   return (
     <>
       <StatusBar barStyle={'default'} />
-      <ImageBackground source={require('@Assets/splash-background/splash_xxxh.png')} style={styles.splash}>
-        <Text style={styles.text}>KORU</Text>
-      </ImageBackground>
+      <LinearGradient
+        colors={['#A5D3CC', '#D9F7BE']}
+        style={styles.linearGradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}>
+        <LauchLogo />
+      </LinearGradient>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  splash: {
+  linearGradient: {
     flex: 1,
-    backgroundColor: colors.black,
-    justifyContent: 'center',
     alignItems: 'center',
-    width: WIDTH,
-    height: HEIGHT,
-  },
-  text: {
-    fontFamily: fontFamily.bold,
-    fontSize: fontSizes.xxl,
-    color: colors.white,
+    justifyContent: 'center',
   },
 });
 

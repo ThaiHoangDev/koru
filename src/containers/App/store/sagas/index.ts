@@ -17,33 +17,33 @@ type TakeableDevice = {
   payload: { id: string; name: string; serviceUUIDs: string };
   take: (cb: (message: any | END) => void) => Device;
 };
-function* watchForPeripherals(): Generator<AnyAction, void, TakeableDevice> {
-  const onDiscoveredPeripheral = () =>
-    eventChannel(emitter => {
-      return bluetoothLeManager.scanForPeripherals(emitter);
-    });
+// function* watchForPeripherals(): Generator<AnyAction, void, TakeableDevice> {
+//   const onDiscoveredPeripheral = () =>
+//     eventChannel(emitter => {
+//       return bluetoothLeManager.scanForPeripherals(emitter);
+//     });
 
-  const channel: TakeableChannel<Device> = yield call(onDiscoveredPeripheral);
+//   const channel: TakeableChannel<Device> = yield call(onDiscoveredPeripheral);
 
-  try {
-    while (true) {
-      const response = yield take(channel);
+//   try {
+//     while (true) {
+//       const response = yield take(channel);
 
-      console.log(response, 'chanel_____');
+//       console.log(response, 'chanel_____');
 
-      // yield put({
-      //   type: sagaActionConstants.ON_DEVICE_DISCOVERED,
-      //   payload: {
-      //     id: response.payload.id,
-      //     name: response.payload.name,
-      //     serviceUUIDs: response.payload.serviceUUIDs,
-      //   },
-      // });
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
+//       // yield put({
+//       //   type: sagaActionConstants.ON_DEVICE_DISCOVERED,
+//       //   payload: {
+//       //     id: response.payload.id,
+//       //     name: response.payload.name,
+//       //     serviceUUIDs: response.payload.serviceUUIDs,
+//       //   },
+//       // });
+//     }
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
 
 function* connectToPeripheral(action: { type: typeof AppActions.Types.INITIATE_CONNECTION; payload: string }) {
   const peripheralId = action.payload;
@@ -53,6 +53,6 @@ function* connectToPeripheral(action: { type: typeof AppActions.Types.INITIATE_C
 
 export default function* watchSaga() {
   yield takeLatest(AppActions.Types.INIT_APP.begin, initializeSaga);
-  yield takeLatest(AppActions.Types.SCAN_FOR_PERIPHERALS.begin, watchForPeripherals);
+  // yield takeLatest(AppActions.Types.SCAN_FOR_PERIPHERALS.begin, watchForPeripherals);
   yield takeLatest(AppActions.Types.INITIATE_CONNECTION.begin, connectToPeripheral);
 }

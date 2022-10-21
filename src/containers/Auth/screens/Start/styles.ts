@@ -7,45 +7,30 @@ export default StyleSheet.create({
   root: {
     flex: 1,
   },
-  containerBackground: {
-    alignItems: 'center',
-    width: WIDTH,
-    height: HEIGHT,
-  },
+
   containerContent: {
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 60,
   },
-  containerTitle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 50,
-    marginTop: HEIGHT / 3,
-  },
+
   title: {
-    color: colors.black,
-    fontFamily: fontFamily.bold,
-    fontSize: 26,
-    lineHeight: 25,
-    bottom: 17,
+    color: colors.black2,
+    fontFamily: fontFamily.FreightBigProMedium,
+    fontSize: 32,
   },
   subTitle: {
-    color: colors.black,
-    fontFamily: fontFamily.book,
-    fontSize: 18,
-    lineHeight: 27,
+    color: colors.grey06,
+    fontFamily: fontFamily.FreightBigProMedium,
+    fontSize: 16,
+    textAlign: 'center',
   },
   textHeader: {
     color: colors.gray04,
     fontFamily: fontFamily.bold,
     fontSize: 20,
   },
-  buttonContainer: {
-    width: 213,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 4,
-  },
+
   buttonTitleLogin: {
     color: colors.black,
   },
@@ -54,5 +39,35 @@ export default StyleSheet.create({
   },
   buttonTitle: {
     color: colors.white,
+  },
+  doneWrap: {
+    paddingHorizontal: 10,
+    marginVertical: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    bottom: 20,
+  },
+  btn: {
+    flex: 1,
+    marginHorizontal: 10,
+    borderRadius: 25,
+  },
+  btnSocial: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    marginHorizontal: 10,
+    borderRadius: 50,
+  },
+
+  txtBtn: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  fontFamily: {
+    fontFamily: fontFamily.Strawford,
   },
 });

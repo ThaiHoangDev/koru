@@ -6,8 +6,15 @@ export interface ILoginProps extends INavigation {
 }
 
 export interface LoginPayload {
-  username: string;
+  username?: string;
+  email: string;
   password: string;
+  code?: string;
+  [key: string]: string | undefined;
+}
+
+export interface LoginBody {
+  cognito_token: string;
 }
 export interface StepProps {
   step: number;

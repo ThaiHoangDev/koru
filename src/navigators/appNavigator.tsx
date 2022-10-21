@@ -6,25 +6,30 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from '@Screens/SplashScreen';
 import MainNavigator from '@Navigators/mainNavigator';
 import AuthNavigator from '@Navigators/authNavigator';
-import { makeSelectIsInitializing, makeSelectIsLoggedIn } from '@Containers/App/store/selectors';
+import { makeSelectIsInitializing, makeSelectIsLoggedIn, makeSelectIsSkipIntro } from '@Containers/App/store/selectors';
 
 const Stack = createStackNavigator();
 
 interface Props {
   isInitializing: boolean;
   isAuthenticated: boolean;
+  isSkipIntro: boolean;
 }
 
-const AppNavigator = ({ isInitializing, isAuthenticated }: Props) => {
+const AppNavigator = ({ isInitializing, isAuthenticated, isSkipIntro }: Props) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
-        {isInitializing ? (
-          <Stack.Screen name="Splash" component={SplashScreen} />
-        ) : isAuthenticated ? (
-          <Stack.Screen name="MainNavigator" component={MainNavigator} />
-        ) : (
-          <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
-        )}
+      {isInitializing ? (
+        <Stack.Screen name="Splash" component={SplashScreen} />
+      ) : isSkipIntro || isAuthenticated ? (
+        <Stack.Screen
+          name="MainNavigator"
+          component={MainNavigator}
+          initialParams={{ screen: isSkipIntro && isAuthenticated ? 'Paring' : 'TabBar' }}
+        />
+      ) : (
+        <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
+      )}
     </Stack.Navigator>
   );
 };
@@ -32,8 +37,7 @@ const AppNavigator = ({ isInitializing, isAuthenticated }: Props) => {
 const mapStateToProps = createStructuredSelector({
   isInitializing: makeSelectIsInitializing(),
   isAuthenticated: makeSelectIsLoggedIn(),
+  isSkipIntro: makeSelectIsSkipIntro(),
 });
-
-;
 
 export default connect(mapStateToProps)(AppNavigator);

@@ -1,6 +1,8 @@
 export default {
   white: '#FFFFFF',
+  white2: '#FBFBFB',
   black: '#000000',
+  black2: '#191919',
   error: '#EB5757',
   grayDark: '#18191a',
   grayLight: '#242526',
@@ -14,6 +16,7 @@ export default {
   gray02: '#727675',
   gray03: '#9D9D9D',
   text: '#727675',
-  gray04: '#0C100B',
-  gray05: '#F2F2F2'
+  gray04: '#CBCBCB',
+  gray05: '#F2F2F2',
+  grey06: '#737373',
 };

@@ -5,6 +5,7 @@ import NetInfo from '@react-native-community/netinfo';
 import { navigationRef, isMountedRef } from '@Utils/navigator';
 import { AppNavigator } from '../../navigators';
 import { AppState, NativeModules, Platform } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const AppContainer = () => {
   // useEffect(() => {
@@ -37,9 +38,11 @@ const AppContainer = () => {
   }, []);
 
   return (
-    <NavigationContainer ref={navigationRef}>
-      <AppNavigator />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer ref={navigationRef}>
+        <AppNavigator />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 

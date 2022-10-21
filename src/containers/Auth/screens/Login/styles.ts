@@ -6,8 +6,6 @@ import { HEIGHT, WIDTH } from '@Constants/app';
 export default StyleSheet.create({
   root: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: colors.white,
   },
   containerContent: {
@@ -36,11 +34,10 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   titleTab: {
-    color: colors.gray04,
-    fontFamily: fontFamily.medium,
-    fontSize: 16,
+    color: colors.black2,
+    fontFamily: fontFamily.Strawford,
+    fontSize: 24,
     textAlign: 'center',
-    paddingLeft: 52,
   },
   textEmail: {
     color: colors.black,

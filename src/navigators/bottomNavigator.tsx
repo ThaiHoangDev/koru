@@ -1,79 +1,76 @@
+import React, { FC, ReactNode } from 'react';
+import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-const TabBarNavigator = createBottomTabNavigator();
-import {
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  Dimensions,
-  Platform,
-} from 'react-native';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import HomeIcon from '@Components/iconSvg/HomeIcon';
 import { HomeNavigator } from './homeNavigator';
 import { ShopNavigator } from './shopNavigator';
 import { SettingNavigator } from './settingNavigator';
+import { colors } from '@Theme/index';
+import TopNavigationBar from './topNavigation';
+import ShopIcon from '@Components/iconSvg/ShopIcon';
+import SettingIcon from '@Components/iconSvg/SettingIcon';
 
+const TabBar: any = ({ isActive, index }: { isActive: boolean; index: number }) => {
+  switch (index) {
+    case 0:
+      return <HomeIcon isActive={isActive} />;
 
-export const TabBarSetting = [
-  {
-    routeName: 'Home',
-    icon: (props: any) => <HomeIcon {...props} />,
-  },
-  {
-    routeName: 'Product',
-    icon: (props: any) => <HomeIcon {...props} />,
-  },
-  {
-    routeName: 'Notifications',
-    icon: (props: any) => <HomeIcon {...props} />,
-  },
-];
+    case 1:
+      return <ShopIcon isActive={isActive} />;
 
+    case 2:
+      return <SettingIcon isActive={isActive} />;
+
+    default:
+      break;
+  }
+};
+
+const TabBarNavigator = createBottomTabNavigator();
 export const BottomTabNavigator = () => {
-  const SMTabBar = ({state, descriptors, navigation}: any) => {
+  const SMTabBar = ({ state, descriptors, navigation }: any) => {
     return (
-      <View
-        style={{flexDirection: 'row', backgroundColor: '#fff'}}
-       >
-        {state.routes.map((route: any, index: any) => {
-          const {icon: TabIcon}: any = TabBarSetting.find(
-            ({routeName}) => routeName === route.name,
-          );
-          const {options} = descriptors[route.key];
-          const label = options.tabBarLabel || options.title || route.name;
-          const isFocused = state.index === index;
-  
+      <SafeAreaView style={{ flexDirection: 'row', paddingHorizontal: 20 }} edges={['bottom']}>
+        {state.routes.map((route: any, index: number) => {
+          const { options } = descriptors[route.key];
+          const isFocused: boolean = state.index === index;
+
           const onPress = () => {
             const event = navigation.emit({
               type: 'tabPress',
               target: route.key,
-            });}
-  
+              canPreventDefault: true,
+            });
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate({ name: route.name, merge: true });
+            }
+          };
+
           const onLongPress = () => {
             navigation.emit({
               type: 'tabLongPress',
               target: route.key,
             });
           };
-  
-          const isFirstOrLast = index === 0 || index === state.routes.length - 1;
-  
+
           return (
             <Pressable
               accessibilityRole="button"
               testID={options.tabBarTestID}
-              key={label}
+              key={index.toString()}
               onPress={onPress}
               onLongPress={onLongPress}
               style={[
                 styles.tabItem,
                 {
-                  flex: isFirstOrLast ? 0.8 : 1.2,
-                  paddingLeft: index === 0 ? 10 : 0,
-                  paddingRight: index === state.routes.length - 1 ? 10 : 0,
+                  borderTopLeftRadius: index === 0 ? 50 : 0,
+                  borderTopRightRadius: index === state.routes.length - 1 ? 50 : 0,
+                  borderBottomLeftRadius: index === 0 ? 50 : 0,
+                  borderBottomRightRadius: index === state.routes.length - 1 ? 50 : 0,
                 },
               ]}>
               {options.tabBarBadge ? (
@@ -82,30 +79,28 @@ export const BottomTabNavigator = () => {
                 </View>
               ) : null}
               <View style={styles.iconWrap}>
-                <TabIcon isActive={isFocused} />
+                <TabBar isActive={isFocused} index={index} />
               </View>
-              <Text
-                style={[styles.tabText, isFocused ? styles.tabTextFocused : {}]}>
-                {label}
-              </Text>
             </Pressable>
           );
         })}
-      </View>
+      </SafeAreaView>
     );
   };
- 
 
   return (
     <TabBarNavigator.Navigator
-      tabBar={props => <SMTabBar {...props} />}>
-      <TabBarNavigator.Screen name="Home" component={HomeNavigator} />
+      tabBar={props => <SMTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+        header: p => <TopNavigationBar {...p} children />,
+      }}>
+      <TabBarNavigator.Screen name="Home" component={HomeNavigator} options={{ headerShown: false }} />
       <TabBarNavigator.Screen name="Shop" component={ShopNavigator} />
       <TabBarNavigator.Screen name="Setting" component={SettingNavigator} />
     </TabBarNavigator.Navigator>
   );
 };
-
 
 const styles = StyleSheet.create({
   tabBadge: {
@@ -121,25 +116,26 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 11,
-   
     fontWeight: '400',
   },
-  tabTextFocused: {
-  
-  },
+  tabTextFocused: {},
   iconWrap: {
     marginVertical: 4,
   },
   tabItem: {
-    backgroundColor: '#fff',
-    height: 36,
+    flex: 1,
+    backgroundColor: colors.black2,
+    height: 60,
     alignItems: 'center',
-    paddingTop: 2,
-    paddingBottom: 2,
-    position: 'relative',
-    borderTopColor: '#BBBBBB',
-    borderTopWidth: 1,
-    top: -10,
+    justifyContent: 'center',
+
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
   badge: {
     backgroundColor: '#2EA65C',

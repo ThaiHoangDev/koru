@@ -13,7 +13,6 @@ export interface IPayload {
   isRegisterSuccess: boolean;
   isResendSuccess: boolean;
   errors: any;
-  showAuthModal: boolean;
   stepSignUp: number;
 }
 
@@ -24,7 +23,6 @@ export const initialState: IPayload = {
   isRegisterSuccess: false,
   isResendSuccess: false,
   errors: {},
-  showAuthModal: false,
   stepSignUp: 0,
 };
 
@@ -68,9 +66,7 @@ const authReducer = (state = initialState, { type, payload }: ACTION) =>
         draft.isResendSuccess = true;
         draft.errors = {};
         break;
-      case AuthActions.Types.TOGGLE_AUTH_MODAL.default:
-        draft.showAuthModal = payload;
-        break;
+
       case AuthActions.Types.RESET_REGISTER_STATE.default:
         draft.isRegisterSuccess = false;
         break;

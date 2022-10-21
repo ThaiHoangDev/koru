@@ -1,58 +1,93 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useNavigation, useRoute, ParamListBase, RouteProp } from '@react-navigation/native';
+import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 
 // utils
-import { StepProps } from '@Containers/Auth/interfaces';
 import { makeSelectStepSignUp } from '@Containers/Auth/store/selectors';
-import { showErrorWithString } from '@Utils/helper';
 import { AuthActions } from '@Containers/Auth/store/actions';
 // components by self
-import TopNavigationBar from '@Navigators/topNavigation';
-import { SliderComp } from '@Components/slider';
-import { FormComp } from '@Containers/Auth/components/formComp';
+import TextInputComp from '@Components/input';
+import { ButtonComp } from '@Components/button';
 // assets
 import styles from './styles';
+import { colors } from '@Theme/index';
+import { WIDTH } from '@Constants/app';
 
-const EmailContainer = ({ step }: StepProps) => {
+const VERIFY_EMAIL: any = [
+  {
+    label: 'Enter your verificationcode',
+    placeholder: 'Verification Code',
+  },
+];
+
+const EmailContainer = () => {
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
   const route: RouteProp<ParamListBase> | any = useRoute();
-  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      header: (p: any) => (
-        <TopNavigationBar
-          {...p}
-          isLeft
-          children={route.params?.isLogin ? <Text style={styles.titleTab}>Login</Text> : <SliderComp step={step} />}
-        />
-      ),
-    });
-  }, [navigation]);
+  const handleVerify = () => {
+    dispatch(AuthActions.verifyCode.request(code));
+  };
 
-  const handleNext = () => {
-    if (!!email) {
-      !route.params?.isLogin && dispatch(AuthActions.stepSignUp.request(5));
-      navigation.navigate('VerifyEmail', {
-        isLogin: route.params?.isLogin,
-        dataSignUp: { ...route.params.dataSignUp, email: email },
-      });
-      console.log(route.params?.dataSignUp, 'FFFFF');
-      !!route.params?.dataSignUp
-        ? dispatch(AuthActions.register.request(route.params?.dataSignUp))
-        : dispatch(AuthActions.login.request(route.params.dataLogin));
-    } else {
-      showErrorWithString('Please input Email!');
-    }
+  const onChangeText = (text: string) => {
+    setCode(text);
+  };
+  const reSendCode = () => {
+    dispatch(AuthActions.resendEmailVerification.request());
   };
 
   return (
     <View style={styles.root}>
-      <FormComp data={email} handleNext={handleNext} title={'What is your email?'} setState={setEmail} />
+      <KeyboardAwareFlatList
+        enableOnAndroid={true}
+        bounces={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+        contentInsetAdjustmentBehavior="always"
+        overScrollMode="always"
+        data={VERIFY_EMAIL}
+        keyExtractor={item => item.label.toString()}
+        renderItem={({ item }) => (
+          <TextInputComp
+            label={''}
+            value={code}
+            placeholder={item.placeholder}
+            handleChangeText={onChangeText}
+            stylesTxt={styles.txtContainer}
+            autoFocus
+            selectionColor={colors.black}
+            keyboardType="numeric"
+          />
+        )}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <View>
+            <Text style={styles.title}>Enter your verification code</Text>
+          </View>
+        }
+        ListHeaderComponentStyle={{ alignItems: 'flex-start', marginTop: 40, width: WIDTH / 2, paddingLeft: 40 }}
+        ListFooterComponentStyle={{ flex: 0.9, justifyContent: 'space-between', marginBottom: 20 }}
+        ListFooterComponent={
+          <>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+              <Text style={styles.subTitle}>Didn’t get the code? </Text>
+              <TouchableOpacity onPress={reSendCode}>
+                <Text>Resend</Text>
+              </TouchableOpacity>
+            </View>
+
+            <ButtonComp
+              title={'Verify'}
+              handlePress={handleVerify}
+              stylesBtn={[styles.btn]}
+              stylesTitle={[styles.txtBtn, styles.fontFamily]}
+            />
+          </>
+        }
+      />
     </View>
   );
 };

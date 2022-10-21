@@ -10,68 +10,74 @@ import { useInjectReducer } from '@Utils/injectReducer';
 import { useInjectSaga } from '@Utils/injectSaga';
 // components
 import { ButtonComp } from '@Components/button';
+import StartLogo from '@Components/iconSvg/startScreen/StartLogo';
+import Facbook from '@Components/iconSvg/startScreen/Facbook';
+import GoogleIcon from '@Components/iconSvg/startScreen/GoogleIcon';
 // assets
 import styles from './styles';
-import { AuthActions } from '@Containers/Auth/store/actions';
+import { colors } from '@Theme/index';
 
 const StartContainer = () => {
   const navigation: any = useNavigation();
   useInjectReducer({ key: 'auth', reducer });
   useInjectSaga({ key: 'auth', saga });
   const dispatch = useDispatch();
-  const top = new Animated.Value(240);
-  const opacity = new Animated.Value(0);
-
-  useEffect(() => {
-    Animated.timing(top, {
-      toValue: 64,
-      duration: 500,
-      easing: Easing.ease,
-      delay: 300,
-      useNativeDriver: false,
-    }).start();
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: 500,
-      easing: Easing.bounce,
-      delay: 300,
-      useNativeDriver: false,
-    }).start();
-  }, []);
-
-  const handleGetStarted = () => {
-    dispatch(AuthActions.stepSignUp.request(1));
-    navigation.navigate('LetGo');
-  };
 
   const handleLogin = () => {
-    navigation.navigate('Login');
+    navigation.navigate('Login', { isLogin: true });
+  };
+
+  const handleSignup = () => {
+    navigation.navigate('Login', { isLogin: false });
   };
 
   return (
-    <ImageBackground source={require('@Assets/image-background/start-image.png')} style={styles.containerBackground}>
-      <Animated.View style={{ top: top, opacity: opacity }}>
-        <Text style={styles.textHeader}>KORU</Text>
-      </Animated.View>
-      <View style={styles.containerContent}>
-        <View style={styles.containerTitle}>
-          <Text style={styles.title}>Start planting air.</Text>
-          <Text style={styles.subTitle}>Your plants are waiting for you.</Text>
-        </View>
-        <ButtonComp
-          title="Get Started"
-          stylesBtn={[styles.buttonContainer, styles.buttonStart]}
-          stylesTitle={styles.buttonTitle}
-          handlePress={handleGetStarted}
-        />
-        <ButtonComp
-          title="Login"
-          stylesBtn={[styles.buttonContainer]}
-          stylesTitle={styles.buttonTitleLogin}
-          handlePress={handleLogin}
-        />
+    <View style={styles.root}>
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <StartLogo />
       </View>
-    </ImageBackground>
+      <View style={styles.containerContent}>
+        <View style={{ marginVertical: 16 }}>
+          <Text style={[styles.title, styles.fontFamily]}>{'Hey Boss!'}</Text>
+        </View>
+        <View style={{ marginBottom: 20, marginHorizontal: 80 }}>
+          <Text style={[styles.subTitle, styles.fontFamily]}>{'There are 1000 kinds of plants waiting for you'}</Text>
+        </View>
+        <View style={[styles.doneWrap, { marginTop: 20 }]}>
+          <ButtonComp
+            title="Login"
+            handlePress={handleLogin}
+            stylesBtn={[styles.btn, { backgroundColor: colors.black2 }]}
+            stylesTitle={[styles.txtBtn, styles.fontFamily, { color: colors.white }]}
+          />
+          <ButtonComp
+            title="Sign Up"
+            handlePress={handleSignup}
+            stylesBtn={[styles.btn, { borderWidth: 1, borderColor: colors.black2 }]}
+            stylesTitle={[styles.txtBtn, styles.fontFamily, { color: colors.black2 }]}
+          />
+        </View>
+        <View style={{ marginTop: 60, marginBottom: 20 }}>
+          <Text>Or social media below</Text>
+        </View>
+        <View style={[styles.doneWrap, { marginBottom: 0 }]}>
+          <ButtonComp
+            title={''}
+            handlePress={handleLogin}
+            stylesBtn={[styles.btnSocial, { backgroundColor: colors.black2 }]}
+            stylesTitle={[styles.txtBtn, styles.fontFamily]}
+            icon={<Facbook />}
+          />
+          <ButtonComp
+            title={''}
+            handlePress={handleLogin}
+            stylesBtn={[styles.btnSocial, { backgroundColor: colors.black2 }]}
+            stylesTitle={[styles.txtBtn, styles.fontFamily]}
+            icon={<GoogleIcon />}
+          />
+        </View>
+      </View>
+    </View>
   );
 };
 

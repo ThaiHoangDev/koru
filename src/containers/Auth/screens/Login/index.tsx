@@ -1,61 +1,74 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import CloseIcon from 'react-native-vector-icons/Ionicons';
+import { View, Text } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 // utils
-import { LginType } from '@Containers/Auth/interfaces';
+import { LginType, LoginPayload } from '@Containers/Auth/interfaces';
+import { AuthActions } from '@Containers/Auth/store/actions';
 // components by self
 import TopNavigationBar from '@Navigators/topNavigation';
-import FacbookIcon from '@Components/iconSvg/FacbookIcon';
-import Google from '@Components/iconSvg/Google';
+import { FormComp } from '@Containers/Auth/components/formComp';
 // assets
 import styles from './styles';
+import { colors } from '@Theme/index';
+import { loginValidationSchema } from '@Containers/Auth/schema';
 
 const LOGIN_KEY = [
-  { lable: 'FACBOOK', element: <FacbookIcon /> },
-  { lable: 'GOOGLE', element: <Google /> },
-  { lable: 'E-Mail', element: <Text style={styles.textEmail}>E-mail</Text> },
+  { lable: 'Email', element: 'Johnde@example.com', type: 'email-address', value: 'email' },
+  { lable: 'Password', element: 'Your password', type: 'default', value: 'password' },
 ];
+const SIGNUP_KEY = [
+  { lable: 'Full Name', element: 'Peter', type: 'default', value: 'username' },
+  { lable: 'Email', element: 'Johnde@example.com', type: 'email-address', value: 'email' },
+  { lable: 'Password', element: 'Your password', type: 'default', value: 'password' },
+];
+const initialValuesLogin: LoginPayload = {
+  email: '',
+  password: '',
+};
+const initialValuesSignUp: LoginPayload = {
+  username: '',
+  email: '',
+  password: '',
+};
 
 const LoginContainer = () => {
   const navigation: any = useNavigation();
+  const route: any = useRoute();
+
+  const dispatch = useDispatch();
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       header: (p: any) => (
         <TopNavigationBar
           {...p}
-          isLeft={false}
-          children={<Text style={styles.titleTab}>Login</Text>}
-          right={<CloseIcon name="close" size={32} />}
+          stylesTop={{ backgroundColor: colors.white }}
+          isLeft={true}
+          children={
+            <Text style={styles.titleTab}>{route.params.isLogin ? 'Wellcome Back!' : 'Create new account'}</Text>
+          }
         />
       ),
     });
-  }, [navigation]);
+  }, [navigation, route]);
 
-  const handleLogin = (type: LginType) => () => {
-    switch (type) {
-      case LOGIN_KEY[0].lable:
-        break;
-
-      default:
-        navigation.navigate('SignUp', { isLogin: true });
-        break;
-    }
+  const handleLogin = (values: LoginPayload) => {
+    route.params.isLogin
+      ? dispatch(AuthActions.login.request(values))
+      : dispatch(AuthActions.registerCognito.request(values));
   };
-  const _renderItem = ({ item }: any) => (
-    <TouchableOpacity style={[styles.buttonContainer, styles.containerContent]} onPress={handleLogin(item.lable)}>
-      {item.element}
-    </TouchableOpacity>
-  );
 
   return (
     <View style={styles.root}>
-      <View style={styles.containerTitle}>
-        <Text style={styles.title}>Login</Text>
-        <Text style={styles.subTitle}>Sign up with your social login to be faster.</Text>
-      </View>
-      <FlatList renderItem={_renderItem} data={LOGIN_KEY} keyExtractor={item => item.lable.toString()} />
+      <FormComp
+        data={route.params.isLogin ? LOGIN_KEY : SIGNUP_KEY}
+        title={''}
+        isLogin={route.params.isLogin}
+        handleLogin={handleLogin}
+        initialValues={route.params.isLogin ? initialValuesLogin : initialValuesSignUp}
+      />
     </View>
   );
 };

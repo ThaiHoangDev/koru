@@ -6,11 +6,12 @@ import ErrorBoundary from 'react-native-error-boundary';
 import { ErrorComp } from '@Components/error-comp';
 
 import AppContainer from '@Containers/App';
-import createStore from './store';
+import { store, persistor } from './store';
+import { LogBox } from 'react-native';
 
-const { store, persistor } = createStore();
 
-export { store };
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const App = () => (
   <Provider store={store}>

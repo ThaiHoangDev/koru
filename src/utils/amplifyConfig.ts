@@ -1,5 +1,5 @@
 import { AWSConfig } from '@Utils/constants';
-import { CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUserSession, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
 
 export const amplifyConfig = {
   Auth: {
@@ -16,4 +16,17 @@ const poolData = {
   ClientId: AWSConfig.appId,
 };
 
-export const cognitoPool = new CognitoUserPool(poolData);
+const cognitoPool = new CognitoUserPool(poolData);
+
+var userData = {
+  Username: 'username',
+  Pool: cognitoPool,
+};
+const cognitoUser = new CognitoUser(userData);
+
+
+
+export {
+  cognitoPool,
+  cognitoUser
+}

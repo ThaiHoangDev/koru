@@ -3,7 +3,7 @@ import React from 'react';
 import { AuthLayout } from '@Layouts/index';
 import EmailContainer from '@Containers/Auth/screens/Email';
 
-const EmailScreen = () => {
+const ParingScreen = () => {
   return (
     <AuthLayout>
       <EmailContainer />
@@ -11,4 +11,4 @@ const EmailScreen = () => {
   );
 };
 
-export default EmailScreen;
+export default ParingScreen;

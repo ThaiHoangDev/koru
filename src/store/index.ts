@@ -1,6 +1,6 @@
 import configureStore from './configureStore';
 import rootReducer from './reducers';
 
-export default () => {
-  return configureStore(rootReducer);
-};
+const { store, persistor } = configureStore(rootReducer);
+
+export { store, persistor };

@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { colors } from '@Theme/index';
 
 export default StyleSheet.create({
   mainWrapper: {
@@ -8,9 +9,10 @@ export default StyleSheet.create({
     position: 'relative',
   },
   content: {
+    backgroundColor: colors.white2,
     position: 'relative',
     flex: 1,
-    paddingHorizontal: '8%',
+    paddingHorizontal: 20,
   },
   homeContent: {
     paddingHorizontal: 0,

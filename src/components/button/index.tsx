@@ -5,7 +5,7 @@ import styles from './styles';
 
 interface IProps {
   title: string;
-  stylesBtn?: ViewStyle[] | ViewStyle;
+  stylesBtn?: ViewStyle[] | ViewStyle | any;
   stylesTitle?: TextStyle | TextStyle[];
   handlePress: () => void;
   icon?: any;

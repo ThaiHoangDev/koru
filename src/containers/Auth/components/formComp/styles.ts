@@ -7,25 +7,24 @@ export default StyleSheet.create({
   root: {
     flex: 1,
   },
-  scrollview: {
-    flex: 1,
-  },
+
   keyboardContainer: {
     flexGrow: 0.5,
     alignItems: 'center',
   },
-  title: {
-    fontFamily: fontFamily.medium,
-    fontSize: fontSizes.xl,
+  txt: {
+    color: colors.grey06,
+    fontFamily: fontFamily.Strawford,
+    fontSize: 13,
+    textAlign: 'right',
+    paddingHorizontal: 40,
   },
   subTitle: {
-    top: 50,
-    zIndex: 2,
-    color: colors.black,
-    fontFamily: fontFamily.book,
-    fontSize: 18,
-    lineHeight: 27,
+    color: colors.black2,
+    fontFamily: fontFamily.Strawford,
+    fontSize: 13,
     textAlign: 'center',
+    marginVertical: 10,
   },
   btnStyle: {
     display: 'flex',
@@ -38,11 +37,26 @@ export default StyleSheet.create({
     borderRadius: 4,
   },
   txtContainer: {
-    height: 100,
-    width: WIDTH / 1.4,
+    height: 30,
+    paddingHorizontal: 2,
+    marginVertical: 10,
+    fontSize: 16,
+    fontFamily: fontFamily.Strawford,
+  },
+  btn: {
+    backgroundColor: colors.black2,
+    marginHorizontal: 40,
     paddingHorizontal: 10,
-    fontSize: 38,
-    fontFamily: fontFamily.book,
-    marginTop: 200,
+    paddingVertical: 6,
+    borderRadius: 25,
+  },
+
+  txtBtn: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: colors.white,
+  },
+  fontFamily: {
+    fontFamily: fontFamily.Strawford,
   },
 });

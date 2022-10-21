@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SplashScreen = () => {
   return (
-    <SafeAreaView edges={['left', 'right']}>
+    <SafeAreaView edges={['left', 'right']} style={{ flex: 1 }}>
       <SplashContainer />
     </SafeAreaView>
   );

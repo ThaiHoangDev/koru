@@ -8,37 +8,20 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
-  containerContent: {
-    marginVertical: 9,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  containerTitle: {
-    alignItems: 'center',
-    marginTop: 50,
-    paddingHorizontal: WIDTH / 6,
-  },
+
   title: {
-    color: colors.black,
-    fontFamily: fontFamily.bold,
-    fontSize: 26,
-    lineHeight: 25,
-    bottom: 17,
+    color: colors.black2,
+    fontFamily: fontFamily.Strawford,
+    fontSize: 24,
   },
   subTitle: {
-    color: colors.black,
-    fontFamily: fontFamily.book,
-    fontSize: 18,
+    color: colors.grey06,
+    fontFamily: fontFamily.Strawford,
+    fontSize: 13,
     lineHeight: 27,
     textAlign: 'center',
   },
-  titleTab: {
-    color: colors.gray04,
-    fontFamily: fontFamily.medium,
-    fontSize: 16,
-    textAlign: 'center',
-    paddingRight: 60,
-  },
+
   textEmail: {
     color: colors.black,
     fontFamily: fontFamily.medium,
@@ -53,5 +36,28 @@ export default StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: colors.gray,
+  },
+  txtContainer: {
+    height: 30,
+    paddingHorizontal: 2,
+    marginVertical: 10,
+    fontSize: 16,
+    fontFamily: fontFamily.Strawford,
+  },
+  btn: {
+    backgroundColor: colors.black2,
+    marginHorizontal: 40,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 25,
+  },
+
+  txtBtn: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: colors.white,
+  },
+  fontFamily: {
+    fontFamily: fontFamily.Strawford,
   },
 });
