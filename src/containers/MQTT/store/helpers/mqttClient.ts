@@ -1,21 +1,19 @@
 import IoTClient from '@Utils/mqtt/iotClient';
-import {extend} from 'lodash';
+import { extend } from 'lodash';
 
 const MQTTClient = () => {
   const connect = (option: any) =>
     new Promise(async resolve => {
       const iotClient = new IoTClient(true);
-      const initialized = await iotClient.initClient(
-        extend({debug: false}, option),
-      );
+      const initialized = await iotClient.initClient(extend({ debug: false }, option));
       if (initialized) {
         console.log('iotClient', iotClient);
         resolve(iotClient);
       }
     });
 
-  const updateClientCredentials = (awsCredentials: { AccessKeyId: any; SecretKey: any; SessionToken: any; }) => {
-    const {AccessKeyId, SecretKey, SessionToken} = awsCredentials;
+  const updateClientCredentials = (awsCredentials: { AccessKeyId: any; SecretKey: any; SessionToken: any }) => {
+    const { AccessKeyId, SecretKey, SessionToken } = awsCredentials;
     const iotClient = new IoTClient();
     iotClient.updateWebSocketCredentials(AccessKeyId, SecretKey, SessionToken);
   };

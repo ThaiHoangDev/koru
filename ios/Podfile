@@ -19,6 +19,16 @@ target 'koru' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'RNAWSCognito', :path => '../node_modules/amazon-cognito-identity-js'
+
+  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+
+  pod 'lottie-ios', :path => '../node_modules/lottie-ios'
+
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
   target 'koruTests' do
     inherit! :complete
     # Pods for testing

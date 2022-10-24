@@ -1,23 +1,24 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
-import { enableES5 } from 'immer';
+import ErrorBoundary from 'react-native-error-boundary';
 
-import AppContainer from './containers/App';
-import createStore from './store';
+import { ErrorComp } from '@Components/error-comp';
 
-const { store, persistor } = createStore();
+import AppContainer from '@Containers/App';
+import { store, persistor } from './store';
+import { LogBox } from 'react-native';
 
-export { store }
 
-export type AppDispatch = typeof store.dispatch;
-
-enableES5();
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const App = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <AppContainer />
+      <ErrorBoundary FallbackComponent={ErrorComp}>
+        <AppContainer />
+      </ErrorBoundary>
     </PersistGate>
   </Provider>
 );

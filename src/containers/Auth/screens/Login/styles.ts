@@ -1,41 +1,57 @@
 import { StyleSheet } from 'react-native';
 
-import fontFamily from '@Theme/fontFamily';
-import fontSizes from '@Theme/fontSizes';
+import { fontFamily, colors } from '@Theme/index';
+import { HEIGHT, WIDTH } from '@Constants/app';
 
 export default StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor: colors.white,
   },
-  logo: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
+  containerContent: {
+    marginVertical: 9,
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  textSignUp: {
+  containerTitle: {
+    alignItems: 'center',
+    marginTop: HEIGHT / 3,
+    paddingHorizontal: WIDTH / 6,
+    bottom: 74,
+  },
+  title: {
+    color: colors.black,
+    fontFamily: fontFamily.bold,
+    fontSize: 26,
+    lineHeight: 25,
+    bottom: 17,
+  },
+  subTitle: {
+    color: colors.black,
+    fontFamily: fontFamily.book,
+    fontSize: 18,
+    lineHeight: 27,
     textAlign: 'center',
   },
-  wrapperError: {
-    width: '100%',
-    marginTop: 20,
-    marginHorizontal: 5,
+  titleTab: {
+    color: colors.black2,
+    fontFamily: fontFamily.Strawford,
+    fontSize: 24,
+    textAlign: 'center',
   },
-  textError: {
-    color: '#EB5757',
-    fontSize: fontSizes.l,
-  },
-  inputContainer: {
-    width: '100%',
-    paddingHorizontal: 45,
-    marginBottom: 20,
-  },
-  inputWrapper: {
-    width: '100%',
-    height: 50,
+  textEmail: {
+    color: colors.black,
+    fontFamily: fontFamily.medium,
+    fontSize: 16,
   },
   buttonContainer: {
-    width: '100%',
-    paddingHorizontal: 45,
-  }
+    width: WIDTH / 2,
+    minWidth: 213,
+    height: 50,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: colors.gray,
+  },
 });

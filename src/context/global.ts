@@ -1,7 +1,7 @@
-import { createContext } from 'react'
+import { createContext } from 'react';
 
 export interface GlobalContext {
-  isDarkMode: boolean
+  isDarkMode: boolean;
 }
 
 export const globalContext = createContext<GlobalContext>({ isDarkMode: false });

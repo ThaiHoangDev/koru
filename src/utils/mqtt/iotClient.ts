@@ -35,11 +35,9 @@ export default class IoTClient {
 
   initClient = (options = {} as any) =>
     new Promise((resolve, reject) => {
-      console.log('initClient ------')
+      console.log('initClient ------');
       this.options = options;
-      const clientId = `school-bus-app-client-${Math.floor(
-        Math.random() * 100000 + 1
-      )}`;
+      const clientId = `school-bus-app-client-${Math.floor(Math.random() * 100000 + 1)}`;
 
       AWS_SDK.config.region = options.region;
       // AWS_SDK.config.credentials = new AWS_SDK.CognitoIdentityCredentials({
@@ -49,14 +47,14 @@ export default class IoTClient {
       // const identityId = AWS_SDK.config.credentials.identityId;
 
       // const cognitoIdentity = new AWS_SDK.CognitoIdentity();
-      console.log('initClient 000')
+      console.log('initClient 000');
       Auth.currentUserCredentials().then(user => {
-        console.log('initClient 111', user)
+        console.log('initClient 111', user);
         AWS_SDK.config.credentials = user;
         new AWS_SDK.Iot().attachPrincipalPolicy(
           { policyName: 'IOTFullAccess', principal: user.identityId },
           (err: any) => {
-            console.log('initClient 222')
+            console.log('initClient 222');
 
             if (err) {
               console.error('attachPrincipalPolicy', err); // an error occurred
@@ -98,18 +96,14 @@ export default class IoTClient {
                 sessionToken: user.sessionToken || ' ',
               });
 
-              this.updateWebSocketCredentials(
-                user.accessKeyId,
-                user.secretAccessKey,
-                user.sessionToken
-              );
+              this.updateWebSocketCredentials(user.accessKeyId, user.secretAccessKey, user.sessionToken);
             }
             if (typeof options.debug !== 'undefined' && options.debug) {
               this.attachDebugHandlers();
             }
-            console.log('CONNECTED', user)
+            console.log('CONNECTED', user);
             resolve(true);
-          }
+          },
         );
       });
     });
@@ -135,16 +129,8 @@ export default class IoTClient {
     });
   };
 
-  updateWebSocketCredentials = (
-    accessKeyId: string,
-    secretAccessKey: string,
-    sessionToken: string
-  ) => {
-    this.client.updateWebSocketCredentials(
-      accessKeyId,
-      secretAccessKey,
-      sessionToken
-    );
+  updateWebSocketCredentials = (accessKeyId: string, secretAccessKey: string, sessionToken: string) => {
+    this.client.updateWebSocketCredentials(accessKeyId, secretAccessKey, sessionToken);
   };
 
   attachMessageHandler = (onNewMessageHandler: any) => {

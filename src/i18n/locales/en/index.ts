@@ -1,4 +1,4 @@
-const common = require('./common.json')
+const common = require('./common.json');
 
 export default {
   common,

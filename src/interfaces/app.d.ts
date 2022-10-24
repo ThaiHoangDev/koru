@@ -1,188 +1,190 @@
-import { string } from 'yup/lib/locale'
-
+export type RootStackParamList = {
+  Home: undefined;
+  Shop: undefined;
+  Setting: undefined;
+};
 export interface GlobalTypes {
-  profile: object | null
-  isLoading: boolean
-  isRequesting: boolean
-  errors: object | null
-  permissionLocation: boolean
+  profile: object | null;
+  isLoading: boolean;
+  isRequesting: boolean;
+  errors: object | null;
+  permissionLocation: boolean;
 }
 
 export interface IRoute {
-  name: string
-  params: object | any
+  name: string;
+  params: object | any;
 }
 
 export interface INavigation {
-  navigate(route: string | object, params?: object): void
-  goBack(): void
-  toggleDrawer?(): void
-  push(route: string, params?: object): void
+  navigate(route: string | object, params?: object): void;
+  goBack(): void;
+  toggleDrawer?(): void;
+  push(route: string, params?: object): void;
 }
 
 export interface ModalPropType {
-  title?: string
-  isVisible: boolean
-  onClose?(): void
-  children: any
-  [data: string]: any
+  title?: string;
+  isVisible: boolean;
+  onClose?(): void;
+  children: any;
+  [data: string]: any;
 }
 
 export interface IErrors {
-  message: string
-  message_code: string | number
-  [data: string]: any
+  message: string;
+  message_code: string | number;
+  [data: string]: any;
 }
 
 export interface IAction {
-  type: string
-  payload: any
+  type: string;
+  payload: any;
 }
 
 export interface PropsScreen {
-  navigation: INavigation
-  route: IRoute
+  navigation: INavigation;
+  route: IRoute;
 }
 
 export interface Coordinate {
-  latitude: number
-  longitude: number
+  latitude: number;
+  longitude: number;
 }
 
 export interface DutyStatusItem {
-  duty_status: string
-  id: number
+  duty_status: string;
+  id: number;
 }
 
 export interface Vehicle {
-  engine_hours: number
-  id: number
-  make: string
-  mileage: number
-  model: string
-  year: number
+  engine_hours: number;
+  id: number;
+  make: string;
+  mileage: number;
+  model: string;
+  year: number;
 }
 
 export interface VehicleConfig {
-  id: number
-  driverId: number
-  vehicleId: number
-  trailerIds: number[]
-  shippingIds: number[]
+  id: number;
+  driverId: number;
+  vehicleId: number;
+  trailerIds: number[];
+  shippingIds: number[];
 }
 
 export interface Trailer {
-  id: number
-  name: string
-  link: string
+  id: number;
+  name: string;
+  link: string;
 }
 
 export interface Remark {
-  id: number
-  title: string
+  id: number;
+  title: string;
 }
 
 export interface ShippingID {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
 
 export interface Journey {
-  id: number
-  driver_id: number
-  trailers: Trailer[],
-  shippings: ShippingID[]
-  vehicle: Vehicle
+  id: number;
+  driver_id: number;
+  trailers: Trailer[];
+  shippings: ShippingID[];
+  vehicle: Vehicle;
 }
 
 export interface Profile {
-  id: number
-  username: string
-  avatar: string
-  cover: string
-  address: string
-  driver_id: number
-  phone?: string
-  cover_image_key: string
-  cover_image_url: string
-  image_key: null
-  image_url: null
+  id: number;
+  username: string;
+  avatar: string;
+  cover: string;
+  address: string;
+  driver_id: number;
+  phone?: string;
+  cover_image_key: string;
+  cover_image_url: string;
+  image_key: null;
+  image_url: null;
 }
 
 export interface DOC {
-  id: number
-  document_template_name: string
-  created_at: number
-  status: string
+  id: number;
+  document_template_name: string;
+  created_at: number;
+  status: string;
 }
 
 export interface DOC_DETAIL extends DOC {
   field_inputs: {
-    label: string
-    type: string,
-    answer: string | number | string[] | object | any
-  }[],
-  notes: string
+    label: string;
+    type: string;
+    answer: string | number | string[] | object | any;
+  }[];
+  notes: string;
 }
 
 export interface Driver {
-  driver_name: string
-  id: number
-  is_passenger: boolean
-  status: string
-  username: string
+  driver_name: string;
+  id: number;
+  is_passenger: boolean;
+  status: string;
+  username: string;
 }
 
-export type LANGUAGE = 'en' | 'de'
+export type LANGUAGE = 'en' | 'de';
 
 export interface IMessage {
-  id: string
-  senderId: number
-  message: string
-  time: number
+  id: string;
+  senderId: number;
+  message: string;
+  time: number;
 }
 
 export interface IProfile {
-  id: number
-  name: string
-  vehicle: string
-  username: string
+  id: number;
+  name: string;
+  vehicle: string;
+  username: string;
 }
 
 export interface ILogEdit {
-  id: number
-  duty_status: string
-  start_time: number
-  end_time: number
-  remark: string
-  location: string
+  id: number;
+  duty_status: string;
+  start_time: number;
+  end_time: number;
+  remark: string;
+  location: string;
 }
 
 export interface IGetMessages {
-  channel_id: string
-  channel: string
+  channel_id: string;
+  channel: string;
 }
 
 export interface ISendMessage extends IGetMessages {
-  idProfile: number
-  msg: string
-  date: number
+  idProfile: number;
+  msg: string;
+  date: number;
 }
 
 export interface ISendMessageNotification {
-  title: string
-  body: string
+  title: string;
+  body: string;
 }
 
 export interface IDataAddDeviceId {
-  device_id: string
+  device_id: string;
 }
 
 export interface ITrailerVehicle {
-  vehicle_id: number
-  vehicle_name: string
+  vehicle_id: number;
+  vehicle_name: string;
 }
-
 
 export interface IListInspectionVehicle {
   inspection: IInspection[];
@@ -192,17 +194,17 @@ export interface IListInspectionVehicle {
 }
 
 export interface CreateDVIRPayload {
-  type: string,
-  inspectionType: string,
-  safetyStatus: string,
-  name: string,
-  vehicleVIN: string,
-  license: string,
-  odometer: string,
-  location: string,
-  listPhoto: any,
-  listInspectVehicle: any,
-  id: number
+  type: string;
+  inspectionType: string;
+  safetyStatus: string;
+  name: string;
+  vehicleVIN: string;
+  license: string;
+  odometer: string;
+  location: string;
+  listPhoto: any;
+  listInspectVehicle: any;
+  id: number;
 }
 
 export interface IListPerformInspectionPayload {
@@ -273,7 +275,7 @@ export interface IDailyDetail {
   id: number;
   confirmed: boolean;
   exemptions: string[];
-  remarks: { remark: string, time: number }[] | [];
+  remarks: { remark: string; time: number }[] | [];
   ruleset: string;
   shipping_ids: string;
   trailers: string;
@@ -284,7 +286,7 @@ export interface IDailyDetail {
 
 export interface IUpdateDailyLog {
   id: number;
-  remarks: { remark: string, time: number }[] | [];
+  remarks: { remark: string; time: number }[] | [];
   shipping_ids: string;
   trailers: string;
 }
@@ -318,7 +320,7 @@ export interface IServiceEditDailyLog {
     location: string;
     remark: string;
     start_time: number;
-  }
+  };
   id: number;
 }
 

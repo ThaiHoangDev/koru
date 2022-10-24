@@ -1,4 +1,2 @@
-export { default as LoginContainer } from './screens/Login';
-// export { default as RegisterContainer } from './screens/Register';
-// export { default as VerifyContainer } from './screens/Verify';
-
+export { default as LetGoContainer } from './screens/LetGo';
+export { default as FastSignUpContainer } from './screens/FastSignUp';

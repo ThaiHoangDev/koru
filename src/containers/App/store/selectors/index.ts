@@ -7,12 +7,8 @@ const globalState = (state: any) => state.global || initialState;
 const makeSelectIsRequesting = () => createSelector(globalState, state => state.isRequesting);
 
 const makeSelectIsInitializing = () => createSelector(globalState, state => state.isInitializing);
+const makeSelectIsSkipIntro = () => createSelector(globalState, state => state.isSkipIntro);
 
 const makeSelectIsLoggedIn = () => createSelector(globalState, state => state.isLoggedIn);
 
-
-export {
-  makeSelectIsRequesting,
-  makeSelectIsInitializing,
-  makeSelectIsLoggedIn,
-};
+export { makeSelectIsRequesting, makeSelectIsInitializing, makeSelectIsLoggedIn, makeSelectIsSkipIntro };

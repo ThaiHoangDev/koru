@@ -1,4 +1,4 @@
-import 'core-js/es/reflect/has'
+import 'core-js/es/reflect/has';
 import invariant from 'invariant';
 import { isEmpty, isFunction, isString } from 'lodash';
 

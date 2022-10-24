@@ -7,14 +7,23 @@ type ACTION = {
   payload: any;
 };
 
+export interface IPayload {
+  isRequesting: boolean;
+  isVerifySuccess: boolean;
+  isRegisterSuccess: boolean;
+  isResendSuccess: boolean;
+  errors: any;
+  stepSignUp: number;
+}
+
 // The initial state of the Login container
-export const initialState = {
+export const initialState: IPayload = {
   isRequesting: false,
   isVerifySuccess: false,
   isRegisterSuccess: false,
   isResendSuccess: false,
   errors: {},
-  showAuthModal: false,
+  stepSignUp: 0,
 };
 
 const authReducer = (state = initialState, { type, payload }: ACTION) =>
@@ -57,11 +66,12 @@ const authReducer = (state = initialState, { type, payload }: ACTION) =>
         draft.isResendSuccess = true;
         draft.errors = {};
         break;
-      case AuthActions.Types.TOGGLE_AUTH_MODAL.default:
-        draft.showAuthModal = payload;
-        break;
+
       case AuthActions.Types.RESET_REGISTER_STATE.default:
         draft.isRegisterSuccess = false;
+        break;
+      case AuthActions.Types.STEP_SIGNUP.begin:
+        draft.stepSignUp = payload;
         break;
       default:
         break;

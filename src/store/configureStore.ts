@@ -12,9 +12,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
  * If you need to store sensitive information, use redux-persist-sensitive-storage.
  * @see https://github.com/CodingZeal/redux-persist-sensitive-storage
  */
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import apiMiddleware from './middlewares/api';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 
 const persistConfig = {
   key: 'root',
@@ -22,9 +23,9 @@ const persistConfig = {
   /**
    * Blacklist state that we do not need/want to persist
    */
-  blacklist: [
-    // 'auth',
-  ],
+  // blacklist: ['auth'],
+  whitelist: ['global', 'app'],
+  stateReconciler: autoMergeLevel2,
 };
 
 export default (rootReducer: any) => {
