@@ -29,7 +29,9 @@ function* loginApiSaga({ payload }: any) {
     yield put(AppActions.initApp.success({ isLoggedIn: true }));
     yield put(AuthActions.login.success());
     // yield put(AppActions.fetchProfile.request());
-  } catch (error) {}
+  } catch (error) {
+    yield put(AuthActions.login.fail({ errors: error }));
+  }
 }
 
 function* loginCognitoSaga({ payload }: LoginAction) {

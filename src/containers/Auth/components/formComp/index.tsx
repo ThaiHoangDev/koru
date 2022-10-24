@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { Text, TextStyle, View, KeyboardTypeOptions, TextInputProps, TouchableOpacity } from 'react-native';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
-import { Formik, FormikErrors } from 'formik';
+import { Formik, FormikErrors, ErrorMessage } from 'formik';
 
 import TextInputComp from '@Components/input';
 import { ButtonComp } from '@Components/button';
 import VideoLoginComp from '@Components/videos/VideoLoginComp';
 
 import styles from './styles';
-import { colors } from '@Theme/index';
+import { colors, fontFamily } from '@Theme/index';
 import { LoginPayload } from '@Containers/Auth/interfaces';
+import { loginValidationSchema } from '@Containers/Auth/schema';
 
 interface IProps extends TextInputProps {
   data: any;
@@ -31,23 +32,33 @@ export const FormComp = ({ data, handleLogin, stylesTxt, title, type, isLogin, i
 
   return (
     <View style={styles.root}>
-      <Formik initialValues={initialValues} onSubmit={handleLogin}>
-        {({ handleChange, handleSubmit, values, errors, isValid }) => {
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleLogin}
+        validationSchema={loginValidationSchema}
+        enableReinitialize>
+        {({ handleChange, handleSubmit, values, errors, isValid, touched }) => {
           const _renderInput = ({ item }: any) => {
             return (
-              <TextInputComp
-                {...rest}
-                nativeID={item.value}
-                label={item.lable}
-                value={values[item.value] || ''}
-                placeholder={item.element}
-                handleChangeText={handleChange(item.value + '')}
-                stylesTxt={styles.txtContainer}
-                selectionColor={colors.black}
-                secureTextEntry={item.value === 'password'}
-                error={!!errors[item.value + '']}
-                // keyboardType={item.type}
-              />
+              <View style={{ justifyContent: 'center' }}>
+                <TextInputComp
+                  {...rest}
+                  clearTextOnFocus={!!errors[item.value + ''] && !!touched[item.value + '']}
+                  nativeID={item.value}
+                  label={item.lable}
+                  value={values[item.value] || ''}
+                  placeholder={item.element}
+                  handleChangeText={handleChange(item.value + '')}
+                  stylesTxt={styles.txtContainer}
+                  selectionColor={colors.black}
+                  secureTextEntry={item.value === 'password'}
+                  error={!!errors[item.value + ''] && !!touched[item.value + '']}
+                />
+                <ErrorMessage
+                  name={item.value + ''}
+                  children={() => <Text style={styles.errorMessage}>{errors[item.value + '']}</Text>}
+                />
+              </View>
             );
           };
           return (

@@ -10,6 +10,7 @@ export interface IPropInitApp {
   isInitializing: boolean,
   isLoggedIn: boolean,
   isSkipIntro: boolean,
+  isPairing: boolean,
 }
 
 export const initialState: IPropInitApp = {
@@ -19,6 +20,7 @@ export const initialState: IPropInitApp = {
   isInitializing: true,
   isLoggedIn: false,
   isSkipIntro: false,
+  isPairing: false,
 };
 
 const appReducer = (state = initialState, { type, payload }: any) =>
@@ -38,7 +40,7 @@ const appReducer = (state = initialState, { type, payload }: any) =>
         draft.isSkipIntro = payload;
         break;
       case REHYDRATE:
-       console.log(REHYDRATE,"jjjjiii___")
+        console.log(REHYDRATE, "jjjjiii___");
         break;
       default:
         break;

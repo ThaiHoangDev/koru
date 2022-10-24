@@ -8,7 +8,11 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}"
+    "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
+    "build:android": "cd android && ./gradlew clean && ./gradlew assembleRelease && open app/build/outputs/apk",
+    "update:node": "rm -rf node_modules && yarn install",
+    "update:pod": "cd ios && pod deintegrate && pod cache clean --all && rm -rf Pods && pod install"
   },
   "dependencies": {
     "@digitalfortress-dev/esp-idf-provisioning-react-native": "^0.1.3",

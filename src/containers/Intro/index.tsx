@@ -67,7 +67,6 @@ export default function IntroScreen() {
     if (index === 2) {
       dispatch(AppActions.introApp(true));
     }
-    // navigation.natigate()
   };
 
   const renderScreen = ({ item, index }: any) => (

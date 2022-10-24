@@ -59,4 +59,12 @@ export default StyleSheet.create({
   fontFamily: {
     fontFamily: fontFamily.Strawford,
   },
+  errorMessage: {
+    color: colors.error,
+    textAlign: 'left',
+    marginHorizontal: 40,
+    marginBottom: 10,
+    marginTop: -10,
+    fontFamily: fontFamily.Strawford,
+  }
 });
