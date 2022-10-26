@@ -15,6 +15,7 @@ export namespace AuthActions {
     'STEP_SIGNUP',
     'LOGIN_API',
     'REGISTER_COGNITO',
+    'REFRESH_TOKEN',
   );
 
   export const login = createActionGenerator(Types.LOGIN);
@@ -24,6 +25,7 @@ export namespace AuthActions {
   export const verifyCode = createActionGenerator(Types.VERIFY_CODE);
   export const resendEmailVerification = createActionGenerator(Types.RESEND_EMAIL_VERIFICATION);
   export const stepSignUp = createActionGenerator(Types.STEP_SIGNUP);
+  export const refreshToken = createActionGenerator(Types.REFRESH_TOKEN);
 
   export const toggleAuthModal = createAction<boolean>(Types.TOGGLE_AUTH_MODAL.default);
   export const resetRegisterState = createAction(Types.RESET_REGISTER_STATE.default);

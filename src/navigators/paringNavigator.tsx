@@ -14,7 +14,7 @@ const Stack = createStackNavigator();
 export const ParingNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'transparentModal' }} initialRouteName="Paring">
-      <Stack.Screen name="Paring" component={PairYourPot} options={{ headerShown: true }} />
+      <Stack.Screen name="Paring" component={PairYourPot} />
       <Stack.Screen name="Searching" component={Searching} />
       <Stack.Screen name="SelectBLT" component={SelectBLTScreen} options={{ headerShown: true }} />
       <Stack.Screen

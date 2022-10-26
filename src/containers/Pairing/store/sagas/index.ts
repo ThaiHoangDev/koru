@@ -1,7 +1,8 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
-import { View, Button, Text, ToastAndroid, PermissionsAndroid } from 'react-native';
+import { ToastAndroid, PermissionsAndroid } from 'react-native';
 import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
 import { PairActions } from '../actions';
+import * as apiService from '../services';
 
 function* scanDevicesSaga({ payload }: any) {
   yield PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION!);
@@ -40,6 +41,19 @@ function* scanNetworks({ payload }: any) {
     });
 }
 
-function* signUpSaga({ payload }: any) {}
+function* getListPlantSaga({ payload }: any): any {
+  try {
+    const { page, perpage, search } = payload;
+    console.log(payload, 'getLIstttt');
+    const data = yield call(apiService.getListPlantApi, payload);
+    console.log(data, 'hhh___');
+    // yield put(PairActions.getListPlant.success(data));
+  } catch (error) {
+    console.log(error, 'nnnn');
+    yield put(PairActions.getListPlant.fail(error));
+  }
+}
 
-export default function* fetchData() {}
+export default function* fetchData() {
+  yield takeLatest(PairActions.Types.GET_LIST_PLANT.begin, getListPlantSaga);
+}

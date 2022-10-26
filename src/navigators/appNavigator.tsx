@@ -21,7 +21,7 @@ const AppNavigator = ({ isInitializing, isAuthenticated, isSkipIntro }: Props) =
     <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
       {isInitializing ? (
         <Stack.Screen name="Splash" component={SplashScreen} />
-      ) : isSkipIntro || isAuthenticated ? (
+      ) : isAuthenticated ? (
         <Stack.Screen
           name="MainNavigator"
           component={MainNavigator}

@@ -18,15 +18,4 @@ const poolData = {
 
 const cognitoPool = new CognitoUserPool(poolData);
 
-var userData = {
-  Username: 'username',
-  Pool: cognitoPool,
-};
-const cognitoUser = new CognitoUser(userData);
-
-
-
-export {
-  cognitoPool,
-  cognitoUser
-}
+export { cognitoPool };

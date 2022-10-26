@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, PermissionsAndroid } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, PermissionsAndroid, Pressable } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useNavigation, useRoute, ParamListBase, RouteProp } from '@react-navigation/native';
@@ -26,12 +26,6 @@ const PairYourPotContainer = ({ step }: StepProps) => {
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
   const route: RouteProp<ParamListBase> | any = useRoute();
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      header: (p: any) => <TopNavigationBar {...p} children={<ProgressComp step={step} />} />,
-    });
-  }, [navigation, step]);
 
   const scanFunc = async () => {
     // await PermissionsAndroid.request(
@@ -61,10 +55,6 @@ const PairYourPotContainer = ({ step }: StepProps) => {
     }, 3000);
   };
 
-  useEffect(() => {
-    dispatch(PairActions.stepPair.request(1));
-  }, []);
-
   return (
     <View style={styles.root}>
       <View style={styles.txtContainer}>
@@ -74,9 +64,9 @@ const PairYourPotContainer = ({ step }: StepProps) => {
           styleLayout={{ flex: 1 }}
         />
       </View>
-      <TouchableOpacity style={{ flex: 2 }} onPress={handlePairing}>
+      <Pressable style={{ flex: 2 }} onPress={handlePairing}>
         <StartPairing />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

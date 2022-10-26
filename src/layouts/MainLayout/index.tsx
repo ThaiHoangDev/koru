@@ -12,7 +12,7 @@ interface Props {
 
 export default function MainLayout({ children }: Props) {
   return (
-    <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
+    <SafeAreaView style={styles.container} edges={['left', 'right']}>
       <KeyboardAvoidingView behavior={IS_ANDROID ? undefined : 'padding'} style={{ flex: 1 }}>
         <MainWrapper>{children}</MainWrapper>
       </KeyboardAvoidingView>

@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { StyleSheet, View, TouchableOpacity, TextInput, TextInputProps } from 'react-native';
 
 import SearchIcon from '@Components/iconSvg/SearchIcon';
 import { colors } from '@Theme/index';
 
-export default function SearchComp() {
+interface IProps extends TextInputProps {}
+
+export default function SearchComp(props: IProps) {
+  const { ...rest } = props;
   const handleSearch = () => {};
   return (
     <View style={styles.container}>
@@ -13,7 +15,7 @@ export default function SearchComp() {
         <SearchIcon />
       </TouchableOpacity>
       <View style={styles.searchBar}>
-        <TextInput style={styles.input} />
+        <TextInput {...rest} style={styles.input} />
       </View>
     </View>
   );
@@ -29,6 +31,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginHorizontal: 10,
+    zIndex: 3,
   },
   backButton: {
     flex: 0.2,
@@ -47,6 +50,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 2,
     width: '100%',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
 });

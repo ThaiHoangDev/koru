@@ -13,6 +13,9 @@ export interface IPayload {
   uuid: string;
   pop: string;
   netWorks: any;
+  listPlant: any;
+  perpage: number;
+  page: number;
 }
 
 // The initial state of the Login container
@@ -22,6 +25,9 @@ export const initialState: IPayload = {
   uuid: '',
   pop: '',
   netWorks: [],
+  listPlant: [],
+  perpage: 10,
+  page: 1,
 };
 
 const authReducer = (state = initialState, { type, payload }: ACTION) =>
@@ -49,6 +55,17 @@ const authReducer = (state = initialState, { type, payload }: ACTION) =>
       case PairActions.Types.SCAN_NETWORKS.failed:
         draft.isRequesting = false;
         draft.netWorks = payload;
+        break;
+      case PairActions.Types.GET_LIST_PLANT.begin:
+        draft.isRequesting = true;
+      case PairActions.Types.GET_LIST_PLANT.succeeded:
+        draft.isRequesting = false;
+        draft.listPlant = payload?.results;
+        draft.perpage = payload?.perpage;
+        break;
+      case PairActions.Types.GET_LIST_PLANT.failed:
+        draft.isRequesting = false;
+        draft.listPlant = [];
         break;
       default:
         break;

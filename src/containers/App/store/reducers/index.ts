@@ -4,13 +4,12 @@ import { REHYDRATE } from 'redux-persist';
 import { AppActions } from '../actions';
 
 export interface IPropInitApp {
-  isLoading: boolean,
-  isRequesting: boolean,
-  profile: any,
-  isInitializing: boolean,
-  isLoggedIn: boolean,
-  isSkipIntro: boolean,
-  isPairing: boolean,
+  isLoading: boolean;
+  isRequesting: boolean;
+  profile: any;
+  isInitializing: boolean;
+  isLoggedIn: boolean;
+  isSkipIntro: boolean;
 }
 
 export const initialState: IPropInitApp = {
@@ -20,7 +19,6 @@ export const initialState: IPropInitApp = {
   isInitializing: true,
   isLoggedIn: false,
   isSkipIntro: false,
-  isPairing: false,
 };
 
 const appReducer = (state = initialState, { type, payload }: any) =>
@@ -40,7 +38,7 @@ const appReducer = (state = initialState, { type, payload }: any) =>
         draft.isSkipIntro = payload;
         break;
       case REHYDRATE:
-        console.log(REHYDRATE, "jjjjiii___");
+        console.log(REHYDRATE, 'jjjjiii___');
         break;
       default:
         break;
