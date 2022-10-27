@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { unionBy, uniqBy } from 'lodash';
 
 import { PairActions } from '../actions';
 
@@ -9,48 +10,42 @@ type ACTION = {
 
 export interface IPayload {
   isRequesting: boolean;
-  stepPairing: number;
   uuid: string;
+  listUuid: any;
   pop: string;
   netWorks: any;
   listPlant: any;
-  perpage: number;
-  page: number;
+  listPlantGroup: any;
 }
 
 // The initial state of the Login container
 export const initialState: IPayload = {
-  isRequesting: true,
-  stepPairing: 1,
+  isRequesting: false,
   uuid: '',
+  listUuid: [],
   pop: '',
   netWorks: [],
   listPlant: [],
-  perpage: 10,
-  page: 1,
+  listPlantGroup: [],
 };
 
 const authReducer = (state = initialState, { type, payload }: ACTION) =>
   produce(state, draft => {
     switch (type) {
-      case PairActions.Types.STEP_PAIRING.begin:
-        draft.stepPairing = payload;
-        break;
       case PairActions.Types.SCAN_DEVICES.begin:
+      case PairActions.Types.CREATE_PLANT.begin:
+      case PairActions.Types.CONNECT_BLE.begin:
         draft.isRequesting = true;
-        draft.stepPairing = payload;
         break;
       case PairActions.Types.SCAN_DEVICES.succeeded:
         draft.isRequesting = false;
-        draft.stepPairing = payload;
+        draft.listUuid = payload;
         break;
       case PairActions.Types.SCAN_NETWORKS.begin:
         draft.isRequesting = true;
-        draft.stepPairing = payload;
         break;
       case PairActions.Types.SCAN_NETWORKS.succeeded:
         draft.isRequesting = false;
-        draft.stepPairing = payload;
         break;
       case PairActions.Types.SCAN_NETWORKS.failed:
         draft.isRequesting = false;
@@ -58,14 +53,32 @@ const authReducer = (state = initialState, { type, payload }: ACTION) =>
         break;
       case PairActions.Types.GET_LIST_PLANT.begin:
         draft.isRequesting = true;
+        break;
       case PairActions.Types.GET_LIST_PLANT.succeeded:
         draft.isRequesting = false;
-        draft.listPlant = payload?.results;
-        draft.perpage = payload?.perpage;
+        draft.listPlant = uniqBy(!!payload.next ? [...draft.listPlant, ...payload?.results] : payload?.results, []);
         break;
       case PairActions.Types.GET_LIST_PLANT.failed:
         draft.isRequesting = false;
         draft.listPlant = [];
+        break;
+      case PairActions.Types.GET_LIST_PLANT_GROUP.begin:
+        break;
+      case PairActions.Types.GET_LIST_PLANT_GROUP.succeeded:
+        draft.listPlantGroup = payload?.results;
+        draft.isRequesting = false;
+        break;
+      case PairActions.Types.GET_LIST_PLANT_GROUP.failed:
+      case PairActions.Types.CREATE_PLANT.failed:
+      case PairActions.Types.SCAN_DEVICES.failed:
+        draft.isRequesting = false;
+        break;
+      case PairActions.Types.CREATE_PLANT.succeeded:
+        draft.isRequesting = false;
+        break;
+      case PairActions.Types.CONNECT_BLE.succeeded:
+        draft.isRequesting = false;
+        draft.uuid = payload;
         break;
       default:
         break;

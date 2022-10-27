@@ -28,7 +28,7 @@ const homeReducer = (state = initialState, { type, payload }: ACTION) =>
         break;
       case HomeActions.Types.GET_MY_PLANT.succeeded:
         draft.isLoading = false;
-        draft.myPlant = [...draft.myPlant, payload.results];
+        draft.myPlant = [...draft.myPlant, ...payload.results];
         draft.loadMore = payload.next;
         break;
       default:

@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
 import { createStructuredSelector } from 'reselect';
@@ -14,6 +14,8 @@ import { makeSelectIsRequesting, makeSelectStepPairing, makeSelectUuid } from '.
 import Searching from './Searching';
 import { colors, fontFamily } from '@Theme/index';
 import SkipIcon from '@Components/iconSvg/SkipIcon';
+import { PairActions } from '../store/actions';
+import { showErrorMessage, showErrorWithString } from '@Utils/helper';
 
 const BLT_LIST = [
   {
@@ -59,15 +61,54 @@ function SelectBLTContainer(props: IProps) {
     }
   }, [navigation, isLoading]);
 
-  const handleSelectBLT = () => {
-    navigation.navigate('ChoosePlant');
+  useEffect(() => {
+    dispatch(PairActions.scanDevices.request());
+    setTimeout(() => {
+      EspIdfProvisioningReactNative.scanBleDevices('SPOT_')
+        .then((res: string | any[]) => {
+          console.log(res, 'scannnnnn------');
+          if (res.length > 0) {
+            // setUuid(res[0].serviceUuid);
+            setTimeout(() => {
+              dispatch(PairActions.scanDevices.success(res));
+            }, 2000);
+          } else {
+            dispatch(PairActions.scanDevices.fail());
+          }
+        })
+        .catch((e: any) => {
+          dispatch(PairActions.scanDevices.fail());
+          console.log(e, 'e----');
+          showErrorMessage({ message: 'Scan BLE failed!' }, () => {
+            navigation.goBack();
+          });
+        });
+    }, 1000);
+  }, [navigation]);
+
+  const connectToBLEDevice = useCallback(async (uuid: any) => {
+    dispatch(PairActions.connectBLE.request());
+    await EspIdfProvisioningReactNative.connectToBLEDevice(uuid)
+      .then((_res: any) => {
+        dispatch(PairActions.connectBLE.success(uuid));
+        navigation.navigate('ChoosePlant');
+        ToastAndroid.show('Connected to device', ToastAndroid.LONG);
+      })
+      .catch((e: any) => {
+        dispatch(PairActions.connectBLE.fail());
+        ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
+      });
+  }, []);
+
+  const handleSelectBLT = (uuid: any) => () => {
+    connectToBLEDevice(uuid);
   };
 
   const _renderItem = ({ item, index }: any) => {
     return (
       <TouchableOpacity
         style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 52 }}
-        onPress={handleSelectBLT}>
+        onPress={handleSelectBLT(item.serviceUuid)}>
         <Text>{item.label}</Text>
         <SkipIcon />
       </TouchableOpacity>

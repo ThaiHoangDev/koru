@@ -1,11 +1,13 @@
 import { AuthenticationDetails, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { AppActions } from '@Containers/App/store/actions';
+import * as AWS from 'aws-sdk/global';
 
 import axiosClient from '@Utils/axios';
 import asyncStorage from '@Utils/asyncStorage';
 import { cognitoPool } from '@Utils/amplifyConfig';
 import { navigate } from '@Utils/navigator';
+import { AWSConfig } from '@Utils/constants';
 
 import { REFRESH_TOKEN, TOKEN_NAME } from '@Constants/app';
 
@@ -16,9 +18,12 @@ import { showErrorWithString } from './../../../../utils/helper';
 import { store } from '@Store/index';
 
 function* loginApiSaga({ payload }: any) {
-  const { cognitoToken } = payload;
+  const { cognitoToken, identityId } = payload;
+  var cognitoUser = cognitoPool.getCurrentUser();
+  console.log(cognitoUser, 'cognitoUser______');
+
   try {
-    const { data } = yield call(apiService.login, { cognito_token: cognitoToken.jwtToken });
+    const { data } = yield call(apiService.login, { cognito_token: cognitoToken.jwtToken, identity_id: 'identityId' });
     const { access_token, refresh_token } = data;
     axiosClient.setHeader(access_token);
     asyncStorage.setItem(TOKEN_NAME, access_token);
@@ -27,6 +32,7 @@ function* loginApiSaga({ payload }: any) {
     yield put(AuthActions.login.success());
     // yield put(AuthActions.fetchProfile.request());
   } catch (error) {
+    console.log(error, 'login error')
     yield put(AuthActions.login.fail({ errors: error }));
   }
 }
@@ -47,6 +53,13 @@ function* loginCognitoSaga({ payload }: LoginAction): any {
     yield cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: (result: any) => {
         const cognitoToken = result.getAccessToken();
+        AWS.config.region = AWSConfig.region;
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId: AWSConfig.identityPoolId, // your identity pool id here
+          Logins: {
+            [`cognito-idp.${AWSConfig.region}.amazonaws.com/${AWSConfig.appId}`]: result.getIdToken().getJwtToken(),
+          },
+        });
         store.dispatch(AuthActions.loginApi.request({ cognitoToken }));
       },
       onFailure: (err: any) => {
@@ -161,7 +174,7 @@ function* refreshTokenSaga(): any {
     asyncStorage.setItem(TOKEN_NAME, data.access_token);
     yield put(AuthActions.refreshToken.success());
   } catch (error) {
-    console.log(error,"jkljkjjIIII");
+    console.log(error, 'jkljkjjIIII');
     yield put(AuthActions.refreshToken.fail());
     yield put(AppActions.initApp.success({ isLoggedIn: false }));
   }

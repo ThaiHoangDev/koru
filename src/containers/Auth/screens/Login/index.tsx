@@ -1,18 +1,19 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 // utils
 import { LginType, LoginPayload } from '@Containers/Auth/interfaces';
 import { AuthActions } from '@Containers/Auth/store/actions';
+import { makeSelectIsRequesting } from '@Containers/Auth/store/selectors';
 // components by self
 import TopNavigationBar from '@Navigators/topNavigation';
 import { FormComp } from '@Containers/Auth/components/formComp';
 // assets
 import styles from './styles';
 import { colors } from '@Theme/index';
-import { loginValidationSchema } from '@Containers/Auth/schema';
 
 const LOGIN_KEY = [
   { lable: 'Email', element: 'Johnde@example.com', type: 'email-address', value: 'email' },
@@ -33,7 +34,11 @@ const initialValuesSignUp: LoginPayload = {
   password: '',
 };
 
-const LoginContainer = () => {
+interface IProps {
+  isLoading: boolean;
+}
+
+const LoginContainer = ({ isLoading }: IProps) => {
   const navigation: any = useNavigation();
   const route: any = useRoute();
 
@@ -68,9 +73,14 @@ const LoginContainer = () => {
         isLogin={route.params.isLogin}
         handleLogin={handleLogin}
         initialValues={route.params.isLogin ? initialValuesLogin : initialValuesSignUp}
+        isLoading={isLoading}
       />
     </View>
   );
 };
 
-export default LoginContainer;
+const mapStateToProps = createStructuredSelector({
+  isLoading: makeSelectIsRequesting(),
+});
+
+export default connect(mapStateToProps)(LoginContainer);

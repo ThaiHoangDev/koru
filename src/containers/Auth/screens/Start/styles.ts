@@ -1,13 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 import { fontFamily, colors, fontSizes } from '@Theme/index';
-import { HEIGHT, WIDTH } from '@Constants/app';
 
 export default StyleSheet.create({
   root: {
     flex: 1,
   },
-
   containerContent: {
     flex: 1,
     alignItems: 'center',

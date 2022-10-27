@@ -11,19 +11,15 @@ import { END, eventChannel, TakeableChannel } from 'redux-saga';
 import { REFRESH_TOKEN, TOKEN_NAME } from '@Constants/app';
 
 function* initializeSaga(): any {
-  console.log( 'tokengghhhhhhh___111');
   try {
     const userToken = yield asyncStorage.getItem(TOKEN_NAME);
     const token = yield JSON.parse(userToken);
     const isLoggedIn = !!token;
-    console.log(token, 'token___111');
     if (isLoggedIn) {
-      console.log(token, 'token___');
       yield axiosClient.setHeader(token);
     }
     yield put(AppActions.initApp.success({ isLoggedIn }));
   } catch (error) {
-    console.log(error);
     yield put(AppActions.initApp.fail());
   }
 }
@@ -38,12 +34,12 @@ function* refreshTokenSaga(): any {
   try {
     const refreshToken = yield asyncStorage.getItem(REFRESH_TOKEN);
     const { data } = yield call(apiService.refreshToken, { refresh_token: JSON.parse(refreshToken) });
-    console.log(data,"dataaa");
+    console.log(data, 'dataaa');
     axiosClient.setHeader(data.access_token);
     asyncStorage.setItem(TOKEN_NAME, data.access_token);
     yield put(AppActions.refreshToken.success());
   } catch (error) {
-    console.log(error,"jkljkjjIIII");
+    console.log(error, 'jkljkjjIIII');
     yield put(AppActions.refreshToken.fail());
     yield put(AppActions.initApp.success({ isLoggedIn: false }));
   }

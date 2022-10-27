@@ -4,7 +4,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { connect, useDispatch } from 'react-redux';
 import { debounce, isEmpty } from 'lodash';
 import { createStructuredSelector } from 'reselect';
-import RefreshableWrapper from 'react-native-fresh-refresh';
 //components
 import TopNavigationBar from '@Navigators/topNavigation';
 import MenuIcon from '@Components/iconSvg/MenuIcon';
@@ -15,8 +14,7 @@ import NoPlantComp from '@Containers/Home/components/NoPlantComp';
 
 import { PropsScreen } from '@Interfaces/app';
 import { HomeActions } from '@Containers/Home/store/actions';
-import { makeSelectIsRequesting } from '@Containers/Home/store/selectors';
-import { makeSelectListPlant } from '@Containers/Pairing/store/selectors';
+import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/store/selectors';
 
 import { fontFamily } from '@Theme/index';
 
@@ -132,7 +130,7 @@ function HomeContainer(props: IProps) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  myPlant: makeSelectListPlant(),
+  myPlant: makeSelectMyPlant(),
   isLoading: makeSelectIsRequesting(),
 });
 

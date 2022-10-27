@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import HomeIcon from '@Components/iconSvg/HomeIcon';
@@ -31,9 +31,9 @@ const TabBar: any = ({ isActive, index }: { isActive: boolean; index: number }) 
 
 const TabBarNavigator = createBottomTabNavigator();
 export const BottomTabNavigator = () => {
-  const SMTabBar = ({ state, descriptors, navigation }: any) => {
+  const SMTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     return (
-      <SafeAreaView style={{ flexDirection: 'row', paddingHorizontal: 20 }} edges={['bottom']}>
+      <SafeAreaView style={styles.bottomTabContainer} edges={['bottom']}>
         {state.routes.map((route: any, index: number) => {
           const { options } = descriptors[route.key];
           const isFocused: boolean = state.index === index;
@@ -46,7 +46,7 @@ export const BottomTabNavigator = () => {
             });
 
             if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate({ name: route.name, merge: true });
+              navigation.navigate<any>({ name: route?.name, merge: true });
             }
           };
 
@@ -103,6 +103,13 @@ export const BottomTabNavigator = () => {
 };
 
 const styles = StyleSheet.create({
+  bottomTabContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    backgroundColor: colors.white2,
+    paddingBottom: Platform.OS === 'android' ? 20 : 0,
+    alignSelf: 'flex-end',
+  },
   tabBadge: {
     fontSize: 8,
     color: '#fff',
@@ -128,13 +135,13 @@ const styles = StyleSheet.create({
     height: 60,
     alignItems: 'center',
     justifyContent: 'center',
-
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: 1,
+      height: 4,
     },
+    shadowColor: colors.black2,
     shadowOpacity: 0.22,
-    shadowRadius: 2.22,
+    shadowRadius: 4,
     elevation: 3,
   },
   badge: {

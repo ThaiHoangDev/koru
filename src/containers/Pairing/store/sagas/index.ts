@@ -43,17 +43,23 @@ function* scanNetworks({ payload }: any) {
 
 function* getListPlantSaga({ payload }: any): any {
   try {
-    const { page, perpage, search } = payload;
-    console.log(payload, 'getLIstttt');
-    const data = yield call(apiService.getListPlantApi, payload);
-    console.log(data, 'hhh___');
-    // yield put(PairActions.getListPlant.success(data));
+    const { data } = yield call(apiService.getListPlantApi, payload);
+    yield put(PairActions.getListPlant.success(data));
   } catch (error) {
     console.log(error, 'nnnn');
     yield put(PairActions.getListPlant.fail(error));
   }
 }
+function* getListPlantGroupSaga({ payload }: any): any {
+  try {
+    const { data } = yield call(apiService.getListPlantGroupApi, payload);
+    yield put(PairActions.getListPlantGroup.success(data));
+  } catch (error) {
+    yield put(PairActions.getListPlantGroup.fail(error));
+  }
+}
 
 export default function* fetchData() {
   yield takeLatest(PairActions.Types.GET_LIST_PLANT.begin, getListPlantSaga);
+  yield takeLatest(PairActions.Types.GET_LIST_PLANT_GROUP.begin, getListPlantGroupSaga);
 }

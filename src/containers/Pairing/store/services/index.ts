@@ -1,11 +1,14 @@
 import axiosClient from '@Utils/axios';
 const getListPlantApi = async (payload: any) => {
-  const { page = 1, perpage = 10, search = null } = payload;
+  const { page = 1, perpage = 10, search = null, group = '', ordering = '' } = payload;
 
-  console.log('KOKOKOKO')
   return await axiosClient.get(
-    `https://dev.api.plantkoru.com/plant/v1/plants?page=${page}&perpage=${perpage}&search=${search}`,
+    `/plant-species?page=${page}&perpage=${perpage}&search=${search}&group=${group}&ordering=${ordering}`,
   );
+};
+const getListPlantGroupApi = async (payload: any) => {
+  const { page = 1, perpage = 10, search = null } = payload;
+  return await axiosClient.get(`/plant-groups?page=${page}&perpage=${perpage}&search=${search}`);
 };
 const createPlantApi = async (payload: any) => {
   return await axiosClient.post('/plants', payload);
@@ -14,4 +17,4 @@ const getPlantApi = async (payload: any) => {
   return await axiosClient.get('/plants', payload);
 };
 
-export { getListPlantApi, createPlantApi, getPlantApi };
+export { getListPlantApi, createPlantApi, getPlantApi, getListPlantGroupApi };

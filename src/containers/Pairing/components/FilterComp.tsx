@@ -9,21 +9,28 @@ const SEARCH = [
   { label: 'Indor', type: 'INDOR' },
 ];
 
-const FilterComp = () => {
-  const handleFilter = () => {};
+interface IProps {
+  data: any;
+  onFilter: (item: any) => void;
+}
+
+const FilterComp = ({ data, onFilter }: IProps) => {
+  const handleFilter = (item: any) => () => {
+    onFilter({ group: item?.uuid, ordering: item?.created_at });
+  };
   const _renderItem = ({ item, index }: any) => {
     return (
       <ButtonComp
-        title={item.label}
+        title={item.name}
         stylesBtn={[styles.btn, { backgroundColor: index === 0 ? colors.black2 : colors.gray04 }]}
         stylesTitle={styles.title}
-        handlePress={handleFilter}
+        handlePress={handleFilter(item)}
       />
     );
   };
   return (
     <FlatList
-      data={SEARCH}
+      data={data}
       keyExtractor={item => item.toString()}
       renderItem={_renderItem}
       horizontal

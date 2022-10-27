@@ -9,8 +9,8 @@ import AppContainer from '@Containers/App';
 import { store, persistor } from './store';
 import { LogBox } from 'react-native';
 
-LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-LogBox.ignoreAllLogs(); //Ignore all log notifications
+// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+// LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 if (__DEV__) {
   import('./ReactotronConfig').then();

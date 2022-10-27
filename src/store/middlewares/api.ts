@@ -15,19 +15,16 @@ import { AppActions } from '@Containers/App/store/actions';
 let previousActions: any = [];
 
 const authenticateMiddleware = (store: any) => (next: any) => (action: any) => {
-  const { type: actionType, payload } = action;
+  const { type: actionType, payload ={} } = action;
 
   if (actionType.indexOf('_REQUEST') > 0) {
+    console.log(action, 'acccc____');
     previousActions.push(action);
   }
 
-  if (actionType.indexOf('_SUCCESS') > 0 || actionType.indexOf('_FAIL') > 0) {
-  }
-
   if (actionType.includes('_FAIL')) {
-    console.log(payload.status, 'paooooUUII)))_______');
-    const statusCode = payload.status;
-
+    console.log(payload?.status, 'paooooUUII)))_______');
+    const statusCode = payload?.status;
     if (statusCode === 401 || statusCode === 403) {
       previousActions.push(action);
       store.dispatch(AppActions.refreshToken.request());
@@ -36,10 +33,10 @@ const authenticateMiddleware = (store: any) => (next: any) => (action: any) => {
 
   if (actionType === AppActions.Types.REFRESH_TOKEN.succeeded && previousActions.length > 0) {
     previousActions.forEach((previousAction: any) => {
-      const type = previousAction.type.replace('_FAIL', '_REQUEST');
-      const action = previousActions.find((item: any) => item.type === type);
-      console.log(action,"action____re")
-      if (action) store.dispatch(action);
+      const type = previousAction.type.replace('_FAILED', '_REQUEST');
+      const action = { type };
+      console.log(action, 'action____re');
+      // if (action) store.dispatch(action);
     });
     previousActions = [];
   }

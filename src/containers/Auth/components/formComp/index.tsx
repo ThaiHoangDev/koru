@@ -21,9 +21,20 @@ interface IProps extends TextInputProps {
   type?: KeyboardTypeOptions;
   isLogin: boolean;
   initialValues: any;
+  isLoading: boolean;
 }
 
-export const FormComp = ({ data, handleLogin, stylesTxt, title, type, isLogin, initialValues, ...rest }: IProps) => {
+export const FormComp = ({
+  data,
+  handleLogin,
+  stylesTxt,
+  title,
+  type,
+  isLogin,
+  initialValues,
+  isLoading,
+  ...rest
+}: IProps) => {
   const navigation: any = useNavigation();
 
   const goToSignUp = () => {
@@ -94,6 +105,7 @@ export const FormComp = ({ data, handleLogin, stylesTxt, title, type, isLogin, i
                       handlePress={handleSubmit}
                       stylesBtn={[styles.btn]}
                       stylesTitle={[styles.txtBtn, styles.fontFamily]}
+                      isLoading={isLoading}
                     />
                   </View>
                 </View>

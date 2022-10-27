@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Animated, Easing, ImageBackground } from 'react-native';
+import { View, Text, Animated, Easing, ImageBackground, Platform, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { useDispatch } from 'react-redux';
@@ -16,6 +16,7 @@ import GoogleIcon from '@Components/iconSvg/startScreen/GoogleIcon';
 // assets
 import styles from './styles';
 import { colors } from '@Theme/index';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const StartContainer = () => {
   const navigation: any = useNavigation();
@@ -32,7 +33,8 @@ const StartContainer = () => {
   };
 
   return (
-    <View style={styles.root}>
+    <SafeAreaView style={styles.root}>
+      <StatusBar barStyle={'default'} hidden/>
       <View style={{ flex: 1, alignItems: 'center' }}>
         <StartLogo />
       </View>
@@ -57,10 +59,10 @@ const StartContainer = () => {
             stylesTitle={[styles.txtBtn, styles.fontFamily, { color: colors.black2 }]}
           />
         </View>
-        <View style={{ marginTop: 60, marginBottom: 20 }}>
+        <View style={{ marginTop: 60, bottom: Platform.OS === 'android' ? 40 : 20 }}>
           <Text>Or social media below</Text>
         </View>
-        <View style={[styles.doneWrap, { marginBottom: 0 }]}>
+        <View style={[styles.doneWrap, { bottom: Platform.OS === 'android' ? 40 : 0 }]}>
           <ButtonComp
             title={''}
             handlePress={handleLogin}
@@ -77,7 +79,7 @@ const StartContainer = () => {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

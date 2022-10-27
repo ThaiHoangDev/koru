@@ -30,8 +30,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
+    width: '100%',
     marginHorizontal: 10,
-    zIndex: 3,
+    paddingVertical: 4,
+    zIndex: 100,
   },
   backButton: {
     flex: 0.2,
@@ -42,9 +44,9 @@ const styles = StyleSheet.create({
   searchBar: {
     flex: 1,
     flexDirection: 'row',
-    borderRadius: 25,
     height: 32,
     borderColor: colors.grey06,
+    borderRadius: 25,
     borderWidth: 2,
     alignItems: 'center',
     position: 'absolute',
