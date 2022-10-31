@@ -11,6 +11,19 @@ import TopNavigationBar from '@Navigators/topNavigation';
 import IntroScreen from '@Screens/IntroScreen';
 import { colors } from '@Theme/index';
 
+export type AuthStackParamList = {
+  Start: undefined;
+  LetGo: undefined;
+  Email: undefined;
+  Login: undefined;
+  FastSignUp: undefined;
+  Intro: undefined;
+  FORGOT: { email: string };
+  FORGOT_PASSWORD_SUBMIT: { email: string };
+  CONFIRM_SIGN_UP: { email: string; password: string };
+  USER: undefined;
+};
+
 const Stack = createStackNavigator();
 const AuthNavigator = () => {
   return (

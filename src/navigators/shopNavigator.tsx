@@ -1,15 +1,14 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View, Text } from 'react-native';
 
+import ShopScreen from '@Screens/shop/ShopScreen';
 
 const Stack = createStackNavigator();
 
 export const ShopNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
-      <Stack.Screen name="Home" component={()=><View><Text>ShopScreen</Text></View>} />
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="ShopScreen">
+      <Stack.Screen name="ShopScreen" component={ShopScreen} />
     </Stack.Navigator>
   );
 };
-

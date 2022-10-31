@@ -6,7 +6,7 @@ import { useNavigation, useRoute, ParamListBase, RouteProp } from '@react-naviga
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 
 // utils
-import { makeSelectStepSignUp } from '@Containers/Auth/store/selectors';
+import { makeSelectIsRequesting, makeSelectStepSignUp } from '@Containers/Auth/store/selectors';
 import { AuthActions } from '@Containers/Auth/store/actions';
 // components by self
 import TextInputComp from '@Components/input';
@@ -30,14 +30,20 @@ const EmailContainer = () => {
   const [code, setCode] = useState('');
 
   const handleVerify = () => {
-    dispatch(AuthActions.verifyCode.request(code));
+    dispatch(
+      AuthActions.verifyCode.request({
+        code,
+        email: route.params?.payload?.email,
+        password: route.params?.payload?.password,
+      }),
+    );
   };
 
   const onChangeText = (text: string) => {
     setCode(text);
   };
   const reSendCode = () => {
-    dispatch(AuthActions.resendEmailVerification.request());
+    dispatch(AuthActions.resendEmailVerification.request({ email: route.params?.payload?.email }));
   };
 
   return (
@@ -92,6 +98,6 @@ const EmailContainer = () => {
   );
 };
 const mapStateToProps = createStructuredSelector({
-  step: makeSelectStepSignUp(),
+  isLoading: makeSelectIsRequesting(),
 });
 export default connect(mapStateToProps)(EmailContainer);

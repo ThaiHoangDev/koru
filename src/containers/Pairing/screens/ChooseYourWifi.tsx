@@ -5,7 +5,7 @@ import { connect, useDispatch } from 'react-redux';
 
 //redux
 import { createStructuredSelector } from 'reselect';
-import { makeSelectStepPairing } from '../store/selectors';
+
 //components
 import WifiIcon from '@Components/iconSvg/pairing/WifiIcon';
 import TitleComp from '../components/TitleComp';
@@ -101,10 +101,7 @@ function ChooseYourWifiContainer(props: IProps) {
   );
 }
 
-const mapStateToProps = createStructuredSelector({
-  step: makeSelectStepPairing(),
-});
-export default connect(mapStateToProps)(ChooseYourWifiContainer);
+export default connect()(ChooseYourWifiContainer);
 
 const styles = StyleSheet.create({
   contentFlatlist: {

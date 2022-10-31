@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, PermissionsAndroid } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, PermissionsAndroid, Pressable, Platform } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useNavigation, useRoute, ParamListBase, RouteProp } from '@react-navigation/native';
 import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
 
 // utils
-import { StepProps } from '@Containers/Auth/interfaces';
-import { makeSelectStepPairing } from '../store/selectors';
 
 // components by self
 import TopNavigationBar from '@Navigators/topNavigation';
-
 // assets
 
 import { colors, fontFamily } from '@Theme/index';
@@ -19,9 +16,8 @@ import { colors, fontFamily } from '@Theme/index';
 import StartPairing from '@Components/iconSvg/pairing/StartPairing';
 import TitleComp from '../components/TitleComp';
 import { PairActions } from '../store/actions';
-import ProgressComp from '../components/ProgressComp';
 
-const PairYourPotContainer = ({ step }: StepProps) => {
+const PairYourPotContainer = () => {
   EspIdfProvisioningReactNative.create();
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
@@ -29,41 +25,16 @@ const PairYourPotContainer = ({ step }: StepProps) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      header: (p: any) => <TopNavigationBar {...p} children={<ProgressComp step={step} />} />,
+      headerShown: true,
+      header: (p: any) => <TopNavigationBar {...p} isLeft />,
     });
-  }, [navigation, step]);
+  }, [navigation]);
 
-  const scanFunc = async () => {
-    // await PermissionsAndroid.request(
-    //   PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION!,
-    // );
-    dispatch(PairActions.scanDevices.request());
-    console.log('scannnnn_______');
-    await EspIdfProvisioningReactNative.scanBleDevices('SPOT_')
-      .then((res: string | any[]) => {
-        console.log(res, 'scannnnnn------');
-        if (res.length > 0) {
-          // setUuid(res[0].serviceUuid);
-        } else {
-          // setUuid('');
-        }
-      })
-      .catch((e: any) => {
-        console.log('scan error');
-      });
-  };
+  const scanFunc = useCallback(async () => {}, []);
 
   const handlePairing = () => {
-    scanFunc();
     navigation.navigate('SelectBLT');
-    setTimeout(() => {
-      dispatch(PairActions.scanDevices.success());
-    }, 3000);
   };
-
-  useEffect(() => {
-    dispatch(PairActions.stepPair.request(1));
-  }, []);
 
   return (
     <View style={styles.root}>
@@ -74,16 +45,16 @@ const PairYourPotContainer = ({ step }: StepProps) => {
           styleLayout={{ flex: 1 }}
         />
       </View>
-      <TouchableOpacity style={{ flex: 2 }} onPress={handlePairing}>
+      <Pressable style={{ flex: 2 }} onPress={handlePairing}>
         <StartPairing />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };
-const mapStateToProps = createStructuredSelector({
-  step: makeSelectStepPairing(),
-});
-export default connect(mapStateToProps)(PairYourPotContainer);
+// const mapStateToProps = createStructuredSelector({
+
+// });
+export default connect()(PairYourPotContainer);
 
 const styles = StyleSheet.create({
   root: {

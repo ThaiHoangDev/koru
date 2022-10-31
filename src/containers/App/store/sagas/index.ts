@@ -1,58 +1,51 @@
 import { takeLatest, put, take, call } from 'redux-saga/effects';
-import bluetoothLeManager from '@Utils/blueManager';
 import { AnyAction } from 'redux';
+import axiosClient from '@Utils/axios';
+import asyncStorage from '@Utils/asyncStorage';
+import * as apiService from '../../../Auth/store/services';
 
 import { AppActions } from '../actions';
 import { Device } from 'react-native-ble-plx';
 import { END, eventChannel, TakeableChannel } from 'redux-saga';
 
-function* initializeSaga() {
+import { REFRESH_TOKEN, TOKEN_NAME } from '@Constants/app';
+
+function* initializeSaga(): any {
   try {
-    yield put(AppActions.initApp.success({ isLoggedIn: false }));
+    const userToken = yield asyncStorage.getItem(TOKEN_NAME);
+    const token = yield JSON.parse(userToken);
+    const isLoggedIn = !!token;
+    if (isLoggedIn) {
+      yield axiosClient.setHeader(token);
+    }
+    yield put(AppActions.initApp.success({ isLoggedIn }));
   } catch (error) {
-    console.log(error);
+    yield put(AppActions.initApp.fail());
   }
 }
+
 type TakeableDevice = {
   payload: { id: string; name: string; serviceUUIDs: string };
   take: (cb: (message: any | END) => void) => Device;
 };
-// function* watchForPeripherals(): Generator<AnyAction, void, TakeableDevice> {
-//   const onDiscoveredPeripheral = () =>
-//     eventChannel(emitter => {
-//       return bluetoothLeManager.scanForPeripherals(emitter);
-//     });
 
-//   const channel: TakeableChannel<Device> = yield call(onDiscoveredPeripheral);
-
-//   try {
-//     while (true) {
-//       const response = yield take(channel);
-
-//       console.log(response, 'chanel_____');
-
-//       // yield put({
-//       //   type: sagaActionConstants.ON_DEVICE_DISCOVERED,
-//       //   payload: {
-//       //     id: response.payload.id,
-//       //     name: response.payload.name,
-//       //     serviceUUIDs: response.payload.serviceUUIDs,
-//       //   },
-//       // });
-//     }
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
-
-function* connectToPeripheral(action: { type: typeof AppActions.Types.INITIATE_CONNECTION; payload: string }) {
-  const peripheralId = action.payload;
-  yield call(bluetoothLeManager.connectToPeripheral, peripheralId);
-  yield put(AppActions.bluInitApp.success(peripheralId));
+function* refreshTokenSaga(): any {
+  console.log('refresh____2');
+  try {
+    const refreshToken = yield asyncStorage.getItem(REFRESH_TOKEN);
+    const { data } = yield call(apiService.refreshToken, { refresh_token: JSON.parse(refreshToken) });
+    console.log(data, 'dataaa');
+    axiosClient.setHeader(data.access_token);
+    asyncStorage.setItem(TOKEN_NAME, data.access_token);
+    yield put(AppActions.refreshToken.success());
+  } catch (error) {
+    console.log(error, 'jkljkjjIIII');
+    yield put(AppActions.refreshToken.fail());
+    yield put(AppActions.initApp.success({ isLoggedIn: false }));
+  }
 }
 
 export default function* watchSaga() {
   yield takeLatest(AppActions.Types.INIT_APP.begin, initializeSaga);
-  // yield takeLatest(AppActions.Types.SCAN_FOR_PERIPHERALS.begin, watchForPeripherals);
-  yield takeLatest(AppActions.Types.INITIATE_CONNECTION.begin, connectToPeripheral);
+  yield takeLatest(AppActions.Types.REFRESH_TOKEN.begin, refreshTokenSaga);
 }

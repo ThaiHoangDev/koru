@@ -10,7 +10,7 @@ const MainNavigator = () => {
   const route: any = useRoute();
 
   return (
-    <MainStack.Navigator initialRouteName={route.params?.screen}>
+    <MainStack.Navigator initialRouteName={route?.params?.screen || 'TabBar'}>
       <MainStack.Screen
         name="Paring"
         component={ParingNavigator}

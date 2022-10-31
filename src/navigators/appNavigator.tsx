@@ -8,6 +8,12 @@ import MainNavigator from '@Navigators/mainNavigator';
 import AuthNavigator from '@Navigators/authNavigator';
 import { makeSelectIsInitializing, makeSelectIsLoggedIn, makeSelectIsSkipIntro } from '@Containers/App/store/selectors';
 
+export type RootStackParamList = {
+  Splash: undefined;
+  MainNavigator: undefined;
+  AuthNavigator: undefined;
+};
+
 const Stack = createStackNavigator();
 
 interface Props {
@@ -21,7 +27,7 @@ const AppNavigator = ({ isInitializing, isAuthenticated, isSkipIntro }: Props) =
     <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'transparentModal' }}>
       {isInitializing ? (
         <Stack.Screen name="Splash" component={SplashScreen} />
-      ) : isSkipIntro || isAuthenticated ? (
+      ) : isAuthenticated ? (
         <Stack.Screen
           name="MainNavigator"
           component={MainNavigator}

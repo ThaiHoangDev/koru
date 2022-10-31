@@ -6,6 +6,7 @@ import { navigationRef, isMountedRef } from '@Utils/navigator';
 import { AppNavigator } from '../../navigators';
 import { AppState, NativeModules, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { HEIGHT, WIDTH } from '@Constants/app';
 
 const AppContainer = () => {
   // useEffect(() => {
@@ -18,16 +19,16 @@ const AppContainer = () => {
 
   useEffect(() => {
     const subAppState = AppState.addEventListener('change', async nextAppState => {
-      console.log('NETWORK1______', nextAppState);
+      // console.log('NETWORK1______', nextAppState);
       if (Platform.OS === 'ios' && nextAppState === 'active') {
         let newNetInfo = await NativeModules.RNCNetInfo.getCurrentState('wifi');
         //your code here
-        console.log('NETWORK______', nextAppState);
+        // console.log('NETWORK______', nextAppState);
       }
     });
     const unsubNetState = NetInfo.addEventListener(state => {
       //your code here
-      console.log(state, 'NetState______');
+      // console.log(state, 'NetState______');
     });
     return () => {
       if (subAppState) {
@@ -38,7 +39,11 @@ const AppContainer = () => {
   }, []);
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider
+      initialMetrics={{
+        insets: { top: 0, bottom: 0, right: 0, left: 0 },
+        frame: { x: WIDTH, y: HEIGHT, width: WIDTH, height: HEIGHT },
+      }}>
       <NavigationContainer ref={navigationRef}>
         <AppNavigator />
       </NavigationContainer>

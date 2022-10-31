@@ -3,10 +3,9 @@ import { Platform, Dimensions } from 'react-native';
 export const RESTART_ON_REMOUNT = '@@saga-injector/restart-on-remount';
 export const DAEMON = '@@saga-injector/daemon';
 export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';
-
 export const APP_ENV = process.env.NODE_ENV;
-export const BASE_API_URL = process.env.BASE_API_URL || '';
-export const MAPBOX_API_KEY = process.env.MAPBOX_API_KEY || '';
+export const BASE_API_URL = process.env.REACT_APP_BASE_API_URL || 'https://dev.api.plantkoru.com/plant/v1';
+export const MAPBOX_API_KEY = process.env.MAPBOX_API_KEY || ''; 
 export const TOKEN_NAME = 'token';
 export const TOKEN_PASSENGER = 'token_passenger';
 export const TOKEN_FCM = 'token_fcm';
