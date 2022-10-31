@@ -1,18 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-  Animated,
-  Easing,
-  ToastAndroid,
-  PermissionsAndroid,
-  Platform,
-} from 'react-native';
-import { connect, useDispatch } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { View, Animated, Easing } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 // utils
@@ -26,32 +13,24 @@ import TitleComp from '../components/TitleComp';
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import Startpairing2 from '@Components/iconSvg/pairing/Startpairing2';
 
-import { makeSelectIsRequesting, makeSelectNetworks, makeSelectUuid } from '../store/selectors';
-import { PropsScreen } from '@Interfaces/app';
-
-interface Iprops extends PropsScreen {
-  isLoading: boolean;
-  netWorks: any;
-}
-
-const Searching = ({ isLoading, netWorks }: Iprops) => {
-  const width = useRef(new Animated.Value(100)).current;
+const Searching = () => {
+  const width = useRef(new Animated.Value(109)).current;
   const height = useRef(new Animated.Value(100)).current;
 
   const w = width.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 1],
+    inputRange: [0, 0.6],
+    outputRange: [0, 0.6],
   });
   const h = height.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 1],
+    inputRange: [0, 0.6],
+    outputRange: [0, 0.6],
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     Animated.parallel([
       Animated.timing(height, {
         toValue: 69,
-        delay: 100,
+        delay: 10,
         duration: 1000,
         isInteraction: true,
         easing: Easing.linear,
@@ -59,7 +38,7 @@ const Searching = ({ isLoading, netWorks }: Iprops) => {
       }),
       Animated.timing(width, {
         toValue: 59,
-        delay: 100,
+        delay: 10,
         duration: 1000,
         isInteraction: true,
         easing: Easing.linear,
@@ -82,12 +61,8 @@ const Searching = ({ isLoading, netWorks }: Iprops) => {
     </View>
   );
 };
-const mapStateToProps = createStructuredSelector({
-  isLoading: makeSelectIsRequesting(),
-  uuid: makeSelectUuid(),
-  netWorks: makeSelectNetworks(),
-});
-export default connect(mapStateToProps)(Searching);
+
+export default Searching;
 
 const styles = StyleSheet.create({
   root: {

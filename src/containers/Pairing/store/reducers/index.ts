@@ -20,7 +20,7 @@ export interface IPayload {
 
 // The initial state of the Login container
 export const initialState: IPayload = {
-  isRequesting: false,
+  isRequesting: true,
   uuid: '',
   listUuid: [],
   pop: '',
@@ -71,6 +71,7 @@ const authReducer = (state = initialState, { type, payload }: ACTION) =>
       case PairActions.Types.GET_LIST_PLANT_GROUP.failed:
       case PairActions.Types.CREATE_PLANT.failed:
       case PairActions.Types.SCAN_DEVICES.failed:
+      case PairActions.Types.CONNECT_BLE.failed:
         draft.isRequesting = false;
         break;
       case PairActions.Types.CREATE_PLANT.succeeded:

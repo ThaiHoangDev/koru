@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextStyle, Text, View } from 'react-native';
+import { TextStyle, Text, View, StyleProp } from 'react-native';
 import { TextInput, TextInputProps, withTheme } from 'react-native-paper';
 // import { TextInput, TextInputProps } from 'react-native';
 
@@ -7,7 +7,7 @@ import styles from './styles';
 
 interface IProps extends TextInputProps {
   value: string;
-  stylesTxt?: TextStyle | TextStyle[];
+  stylesTxt?: TextStyle | TextStyle[] | StyleProp<TextStyle>;
   handleChangeText: (txt: string) => void;
   type?: string;
   label: string;

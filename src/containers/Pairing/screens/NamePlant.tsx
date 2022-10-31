@@ -4,8 +4,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-import { AWSConfig } from '@Utils/constants';
-
 import TopNavigationBar from '@Navigators/topNavigation';
 import { PropsScreen } from '@Interfaces/app';
 import TextInputComp from '@Components/input';
@@ -14,14 +12,15 @@ import { ButtonComp } from '@Components/button';
 import { colors, fontFamily } from '@Theme/index';
 import { PairActions } from '../store/actions';
 
-import { makeSelectUuid } from '../store/selectors';
+import { makeSelectIsRequesting, makeSelectUuid, makeSelectUuidConnected } from '../store/selectors';
 
 interface IProps extends PropsScreen {
   bluetooth_uid: string;
+  isLoading: boolean;
 }
 
 const NamePlantContainer = (props: IProps) => {
-  const { bluetooth_uid, ...rest } = props;
+  const { bluetooth_uid, isLoading, ...rest } = props;
   const navigation: any = useNavigation();
   const route: any = useRoute();
   const dispatch = useDispatch();
@@ -41,10 +40,10 @@ const NamePlantContainer = (props: IProps) => {
   const handleScanWifi = () => {
     const body = {
       name: newName,
-      bluetooth_uid,
+      bluetooth_uid: bluetooth_uid || '',
       species: route.params?.plant?.uuid || '',
-      identity_id: AWSConfig.identityPoolId,
     };
+    console.log(body, 'bodyCreatePlant________');
     dispatch(PairActions.createPlant.request(body));
   };
 
@@ -67,6 +66,7 @@ const NamePlantContainer = (props: IProps) => {
           handlePress={handleScanWifi}
           stylesBtn={styles.btn}
           stylesTitle={styles.titleBtn}
+          isLoading={isLoading}
         />
       </View>
     </View>
@@ -74,7 +74,8 @@ const NamePlantContainer = (props: IProps) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  bluetooth_uid: makeSelectUuid(),
+  isLoading: makeSelectIsRequesting(),
+  bluetooth_uid: makeSelectUuidConnected(),
 });
 
 export default connect(mapStateToProps)(NamePlantContainer);

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import NoPlantIcon from '@Components/iconSvg/home/NoPlantIcon';
-import { fontFamily } from '@Theme/index';
+import { colors, fontFamily } from '@Theme/index';
 
 const NoPlantComp = () => {
   return (
@@ -32,5 +32,6 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.Strawford,
     textAlign: 'center',
     paddingHorizontal: 20,
+    color: colors.black2,
   },
 });

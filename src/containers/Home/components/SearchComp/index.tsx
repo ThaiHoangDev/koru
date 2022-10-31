@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginHorizontal: 10,
     paddingVertical: 4,
+    color: colors.black2,
     zIndex: 100,
   },
   backButton: {

@@ -2,8 +2,8 @@ import React from 'react';
 import Lottie from 'lottie-react-native';
 
 interface Iprops {
-  source: any;
-  width: number;
+  source?: any;
+  width?: number;
 }
 
 export default function LoaderAnimationProgress({

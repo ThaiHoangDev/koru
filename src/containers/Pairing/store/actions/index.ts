@@ -13,6 +13,7 @@ export namespace PairActions {
     'GET_LIST_PLANT_GROUP',
     'CREATE_PLANT',
     'CONNECT_BLE',
+    'PROV_CUSTOM',
   );
 
   export const stepPair = createActionGenerator(Types.STEP_PAIRING);
@@ -22,4 +23,5 @@ export namespace PairActions {
   export const getListPlantGroup = createActionGenerator(Types.GET_LIST_PLANT_GROUP);
   export const createPlant = createActionGenerator(Types.CREATE_PLANT);
   export const connectBLE = createActionGenerator(Types.CONNECT_BLE);
+  export const provCustomWithByteData = createActionGenerator(Types.PROV_CUSTOM);
 }

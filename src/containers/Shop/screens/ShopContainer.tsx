@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, RefreshControl, FlatListProps } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { connect, useDispatch } from 'react-redux';
 import { debounce, isEmpty } from 'lodash';
 import { createStructuredSelector } from 'reselect';
@@ -9,7 +8,6 @@ import { createStructuredSelector } from 'reselect';
 import TopNavigationBar from '@Navigators/topNavigation';
 import MenuIcon from '@Components/iconSvg/MenuIcon';
 import SearchComp from '@Containers/Home/components/SearchComp';
-import AddIcon from '@Components/iconSvg/AddIcon';
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import NoPlantComp from '@Containers/Home/components/NoPlantComp';
 
@@ -19,20 +17,20 @@ import { HomeActions } from '@Containers/Home/store/actions';
 import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/store/selectors';
 
 import { colors, fontFamily } from '@Theme/index';
-import { HomeStackParamList } from '@Navigators/homeNavigator';
+import CardIcon from '@Components/iconSvg/shop/CardIcon';
+import FilterComp from '@Containers/Pairing/components/FilterComp';
+import { makeSelectListPlantGroup } from '@Containers/Pairing/store/selectors';
 
-type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
-type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'HomeScreen'>;
-
-interface IProps {
+interface IProps extends PropsScreen {
   isLoading: boolean;
   myPlant: any;
-  navigation: HomeScreenNavigationProp;
-  route: HomeScreenRouteProp;
+  listPlantGroup: any;
 }
 
-function HomeContainer(props: IProps) {
-  const { isLoading, myPlant, navigation, route } = props;
+function ShopContainer(props: IProps) {
+  const { isLoading, myPlant, listPlantGroup } = props;
+  const navigation: any = useNavigation();
+  const route: any = useRoute();
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
@@ -40,11 +38,10 @@ function HomeContainer(props: IProps) {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      header: (p: any) => (
-        <TopNavigationBar {...p} children={<Text style={styles.titleTab}>{'My Koru'}</Text>} right={<MenuIcon />} />
-      ),
+      headerShown: true,
+      header: (p: any) => <TopNavigationBar {...p} children={<Text style={styles.titleTab}>{'Choose Plant'}</Text>} />,
     });
-  }, [navigation, route]);
+  }, [navigation]);
 
   const handleSearch = (value: string) => {
     const payload = {
@@ -88,13 +85,20 @@ function HomeContainer(props: IProps) {
     return <PlantBoxComp data={item} />;
   };
 
+  const handleFilter = () => {};
+
   return (
     <View style={styles.rootContainer}>
       <View style={styles.headerContainer}>
-        <SearchComp onChangeText={handleChangeText} />
-        <TouchableOpacity style={styles.addContainer} onPress={handleGoToPairing}>
-          <AddIcon />
-        </TouchableOpacity>
+        <View style={styles.searchContainer}>
+          <SearchComp onChangeText={handleChangeText} />
+          <TouchableOpacity style={styles.addContainer} onPress={handleGoToPairing}>
+            <CardIcon />
+          </TouchableOpacity>
+        </View>
+        <View style={{ marginVertical: 10 }}>
+          <FilterComp data={listPlantGroup} onFilter={handleFilter} />
+        </View>
       </View>
       <FlatList
         data={myPlant}
@@ -138,15 +142,17 @@ function HomeContainer(props: IProps) {
 const mapStateToProps = createStructuredSelector({
   myPlant: makeSelectMyPlant(),
   isLoading: makeSelectIsRequesting(),
+  listPlantGroup: makeSelectListPlantGroup(),
 });
 
-export default connect(mapStateToProps)(HomeContainer);
+export default connect(mapStateToProps)(ShopContainer);
 
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
   },
-  headerContainer: {
+  headerContainer: {},
+  searchContainer: {
     flexDirection: 'row',
     marginVertical: 10,
   },
@@ -157,8 +163,14 @@ const styles = StyleSheet.create({
     color: colors.black2,
   },
   addContainer: {
-    width: 50,
-    alignItems: 'flex-end',
+    width: 32,
+    height: 32,
+    backgroundColor: colors.gray,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 6,
+    marginLeft: 8,
   },
   columnWrapper: {
     justifyContent: 'space-between',

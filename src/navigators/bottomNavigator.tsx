@@ -1,7 +1,7 @@
-import React, { FC, ReactNode } from 'react';
+import React, { useState } from 'react';
 import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
-import { StyleSheet, Text, View, Pressable, Platform } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Platform, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import HomeIcon from '@Components/iconSvg/HomeIcon';
@@ -12,6 +12,7 @@ import { colors } from '@Theme/index';
 import TopNavigationBar from './topNavigation';
 import ShopIcon from '@Components/iconSvg/ShopIcon';
 import SettingIcon from '@Components/iconSvg/SettingIcon';
+import { HEIGHT, IS_ANDROID } from '@Constants/app';
 
 const TabBar: any = ({ isActive, index }: { isActive: boolean; index: number }) => {
   switch (index) {
@@ -31,9 +32,27 @@ const TabBar: any = ({ isActive, index }: { isActive: boolean; index: number }) 
 
 const TabBarNavigator = createBottomTabNavigator();
 export const BottomTabNavigator = () => {
+  const [visible, setVisible] = useState(true);
+  React.useLayoutEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setVisible(false);
+    });
+
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setTimeout(() => {
+        setVisible(true);
+      }, 0);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   const SMTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     return (
-      <SafeAreaView style={styles.bottomTabContainer} edges={['bottom']}>
+      <SafeAreaView style={styles.bottomTabContainer} edges={['bottom', 'left', 'right']}>
         {state.routes.map((route: any, index: number) => {
           const { options } = descriptors[route.key];
           const isFocused: boolean = state.index === index;
@@ -58,30 +77,32 @@ export const BottomTabNavigator = () => {
           };
 
           return (
-            <Pressable
-              accessibilityRole="button"
-              testID={options.tabBarTestID}
-              key={index.toString()}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={[
-                styles.tabItem,
-                {
-                  borderTopLeftRadius: index === 0 ? 50 : 0,
-                  borderTopRightRadius: index === state.routes.length - 1 ? 50 : 0,
-                  borderBottomLeftRadius: index === 0 ? 50 : 0,
-                  borderBottomRightRadius: index === state.routes.length - 1 ? 50 : 0,
-                },
-              ]}>
-              {options.tabBarBadge ? (
-                <View style={styles.badge}>
-                  <Text style={styles.tabBadge}>{options.tabBarBadge}</Text>
+            visible && (
+              <Pressable
+                accessibilityRole="button"
+                testID={options.tabBarTestID}
+                key={index.toString()}
+                onPress={onPress}
+                onLongPress={onLongPress}
+                style={[
+                  styles.tabItem,
+                  {
+                    borderTopLeftRadius: index === 0 ? 50 : 0,
+                    borderTopRightRadius: index === state.routes.length - 1 ? 50 : 0,
+                    borderBottomLeftRadius: index === 0 ? 50 : 0,
+                    borderBottomRightRadius: index === state.routes.length - 1 ? 50 : 0,
+                  },
+                ]}>
+                {options.tabBarBadge ? (
+                  <View style={styles.badge}>
+                    <Text style={styles.tabBadge}>{options.tabBarBadge}</Text>
+                  </View>
+                ) : null}
+                <View style={styles.iconWrap}>
+                  <TabBar isActive={isFocused} index={index} />
                 </View>
-              ) : null}
-              <View style={styles.iconWrap}>
-                <TabBar isActive={isFocused} index={index} />
-              </View>
-            </Pressable>
+              </Pressable>
+            )
           );
         })}
       </SafeAreaView>
@@ -94,6 +115,7 @@ export const BottomTabNavigator = () => {
       screenOptions={{
         headerShown: false,
         header: p => <TopNavigationBar {...p} children />,
+        tabBarHideOnKeyboard: IS_ANDROID,
       }}>
       <TabBarNavigator.Screen name="Home" component={HomeNavigator} options={{ headerShown: false }} />
       <TabBarNavigator.Screen name="Shop" component={ShopNavigator} />
@@ -104,11 +126,12 @@ export const BottomTabNavigator = () => {
 
 const styles = StyleSheet.create({
   bottomTabContainer: {
+    display: 'flex',
     flexDirection: 'row',
+    // position: 'relative',
     paddingHorizontal: 20,
     backgroundColor: colors.white2,
     paddingBottom: Platform.OS === 'android' ? 20 : 0,
-    alignSelf: 'flex-end',
   },
   tabBadge: {
     fontSize: 8,
@@ -136,13 +159,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     shadowOffset: {
-      width: 1,
-      height: 4,
+      width: 3,
+      height: -6,
     },
-    shadowColor: colors.black2,
-    shadowOpacity: 0.22,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowColor: colors.yellow,
+    shadowOpacity: 0.02,
+    shadowRadius: 25,
+    elevation: 6,
+    zIndex: 2,
   },
   badge: {
     backgroundColor: '#2EA65C',
@@ -153,7 +177,7 @@ const styles = StyleSheet.create({
     paddingVertical: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
+    // position: 'absolute',
     display: 'flex',
     top: 8.8,
   },

@@ -20,8 +20,11 @@ export const ButtonComp = ({ title, stylesBtn, stylesTitle, handlePress, icon, i
   };
   return (
     <TouchableOpacity style={[styles.root, stylesBtn]} onPress={onPress}>
-      {isLoading && <LoaderAnimationProgress source={require('@Assets/lotties/loading.json')} width={40} />}
-      <Text style={[styles.title, stylesTitle]}>{title}</Text>
+      {isLoading ? (
+        <LoaderAnimationProgress source={require('@Assets/lotties/loading.json')} width={80} />
+      ) : (
+        <Text style={[styles.title, stylesTitle]}>{title}</Text>
+      )}
       {icon}
     </TouchableOpacity>
   );

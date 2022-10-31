@@ -6,11 +6,9 @@ import { useNavigation, useRoute, ParamListBase, RouteProp } from '@react-naviga
 import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
 
 // utils
-import { StepProps } from '@Containers/Auth/interfaces';
-import { makeSelectStepPairing } from '../store/selectors';
 
 // components by self
-
+import TopNavigationBar from '@Navigators/topNavigation';
 // assets
 
 import { colors, fontFamily } from '@Theme/index';
@@ -19,21 +17,23 @@ import StartPairing from '@Components/iconSvg/pairing/StartPairing';
 import TitleComp from '../components/TitleComp';
 import { PairActions } from '../store/actions';
 
-const PairYourPotContainer = ({ step }: StepProps) => {
+const PairYourPotContainer = () => {
   EspIdfProvisioningReactNative.create();
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
   const route: RouteProp<ParamListBase> | any = useRoute();
 
-  const scanFunc = useCallback(async () => {
-    // await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION!);
-    dispatch(PairActions.scanDevices.request());
-    navigation.navigate('SelectBLT');
-    console.log('scannnnn_______');
-  }, []);
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      header: (p: any) => <TopNavigationBar {...p} isLeft />,
+    });
+  }, [navigation]);
+
+  const scanFunc = useCallback(async () => {}, []);
 
   const handlePairing = () => {
-    scanFunc();
+    navigation.navigate('SelectBLT');
   };
 
   return (
@@ -51,10 +51,10 @@ const PairYourPotContainer = ({ step }: StepProps) => {
     </View>
   );
 };
-const mapStateToProps = createStructuredSelector({
-  step: makeSelectStepPairing(),
-});
-export default connect(mapStateToProps)(PairYourPotContainer);
+// const mapStateToProps = createStructuredSelector({
+
+// });
+export default connect()(PairYourPotContainer);
 
 const styles = StyleSheet.create({
   root: {

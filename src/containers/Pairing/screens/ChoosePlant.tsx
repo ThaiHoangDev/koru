@@ -74,6 +74,7 @@ function ChoosePlantContainer(props: IProps) {
   useEffect(() => {
     setPage(1);
   }, [isRefresh]);
+
   useEffect(() => {
     const payload = {
       page,
@@ -107,7 +108,7 @@ function ChoosePlantContainer(props: IProps) {
   const searchDebounce = useCallback(debounce(handleSearch, 400), []);
 
   const handleChoosePlant = (item: any) => () => {
-    navigation.navigate('NamePlant', { plant: item });
+    navigation.navigate('NamePlant', { plant: item  });
   };
 
   const handleFilter = (item: any) => {
@@ -194,6 +195,7 @@ const styles = StyleSheet.create({
   txtTitle: {
     fontFamily: fontFamily.FreightBigProMedium,
     fontSize: 32,
+    color: colors.black2
   },
   subTitle: {
     fontFamily: fontFamily.Strawford,

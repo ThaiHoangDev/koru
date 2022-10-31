@@ -8,6 +8,12 @@ import MainNavigator from '@Navigators/mainNavigator';
 import AuthNavigator from '@Navigators/authNavigator';
 import { makeSelectIsInitializing, makeSelectIsLoggedIn, makeSelectIsSkipIntro } from '@Containers/App/store/selectors';
 
+export type RootStackParamList = {
+  Splash: undefined;
+  MainNavigator: undefined;
+  AuthNavigator: undefined;
+};
+
 const Stack = createStackNavigator();
 
 interface Props {
