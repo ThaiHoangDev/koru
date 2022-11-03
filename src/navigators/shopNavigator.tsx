@@ -3,6 +3,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import ShopScreen from '@Screens/shop/ShopScreen';
 
+export type ShopStackParamList = {
+  ShopScreen: undefined;
+  OrderScreen: undefined;
+  PlantOrderDetailScreen: { uuid: string };
+};
+
 const Stack = createStackNavigator();
 
 export const ShopNavigator = () => {
