@@ -1,36 +1,40 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, RefreshControl, FlatListProps } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { connect, useDispatch } from 'react-redux';
 import { debounce, isEmpty } from 'lodash';
 import { createStructuredSelector } from 'reselect';
+import { StackNavigationProp } from '@react-navigation/stack';
 //components
 import TopNavigationBar from '@Navigators/topNavigation';
-import MenuIcon from '@Components/iconSvg/MenuIcon';
 import SearchComp from '@Containers/Home/components/SearchComp';
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import NoPlantComp from '@Containers/Home/components/NoPlantComp';
+import CardIcon from '@Components/iconSvg/shop/CardIcon';
+import FilterComp from '@Containers/Pairing/components/FilterComp';
+import { ShopStackParamList } from '@Navigators/shopNavigator';
 
-import { PropsScreen } from '@Interfaces/app';
+// import { PropsScreen } from '@Interfaces/app';
 import PlantBoxComp from '@Containers/Home/components/PlantBoxComp';
 import { HomeActions } from '@Containers/Home/store/actions';
 import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/store/selectors';
-
-import { colors, fontFamily } from '@Theme/index';
-import CardIcon from '@Components/iconSvg/shop/CardIcon';
-import FilterComp from '@Containers/Pairing/components/FilterComp';
 import { makeSelectListPlantGroup } from '@Containers/Pairing/store/selectors';
 
-interface IProps extends PropsScreen {
+import { colors, fontFamily } from '@Theme/index';
+
+type ShopScreenNavigationProp = StackNavigationProp<ShopStackParamList, 'ShopScreen'>;
+type ShopScreenRouteProp = RouteProp<ShopStackParamList, 'ShopScreen'>;
+
+interface IProps {
   isLoading: boolean;
   myPlant: any;
   listPlantGroup: any;
+  navigation: ShopScreenNavigationProp;
+  route: ShopScreenRouteProp;
 }
 
 function ShopContainer(props: IProps) {
-  const { isLoading, myPlant, listPlantGroup } = props;
-  const navigation: any = useNavigation();
-  const route: any = useRoute();
+  const { isLoading, myPlant, listPlantGroup, navigation, route } = props;
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
@@ -44,12 +48,12 @@ function ShopContainer(props: IProps) {
   }, [navigation]);
 
   const handleSearch = (value: string) => {
-    const payload = {
-      page,
-      perpage: 10,
-      search: value,
-    };
-    dispatch(HomeActions.getMyPlant.request(payload));
+    // const payload = {
+    //   page,
+    //   perpage: 10,
+    //   search: value,
+    // };
+    // dispatch(HomeActions.getMyPlant.request(payload));
   };
 
   const searchDebounce = useCallback(debounce(handleSearch, 400), []);
@@ -77,8 +81,8 @@ function ShopContainer(props: IProps) {
       }, 1000);
   }, [page, isRefresh, dispatch]);
 
-  const handleGoToPairing = () => {
-    navigation.navigate('Paring');
+  const handleGoToCard = () => {
+    navigation.navigate('OrderScreen');
   };
 
   const _renderItem = ({ item }: any) => {
@@ -92,7 +96,7 @@ function ShopContainer(props: IProps) {
       <View style={styles.headerContainer}>
         <View style={styles.searchContainer}>
           <SearchComp onChangeText={handleChangeText} />
-          <TouchableOpacity style={styles.addContainer} onPress={handleGoToPairing}>
+          <TouchableOpacity style={styles.addContainer} onPress={handleGoToCard}>
             <CardIcon />
           </TouchableOpacity>
         </View>
@@ -150,6 +154,7 @@ export default connect(mapStateToProps)(ShopContainer);
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
+    paddingHorizontal: 20,
   },
   headerContainer: {},
   searchContainer: {

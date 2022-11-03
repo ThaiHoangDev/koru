@@ -4,6 +4,9 @@ import { BottomTabNavigator } from './bottomNavigator';
 import { ParingNavigator } from './paringNavigator';
 import { useRoute } from '@react-navigation/native';
 
+import OrderScreen from '@Screens/shop/OrderScreen';
+import PlantOrderDetailScreen from '@Screens/shop/PlantOrderDetailScreen';
+
 const MainStack = createStackNavigator();
 
 const MainNavigator = () => {
@@ -17,6 +20,8 @@ const MainNavigator = () => {
         options={{ headerShown: false, presentation: 'card' }}
       />
       <MainStack.Screen name="TabBar" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <MainStack.Screen name="OrderScreen" component={OrderScreen} />
+      <MainStack.Screen name="PlantOrderDetailScreen" component={PlantOrderDetailScreen} />
     </MainStack.Navigator>
   );
 };
