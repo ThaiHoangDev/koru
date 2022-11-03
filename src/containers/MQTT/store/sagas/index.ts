@@ -58,8 +58,8 @@ function* disconnect() {
   }
 }
 
-function* read(socket: any) {
-  const channel = yield call(subscribe, socket);
+function* read(socket: any): any {
+  const channel: any = yield call(subscribe, socket);
   yield takeEvery(channel, function* (value) {
     yield put(value);
   });
@@ -69,7 +69,7 @@ const connect = async () => {
   return await MQTTClient.connect(MQTTConfig);
 };
 
-function* initMQTTSaga() {
+function* initMQTTSaga(): any {
   try {
     const websocketInstance = yield connect();
     yield fork(handleMQTT, websocketInstance);

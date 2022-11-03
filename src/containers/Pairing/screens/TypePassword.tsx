@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import { PropsScreen } from '@Interfaces/app';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import TopNavigationBar from '@Navigators/topNavigation';
 import TitleComp from '../components/TitleComp';
@@ -11,19 +11,23 @@ import { colors, fontFamily } from '@Theme/index';
 
 const TypePasswordContainer = (props: PropsScreen) => {
   const navigation: any = useNavigation();
+  const route: any = useRoute();
   const dispatch = useDispatch();
   const [passwordWifi, setPasswordWifi] = useState('');
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       header: (p: any) => <TopNavigationBar {...p} isLeft />,
     });
   }, [navigation]);
+
   const handleChangeText = (text: string) => {
     setPasswordWifi(text);
   };
 
   const handleConnectWifi = () => {
-    navigation.navigate('ConnectingWifi');
+    navigation.navigate('ConnectingWifi', { ssid: route.params?.ssid, passwordWifi });
   };
 
   return (
@@ -39,7 +43,7 @@ const TypePasswordContainer = (props: PropsScreen) => {
           label={'Password'}
           placeholder={'Your password'}
           stylesTxt={styles.input}
-          // keyboardType='visible-password'
+          secureTextEntry={secureTextEntry}
         />
       </View>
       <View style={styles.footer}>
@@ -48,6 +52,7 @@ const TypePasswordContainer = (props: PropsScreen) => {
           handlePress={handleConnectWifi}
           stylesBtn={styles.btn}
           stylesTitle={styles.titleBtn}
+          isLoading={false}
         />
       </View>
     </View>

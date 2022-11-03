@@ -19,6 +19,7 @@ import TopNavigationBar from '@Navigators/topNavigation';
 import { makeSelectIsRequesting, makeSelectUuid } from '../store/selectors';
 import { colors, fontFamily } from '@Theme/index';
 import { showErrorMessage } from '@Utils/helper';
+import { IS_ANDROID } from '@Constants/app';
 
 interface IProps extends PropsScreen {
   isLoading: boolean;
@@ -46,8 +47,10 @@ function SelectBLTContainer(props: IProps) {
 
   const scanBLT = useCallback(async () => {
     dispatch(PairActions.scanDevices.request());
-    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
-    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN);
+    if (IS_ANDROID) {
+      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN);
+    }
     await EspIdfProvisioningReactNative.scanBleDevices('SPOT_')
       .then((res: any[]) => {
         console.log(res, 'sacnnnnn');
@@ -74,21 +77,24 @@ function SelectBLTContainer(props: IProps) {
   }, [navigation]);
 
   const connectToBLEDevice = useCallback(async (uuid: any) => {
+    console.log(uuid,"iDD")
     try {
       dispatch(PairActions.connectBLE.request());
-      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT);
-      setTimeout(() => {
-        EspIdfProvisioningReactNative.connectToBLEDevice(uuid)
-          .then((_res: any) => {
-            dispatch(PairActions.connectBLE.success(uuid));
-            navigation.navigate('ChoosePlant', { bluetooth_uid: uuid });
-            ToastAndroid.show('Connected to device', ToastAndroid.LONG);
-          })
-          .catch((e: any) => {
-            dispatch(PairActions.connectBLE.fail(e));
-            ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
-          });
-      }, 10);
+      IS_ANDROID && (await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT));
+      EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
+      EspIdfProvisioningReactNative.connectToBLEDevice(uuid)
+        .then((_res: any) => {
+          dispatch(PairActions.connectBLE.success(uuid));
+          console.log(uuid, _res,"uuu___IDDD")
+          navigation.navigate('ChoosePlant', { bluetooth_uid: uuid });
+          ToastAndroid.show('Connected to device', ToastAndroid.LONG);
+        })
+        .catch((e: any) => {
+          dispatch(PairActions.connectBLE.fail(e));
+          console.log(e,"uuu___IDDD_FAILED")
+          showErrorMessage(e,()=>{})
+          ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
+        });
     } catch (error) {
       console.log(error, 'connect error');
     }
@@ -103,7 +109,7 @@ function SelectBLTContainer(props: IProps) {
       <TouchableOpacity
         style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 52 }}
         onPress={handleSelectBLT(item.serviceUuid)}>
-        <Text style={{ color: colors.black2 }}>{item.deviceName}</Text>
+        <Text style={{ color: colors.black2 }}>{item.deviceName || item.name}</Text>
         <SkipIcon />
       </TouchableOpacity>
     );

@@ -1,63 +1,30 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { connect, useDispatch } from 'react-redux';
-
+import { isEmpty } from 'lodash';
 //redux
 import { createStructuredSelector } from 'reselect';
-
+import { makeSelectIsRequesting, makeSelectNetworks } from '../store/selectors';
+import { PairActions } from '../store/actions';
 //components
 import WifiIcon from '@Components/iconSvg/pairing/WifiIcon';
 import TitleComp from '../components/TitleComp';
 import TopNavigationBar from '@Navigators/topNavigation';
+import NoPlantComp from '@Containers/Home/components/NoPlantComp';
+import LoaderAnimationProgress from '@Components/lottie/loader';
 //type
 import { PropsScreen } from '@Interfaces/app';
 import { colors, fontFamily } from '@Theme/index';
 
 interface IProps extends PropsScreen {
-  step: number;
+  listWifiScan: any;
+  isLoading: boolean;
 }
 
-const WIFI_LIST = [
-  {
-    name: 'Digital Fortress 5G',
-    type: 'Plant type',
-    uri: '',
-  },
-  {
-    name: 'Nahle',
-    type: 'Plant type',
-    uri: '',
-  },
-  {
-    name: 'Wifi Name',
-    type: 'Plant type',
-    uri: '',
-  },
-  {
-    name: 'Wifi Name2',
-    type: 'Plant type',
-    uri: '',
-  },
-  {
-    name: 'Wifi Name3',
-    type: 'Plant type',
-    uri: '',
-  },
-  {
-    name: 'Wifi Name4',
-    type: 'Plant type',
-    uri: '',
-  },
-  {
-    name: 'Wifi Name5',
-    type: 'Plant type',
-    uri: '',
-  },
-];
-
 function ChooseYourWifiContainer(props: IProps) {
-  const { ...rest } = props;
+  const { listWifiScan, isLoading, ...rest } = props;
+  const [isRefresh, setIsRefresh] = useState(false);
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
 
@@ -67,8 +34,20 @@ function ChooseYourWifiContainer(props: IProps) {
     });
   }, [navigation]);
 
-  const handleSelectWifi = () => {
-    navigation.navigate('TypePassword');
+  const handleSelectWifi = (ssid: any) => () => {
+    navigation.navigate('TypePassword', { ssid });
+    // dispatch(PairActions.scanNetworks.request());
+  };
+
+  useEffect(() => {
+    dispatch(PairActions.scanNetworks.request());
+    setTimeout(() => {
+      isRefresh && setIsRefresh(false);
+    }, 400);
+  }, [isRefresh]);
+
+  const handleRefresh = () => {
+    setIsRefresh(true);
   };
 
   const _renderItem = ({ item, index }: any) => {
@@ -79,12 +58,12 @@ function ChooseYourWifiContainer(props: IProps) {
           { borderColor: colors.grey06, borderBottomWidth: 0, borderWidth: 1 },
           index === 0
             ? { borderTopLeftRadius: 16, borderTopRightRadius: 16 }
-            : index === WIFI_LIST.length - 1
+            : index === listWifiScan.length - 1
             ? { borderBottomLeftRadius: 16, borderBottomRightRadius: 16, borderBottomWidth: 1 }
             : null,
         ]}
-        onPress={handleSelectWifi}>
-        <Text style={styles.nameWifi}>{item.name}</Text>
+        onPress={handleSelectWifi(item.ssid)}>
+        <Text style={styles.nameWifi}>{item.ssid}</Text>
         <WifiIcon />
       </TouchableOpacity>
     );
@@ -94,14 +73,42 @@ function ChooseYourWifiContainer(props: IProps) {
     <FlatList
       ListHeaderComponent={<TitleComp title={'_Choose your wifi'} subTitle={'Wifi List'} />}
       ListHeaderComponentStyle={styles.headerContainerFlat}
-      data={WIFI_LIST}
+      data={listWifiScan}
       renderItem={_renderItem}
-      keyExtractor={item => item.name.toString()}
+      keyExtractor={item => item.ssid.toString()}
+      ListEmptyComponent={
+        isLoading ? (
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <LoaderAnimationProgress source={require('@Assets/lotties/loading.json')} width={200} />
+          </View>
+        ) : isEmpty(listWifiScan) ? (
+          <NoPlantComp />
+        ) : null
+      }
+      refreshControl={
+        <RefreshControl
+          tintColor={'#fff'}
+          refreshing={isRefresh}
+          onRefresh={handleRefresh}
+          children={
+            isRefresh && (
+              <View style={{ alignItems: 'center', justifyContent: 'center', zIndex: 3 }}>
+                <LoaderAnimationProgress source={require('@Assets/lotties/refreshing.json')} width={30} />
+              </View>
+            )
+          }
+        />
+      }
     />
   );
 }
 
-export default connect()(ChooseYourWifiContainer);
+const mapStateToProps = createStructuredSelector({
+  isLoading: makeSelectIsRequesting(),
+  listWifiScan: makeSelectNetworks(),
+});
+
+export default connect(mapStateToProps)(ChooseYourWifiContainer);
 
 const styles = StyleSheet.create({
   contentFlatlist: {

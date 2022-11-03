@@ -12,13 +12,26 @@ import ConnectingComp from '../components/ConnectingComp';
 // assets
 
 import { colors, fontFamily } from '@Theme/index';
+import { PairActions } from '../store/actions';
+import { useRoute } from '@react-navigation/native';
 
 interface Iprops extends PropsScreen {
   isLoading: boolean;
   netWorks: any;
 }
 
-const ConnectingWifiContainer = ({ isLoading, netWorks }: Iprops) => {
+const ConnectingWifiContainer = ({ isLoading }: Iprops) => {
+  const dispatch = useDispatch();
+  const route: any = useRoute();
+  useEffect(() => {
+    dispatch(
+      PairActions.provCreds.request({
+        ssid: route.params.ssid,
+        passwordWifi: route.params.passwordWifi,
+      }),
+    );
+  }, []);
+
   return (
     <View style={styles.root}>
       <ConnectingComp />
@@ -27,15 +40,12 @@ const ConnectingWifiContainer = ({ isLoading, netWorks }: Iprops) => {
 };
 const mapStateToProps = createStructuredSelector({
   isLoading: makeSelectIsRequesting(),
-  uuid: makeSelectUuid(),
-  netWorks: makeSelectNetworks(),
 });
 export default connect(mapStateToProps)(ConnectingWifiContainer);
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-
     justifyContent: 'center',
   },
   txtContainer: {},
