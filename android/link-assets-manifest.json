@@ -1,0 +1,25 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/FreightBigProMedium-Regular.ttf",
+      "sha1": "e3ba752fd9e017567b7ad3782f58a6d6fc1b9285"
+    },
+    {
+      "path": "src/assets/fonts/Strawford-Regular.otf",
+      "sha1": "30e54c4020817be440aefdb3b85525bd24c85942"
+    },
+    {
+      "path": "src/assets/fonts/gotham-bold.otf",
+      "sha1": "7eda72c017a05a7b1324b6ae3038b6c01fa0981a"
+    },
+    {
+      "path": "src/assets/fonts/gotham-book.otf",
+      "sha1": "e84b62cebdc85a2673d9c81d49507ea66890e290"
+    },
+    {
+      "path": "src/assets/fonts/gotham-medium.otf",
+      "sha1": "e0f46faa2a008d9a5ec76db299b1e71352a8fa56"
+    }
+  ]
+}
