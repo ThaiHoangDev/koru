@@ -12,7 +12,7 @@ export default StyleSheet.create({
     backgroundColor: colors.white2,
     position: 'relative',
     flex: 1,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
   },
   homeContent: {
     paddingHorizontal: 0,

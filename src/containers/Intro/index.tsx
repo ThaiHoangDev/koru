@@ -79,7 +79,12 @@ export default function IntroScreen() {
         <Text style={[styles.subtitle, styles.fontFamily]}>{item.subtitle}</Text>
       </View>
       <View style={{ flex: 0.2 }}>
-        <ButtonComp title={'Skip now'} handlePress={handleIntro} stylesTitle={[styles.textSkip, styles.fontFamily]} />
+        <ButtonComp
+          title={'Skip now'}
+          handlePress={handleIntro}
+          stylesTitle={[styles.textSkip, styles.fontFamily]}
+          isLoading={false}
+        />
       </View>
       <View style={[styles.doneWrap, { flex: 0.2, marginTop: 20 }]}>
         <ButtonComp
@@ -88,6 +93,7 @@ export default function IntroScreen() {
           stylesBtn={styles.btn}
           stylesTitle={[styles.txtBtn, styles.fontFamily]}
           icon={index === 1 ? <NextIcon /> : undefined}
+          isLoading={false}
         />
       </View>
     </View>

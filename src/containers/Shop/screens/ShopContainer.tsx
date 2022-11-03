@@ -150,6 +150,7 @@ export default connect(mapStateToProps)(ShopContainer);
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
+    paddingHorizontal: 20
   },
   headerContainer: {},
   searchContainer: {

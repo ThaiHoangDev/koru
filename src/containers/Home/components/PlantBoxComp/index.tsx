@@ -1,7 +1,10 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+
 import { Plant } from '@Containers/Home/interfaces';
-import { colors } from '@Theme/index';
+import { ImageBackgroundCompLayout } from '@Components/image-backgroundComp';
+
+import { colors, fontFamily } from '@Theme/index';
 
 interface IProps {
   data: Plant;
@@ -12,14 +15,17 @@ const PlantBoxComp = ({ data }: IProps) => {
     <View style={styles.root}>
       <View style={styles.headerContainer}>
         <View>
-          <Text style={{ color: colors.black2 }}>{data.name}</Text>
-          <Text style={{ color: colors.black2 }}>{data.species_name}</Text>
+          <Text style={styles.title}>{data.name}</Text>
+          <Text style={styles.subTitle}>{data.species_name}</Text>
         </View>
         <View style={styles.status}></View>
       </View>
-      <View style={{flex: 1}}>
-        <Image source={{ uri: data.species_image }} resizeMode="contain" style={styles.image} />
-      </View>
+      <ImageBackgroundCompLayout
+        children={<Image source={{ uri: data.species_image }} resizeMode="contain" style={styles.image} />}
+        source={require('@Assets/image-background/box-plant.png')}
+        resizeMode="cover"
+        imageStyle={{ flex: 1, width: '100%' }}
+      />
     </View>
   );
 };
@@ -28,17 +34,24 @@ export default PlantBoxComp;
 
 const styles = StyleSheet.create({
   root: {
-    flex: 0.4,
     padding: 8,
-    width: '100%',
     height: 204,
     borderRadius: 8,
     borderWidth: 2,
     borderColor: colors.gray04,
   },
+  title: {
+    color: colors.black2,
+    fontSize: 16,
+    fontFamily: fontFamily.Strawford,
+  },
+  subTitle: {
+    color: colors.grey06,
+    fontSize: 13,
+    fontFamily: fontFamily.Strawford,
+  },
   image: {
     flex: 1,
-    width: 100,
     height: 160,
   },
   status: {

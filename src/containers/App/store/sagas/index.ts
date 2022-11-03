@@ -15,6 +15,7 @@ function* initializeSaga(): any {
     const userToken = yield asyncStorage.getItem(TOKEN_NAME);
     const token = yield JSON.parse(userToken);
     const isLoggedIn = !!token;
+    console.log(token,"too__")
     if (isLoggedIn) {
       yield axiosClient.setHeader(token);
     }

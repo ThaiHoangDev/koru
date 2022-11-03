@@ -9,6 +9,7 @@ import { HomeActions } from '../actions';
 function* getMyPlantSaga({ payload }: any) {
   try {
     const { data } = yield call(apiService.getMyPlantAPI, payload);
+    console.log(data,"fafafa___")
     yield put(HomeActions.getMyPlant.success(data));
   } catch (error) {
     yield put(HomeActions.getMyPlant.fail(error));

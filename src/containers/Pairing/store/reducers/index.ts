@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { unionBy, uniqBy } from 'lodash';
+import { uniqBy } from 'lodash';
 
 import { PairActions } from '../actions';
 
@@ -35,6 +35,7 @@ const authReducer = (state = initialState, { type, payload }: ACTION) =>
       case PairActions.Types.SCAN_DEVICES.begin:
       case PairActions.Types.CREATE_PLANT.begin:
       case PairActions.Types.CONNECT_BLE.begin:
+      case PairActions.Types.PROV_CREDS.begin:
         draft.isRequesting = true;
         break;
       case PairActions.Types.SCAN_DEVICES.succeeded:
@@ -46,6 +47,7 @@ const authReducer = (state = initialState, { type, payload }: ACTION) =>
         break;
       case PairActions.Types.SCAN_NETWORKS.succeeded:
         draft.isRequesting = false;
+        draft.netWorks = payload;
         break;
       case PairActions.Types.SCAN_NETWORKS.failed:
         draft.isRequesting = false;
@@ -72,6 +74,7 @@ const authReducer = (state = initialState, { type, payload }: ACTION) =>
       case PairActions.Types.CREATE_PLANT.failed:
       case PairActions.Types.SCAN_DEVICES.failed:
       case PairActions.Types.CONNECT_BLE.failed:
+      case PairActions.Types.PROV_CREDS.failed:
         draft.isRequesting = false;
         break;
       case PairActions.Types.CREATE_PLANT.succeeded:
