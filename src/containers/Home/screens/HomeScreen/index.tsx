@@ -13,7 +13,6 @@ import AddIcon from '@Components/iconSvg/AddIcon';
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import NoPlantComp from '@Containers/Home/components/NoPlantComp';
 
-import { PropsScreen } from '@Interfaces/app';
 import PlantBoxComp from '@Containers/Home/components/PlantBoxComp';
 import { HomeActions } from '@Containers/Home/store/actions';
 import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/store/selectors';
@@ -84,8 +83,16 @@ function HomeContainer(props: IProps) {
     navigation.navigate('Paring');
   };
 
+  const handlePress = () => {
+    navigation.navigate('PlantDetail');
+  };
+
   const _renderItem = ({ item }: any) => {
-    return <PlantBoxComp data={item} />;
+    return (
+      <TouchableOpacity onPress={handlePress}>
+        <PlantBoxComp data={item} />
+      </TouchableOpacity>
+    );
   };
 
   return (
@@ -145,6 +152,7 @@ export default connect(mapStateToProps)(HomeContainer);
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
+    paddingHorizontal: 20
   },
   headerContainer: {
     flexDirection: 'row',

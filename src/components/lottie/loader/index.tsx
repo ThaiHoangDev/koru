@@ -10,5 +10,5 @@ export default function LoaderAnimationProgress({
   source = require('../../../assets/lotties/searching.json'),
   width = 90,
 }: Iprops) {
-  return <Lottie source={source} autoPlay loop autoSize style={{ width, zIndex: 1 }} />;
+  return <Lottie source={source} autoPlay loop autoSize style={{ width, zIndex: 1 }} speed={1} />;
 }

@@ -4,50 +4,48 @@ import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisio
 import { PairActions } from '../actions';
 import * as apiService from '../services';
 import { navigate } from '@Utils/navigator';
+import { store } from '@Store/index';
+import { showErrorWithString } from '@Utils/helper';
 
-function* scanDevicesSaga({ payload }: any) {
-  yield PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION!);
-  console.log('scan init');
-  EspIdfProvisioningReactNative.scanBleDevices('SPOT_')
-    .then((res: string | any[]) => {
-      console.log(res, 'scan data____');
-      if (res.length > 0) {
-        // put(PairActions.scanDevices.success(res[0].serviceUuid));
-        EspIdfProvisioningReactNative.connectToBLEDevice(res[0].serviceUuid)
-          .then((_res: any) => {
-            ToastAndroid.show('Connected to device', ToastAndroid.LONG);
-          })
-          .catch((e: any) => {
-            ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
-            console.log(e);
-          });
-      } else {
-        put(PairActions.scanDevices.fail(''));
-      }
-    })
-    .catch((e: any) => {
-      console.log(e);
-    });
-}
+function* scanDevicesSaga({ payload }: any) {}
 
-function* scanNetworks({ payload }: any) {
+function* scanNetworks() {
   EspIdfProvisioningReactNative.scanNetworks()
     .then((res: any[]) => {
       console.log(res, 'netWorks__________');
+      store.dispatch(PairActions.scanNetworks.success(res));
       ToastAndroid.show('Number of networks found: ' + res.length, ToastAndroid.LONG);
     })
     .catch((e: any) => {
+      store.dispatch(PairActions.scanNetworks.fail(e));
+      showErrorWithString(e, () => {});
       ToastAndroid.show('Scan networks error', ToastAndroid.LONG);
       console.log(e);
     });
 }
 
+function* provCreds({ payload }: any) {
+  try {
+    const { ssid, passwordWifi } = payload;
+    yield EspIdfProvisioningReactNative.provisionNetwork(ssid, passwordWifi)
+      .then((resp: any) => {
+        navigate('TabBar');
+        store.dispatch(PairActions.provCreds.success());
+        ToastAndroid.show('Credentials provided with success', ToastAndroid.LONG);
+      })
+      .catch((e: any) => {
+        store.dispatch(PairActions.provCreds.fail());
+        ToastAndroid.show('Provide creds error', ToastAndroid.LONG);
+        console.log(e);
+      });
+  } catch (error) {}
+}
+
 function* provCustomWithByteData({ payload }: any) {
-  const { bluetooth_uid, secret } = payload;
-  console.log(payload,"secret")
+  const { uuid, secret } = payload;
   try {
     yield EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
-    const string = `https://dev.api.plantkoru.com/plant/v1/plants/${bluetooth_uid}/certificate?secret=${secret}`;
+    const string = `https://dev.api.plantkoru.com/plant/v1/plants/${uuid}/certificate?secret=${secret}`;
     const strToBuf = (str: string) => {
       var buf = new ArrayBuffer(str.length);
       var bufView = new Uint8Array(buf);
@@ -57,20 +55,18 @@ function* provCustomWithByteData({ payload }: any) {
       return bufView;
     };
     const stringAsByteArray = strToBuf(string);
-    console.log(stringAsByteArray);
     const hexArrayOfCmdContent = Object.keys(stringAsByteArray).map(i => stringAsByteArray[Number(i)]!.toString(16));
-    console.log('hexArrayOfCmdContent: ', JSON.stringify(hexArrayOfCmdContent)); // ["52", "0"]
     yield EspIdfProvisioningReactNative.sendCustomDataWithByteData('certificatePem', hexArrayOfCmdContent)
       .then((resp: any) => {
-        const data = JSON.parse(resp.data.substring(8));
         ToastAndroid.show('Custom data with byte accuracy provisioned successfully', ToastAndroid.LONG);
         navigate('ChooseWifi');
-        console.log(data);
       })
       .catch((e: { message: any }) => {
         console.log(e && e.message ? e.message : 'error querying live data');
       });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error, 'error querying live data22');
+  }
 }
 
 function* getListPlantSaga({ payload }: any): any {
@@ -93,7 +89,6 @@ function* getListPlantGroupSaga({ payload }: any): any {
 function* createPlantSaga({ payload }: any) {
   try {
     const { data } = yield call(apiService.createPlantApi, payload);
-    console.log(data, 'creDATA______');
     yield put(PairActions.createPlant.success(data));
     yield put(PairActions.provCustomWithByteData.request(data.data));
     yield;
@@ -108,4 +103,6 @@ export default function* fetchData() {
   yield takeLatest(PairActions.Types.GET_LIST_PLANT_GROUP.begin, getListPlantGroupSaga);
   yield takeLatest(PairActions.Types.CREATE_PLANT.begin, createPlantSaga);
   yield takeLatest(PairActions.Types.PROV_CUSTOM.begin, provCustomWithByteData);
+  yield takeLatest(PairActions.Types.SCAN_NETWORKS.begin, scanNetworks);
+  yield takeLatest(PairActions.Types.PROV_CREDS.begin, provCreds);
 }
