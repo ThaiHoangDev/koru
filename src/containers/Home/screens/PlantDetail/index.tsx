@@ -1,4 +1,14 @@
-import { Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, { useRef, useState } from 'react';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 
@@ -93,6 +103,13 @@ const PlantDetailContainer = (props: IProps) => {
     );
   };
 
+  const navigateFanSpeed = () => {
+    navigation.navigate('FanSpeedScreen');
+  };
+  const navigateMoreInfo = () => {
+    navigation.navigate('FanSpeedScreen');
+  };
+
   const renderScreen = ({ item, index }: any) => (
     <ImageBackgroundCompLayout
       children={
@@ -155,11 +172,12 @@ const PlantDetailContainer = (props: IProps) => {
         </TouchableOpacity>
         <ImageBackgroundCompLayout
           children={
-            <View style={{ position: 'relative', width: WIDTH / 2 }}>
+            <TouchableOpacity
+              style={{ position: 'relative', width: WIDTH, alignItems: 'center', justifyContent: 'center' }}>
               <View
                 style={{
                   position: 'absolute',
-                  right: WIDTH / 5.9,
+                  right: WIDTH / 2.4,
                   top: 40,
                   zIndex: 2,
                   alignItems: 'center',
@@ -170,11 +188,11 @@ const PlantDetailContainer = (props: IProps) => {
                 <Text style={{ fontSize: 32, color: colors.black2, fontFamily: fontFamily.Strawford }}>days</Text>
               </View>
               <LoaderAnimationProgress source={require('@Assets/lotties/water.json')} width={200} />
-            </View>
+            </TouchableOpacity>
           }
           source={require('@Assets/image-background/beach.png')}
           resizeMode="contain"></ImageBackgroundCompLayout>
-        <BottomTab />
+        <BottomTab onClickLeft={navigateMoreInfo} onClickRight={navigateFanSpeed} isDetail />
       </View>
     </View>
   );

@@ -1,25 +1,38 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { ButtonComp } from '@Components/button';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '@Theme/index';
 
-export default function BottomTab() {
-  const onPress = () => {};
+interface IProps {
+  onClickLeft: () => void;
+  onClickRight: () => void;
+  isActiveRight?: boolean;
+  isDetail?: boolean;
+}
+
+export default function BottomTab({ onClickLeft, onClickRight, isDetail, isActiveRight }: IProps) {
+  const onPressBtnLeft = () => {
+    onClickLeft();
+  };
+  const onPressBtnRight = () => {
+    onClickRight();
+  };
   return (
     <SafeAreaView style={styles.root} edges={['bottom']}>
       <ButtonComp
-        stylesBtn={[styles.btn, styles.activeBtn, styles.btnLeft]}
+        stylesBtn={[styles.btn, !isDetail && !isActiveRight && styles.activeBtn, styles.btnLeft]}
         title={'More Info'}
-        handlePress={onPress}
+        handlePress={onPressBtnLeft}
         isLoading={false}
-        stylesTitle={styles.titleBtn}
+        stylesTitle={isDetail || !isActiveRight ? styles.titleBtn : styles.titleBtnActive}
       />
       <ButtonComp
-        stylesBtn={[styles.btn, styles.btnRight]}
+        stylesBtn={[styles.btn, styles.btnRight, !isDetail && isActiveRight && styles.activeBtn]}
         title={'Air Purification'}
-        handlePress={onPress}
+        handlePress={onPressBtnRight}
         isLoading={false}
+        stylesTitle={isDetail || !isActiveRight ? styles.titleBtn : styles.titleBtnActive}
       />
     </SafeAreaView>
   );
@@ -38,6 +51,7 @@ const styles = StyleSheet.create({
   activeBtn: {
     backgroundColor: colors.black2,
   },
+  unActiveBtn: {},
   btnLeft: {
     borderBottomRightRadius: 50,
     borderTopRightRadius: 50,
@@ -49,6 +63,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   titleBtn: {
+    color: colors.grey06,
+  },
+  titleBtnActive: {
     color: colors.white,
   },
 });

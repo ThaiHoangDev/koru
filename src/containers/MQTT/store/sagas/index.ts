@@ -15,6 +15,8 @@ function subscribe() {
     MQTTClient.attachMessageHandler((topic: string, message: any) => {
       console.log('topic xxxxxxx', topic, message.toString());
       const data = JSON.parse(message.toString());
+      console.log(data, 'sub MOTT______DATA');
+
       try {
         if (/\$aws\/things\/ESN-\w{3,}\/shadow\/update\/accepted/.test(topic)) {
           console.log('1');
@@ -59,7 +61,7 @@ function* disconnect() {
 }
 
 function* read(socket: any): any {
-  const channel: any = yield call(subscribe, socket);
+  const channel: any = yield call(subscribe);
   yield takeEvery(channel, function* (value) {
     yield put(value);
   });

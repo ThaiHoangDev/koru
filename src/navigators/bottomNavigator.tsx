@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
-
 import { StyleSheet, Text, View, Pressable, Platform, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -12,7 +11,7 @@ import { colors } from '@Theme/index';
 import TopNavigationBar from './topNavigation';
 import ShopIcon from '@Components/iconSvg/ShopIcon';
 import SettingIcon from '@Components/iconSvg/SettingIcon';
-import { HEIGHT, IS_ANDROID } from '@Constants/app';
+import { IS_ANDROID } from '@Constants/app';
 
 const TabBar: any = ({ isActive, index }: { isActive: boolean; index: number }) => {
   switch (index) {

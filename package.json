@@ -23,6 +23,7 @@
     "@react-navigation/bottom-tabs": "^6.3.2",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/stack": "^6.2.2",
+    "@types/aws-iot-device-sdk": "^2.2.4",
     "@types/invariant": "^2.2.35",
     "@types/lodash": "^4.14.182",
     "@types/react-native-vector-icons": "^6.4.11",
