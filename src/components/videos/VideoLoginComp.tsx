@@ -10,7 +10,7 @@ const videoStyle: StyleProp<ViewStyle> = {
   bottom: 100,
 };
 
-const viewStyle = { height: 250 };
+const viewStyle = { height: HEIGHT / 5 };
 
 export default function VideoLoginComp() {
   return (

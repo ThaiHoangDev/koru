@@ -24,7 +24,6 @@ export default StyleSheet.create({
     fontFamily: fontFamily.Strawford,
     fontSize: 13,
     textAlign: 'center',
-    marginVertical: 10,
   },
   btnStyle: {
     display: 'flex',
@@ -66,5 +65,23 @@ export default StyleSheet.create({
     marginBottom: 10,
     marginTop: -10,
     fontFamily: fontFamily.Strawford,
-  }
+  },
+  listHeader: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  listFooter: {
+    flexGrow: 0.8,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  accountView: {
+    flexGrow: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
 });

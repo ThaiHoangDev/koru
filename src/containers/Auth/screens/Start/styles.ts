@@ -7,9 +7,9 @@ export default StyleSheet.create({
     flex: 1,
   },
   containerContent: {
-    flex: 1,
+    flex: 0.8,
+    flexGrow: 1,
     alignItems: 'center',
-    marginTop: 60,
   },
 
   title: {
@@ -43,7 +43,6 @@ export default StyleSheet.create({
     marginVertical: 20,
     display: 'flex',
     flexDirection: 'row',
-    bottom: 20,
   },
   btn: {
     flex: 1,
@@ -67,5 +66,23 @@ export default StyleSheet.create({
   },
   fontFamily: {
     fontFamily: fontFamily.Strawford,
+  },
+  startLogo: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  introView: {
+    marginBottom: 20,
+    marginHorizontal: 80,
+  },
+  socialText: {
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 10,
+  },
+  socialBtn: {
+    flexGrow: 0.2,
+    display: 'flex',
+    flexDirection: 'row',
   },
 });
