@@ -10,8 +10,8 @@ import { store, persistor } from './store';
 import { LogBox } from 'react-native';
 import { amplifyConfig } from '@Utils/amplifyConfig';
 
-// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-// LogBox.ignoreAllLogs(); //Ignore all log notifications
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 Amplify.configure(amplifyConfig);
 

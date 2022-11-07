@@ -7,6 +7,7 @@ export type HomeStackParamList = {
   HomeScreen: undefined;
   Paring: undefined;
   PlantDetail: undefined;
+  FanSpeedScreen: undefined;
 };
 
 const Stack = createStackNavigator();

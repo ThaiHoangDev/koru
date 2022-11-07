@@ -46,30 +46,35 @@ function SelectBLTContainer(props: IProps) {
   }, [navigation, isLoading]);
 
   const scanBLT = useCallback(async () => {
-    dispatch(PairActions.scanDevices.request());
-    if (IS_ANDROID) {
-      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
-      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN);
-    }
-    await EspIdfProvisioningReactNative.scanBleDevices('SPOT_')
-      .then((res: any[]) => {
-        console.log(res, 'sacnnnnn');
-        if (res.length > 0) {
-          dispatch(PairActions.scanDevices.success(res));
-        } else {
+    console.log('sacnnnn____');
+    try {
+      dispatch(PairActions.scanDevices.request());
+      if (IS_ANDROID) {
+        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN);
+      }
+      await EspIdfProvisioningReactNative.scanBleDevices('SPOT_')
+        .then((res: any[]) => {
+          console.log(res, 'sacnnnnningggggggg____');
+          if (res.length > 0) {
+            dispatch(PairActions.scanDevices.success(res));
+          } else {
+            dispatch(PairActions.scanDevices.fail());
+            showErrorMessage({ message: 'Scan BLE failed!' }, () => {
+              navigation.goBack();
+            });
+          }
+        })
+        .catch((e: any) => {
+          console.log(e, 'sacnnnnn');
           dispatch(PairActions.scanDevices.fail());
           showErrorMessage({ message: 'Scan BLE failed!' }, () => {
             navigation.goBack();
           });
-        }
-      })
-      .catch((e: any) => {
-        console.log(e, 'sacnnnnn');
-        dispatch(PairActions.scanDevices.fail());
-        showErrorMessage({ message: 'Scan BLE failed!' }, () => {
-          navigation.goBack();
         });
-      });
+    } catch (error) {
+      showErrorMessage(error, () => {});
+    }
   }, [navigation]);
 
   useEffect(() => {
@@ -77,7 +82,6 @@ function SelectBLTContainer(props: IProps) {
   }, [navigation]);
 
   const connectToBLEDevice = useCallback(async (uuid: any) => {
-    console.log(uuid,"iDD")
     try {
       dispatch(PairActions.connectBLE.request());
       IS_ANDROID && (await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT));
@@ -85,18 +89,19 @@ function SelectBLTContainer(props: IProps) {
       EspIdfProvisioningReactNative.connectToBLEDevice(uuid)
         .then((_res: any) => {
           dispatch(PairActions.connectBLE.success(uuid));
-          console.log(uuid, _res,"uuu___IDDD")
+          console.log(uuid, _res, 'uuu___IDDD');
           navigation.navigate('ChoosePlant', { bluetooth_uid: uuid });
           ToastAndroid.show('Connected to device', ToastAndroid.LONG);
         })
         .catch((e: any) => {
           dispatch(PairActions.connectBLE.fail(e));
-          console.log(e,"uuu___IDDD_FAILED")
-          showErrorMessage(e,()=>{})
+          console.log(e, 'uuu___IDDD_FAILED');
+          showErrorMessage(e, () => {});
           ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
         });
     } catch (error) {
       console.log(error, 'connect error');
+      showErrorMessage(error, () => {});
     }
   }, []);
 
@@ -114,11 +119,11 @@ function SelectBLTContainer(props: IProps) {
       </TouchableOpacity>
     );
   };
-  console.log(isLoading, 'loading error');
+
   if (isLoading) {
     return <Searching />;
   }
-
+  
   return (
     <FlatList
       ListHeaderComponent={<TitleComp title={'We found your pot.'} subTitle={'Devices List'} />}

@@ -51,9 +51,7 @@ const PairYourPotContainer = () => {
     </View>
   );
 };
-// const mapStateToProps = createStructuredSelector({
 
-// });
 export default connect()(PairYourPotContainer);
 
 const styles = StyleSheet.create({

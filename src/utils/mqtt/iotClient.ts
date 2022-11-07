@@ -3,7 +3,6 @@ import AWSSDK from 'aws-sdk';
 import { Auth } from 'aws-amplify';
 
 import { AWS } from '../../utils/constants';
-import { Alert } from 'react-native';
 
 let instance: any = null;
 let AWS_SDK = {} as any;

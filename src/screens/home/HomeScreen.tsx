@@ -25,6 +25,10 @@ interface IProps {
 const HomeScreen = (props: IProps) => {
   useInjectReducer({ key: 'home', reducer });
   useInjectSaga({ key: 'home', saga });
+
+  // useInjectReducer({ key: 'mqtt', reducer });
+  // useInjectSaga({ key: 'mqtt', saga });
+
   return (
     <MainLayout>
       <HomeContainer {...props} />

@@ -25,6 +25,7 @@ const FilterComp = ({ data, onFilter }: IProps) => {
         stylesBtn={[styles.btn, { backgroundColor: index === 0 ? colors.black2 : colors.gray04 }]}
         stylesTitle={styles.title}
         handlePress={handleFilter(item)}
+        isLoading={false}
       />
     );
   };
