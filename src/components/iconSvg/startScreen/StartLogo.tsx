@@ -1,3 +1,4 @@
+import { HEIGHT, WIDTH } from '@Constants/app';
 import * as React from 'react';
 import { SvgXml } from 'react-native-svg';
 
@@ -55,4 +56,4 @@ const xmlNormal = `
 
 `;
 
-export default () => <SvgXml xml={xmlNormal} />;
+export default () => <SvgXml xml={xmlNormal} width={WIDTH / 1.2} height={HEIGHT / 2.2} />;

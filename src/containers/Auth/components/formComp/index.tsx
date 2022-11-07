@@ -84,17 +84,17 @@ export const FormComp = ({
               renderItem={_renderInput}
               showsVerticalScrollIndicator={false}
               ListHeaderComponent={<VideoLoginComp />}
-              ListHeaderComponentStyle={{ flex: 0.6, alignItems: 'center', justifyContent: 'center' }}
-              ListFooterComponentStyle={{ flex: 0.2 }}
+              ListHeaderComponentStyle={styles.listHeader}
+              ListFooterComponentStyle={{ flexGrow: 0.4 }}
               ListFooterComponent={
-                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <View style={styles.listFooter}>
                   {isLogin && (
                     <TouchableOpacity>
                       <Text style={styles.txt}>Forgot Your Password?</Text>
                     </TouchableOpacity>
                   )}
-                  <View style={{ marginTop: isLogin ? 100 : 60 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                  <View style={{ flexGrow: 1 }}>
+                    <View style={styles.accountView}>
                       <Text style={styles.subTitle}> {!isLogin ? 'Have an account?' : 'Don’t have an account?'}</Text>
                       <TouchableOpacity onPress={goToSignUp}>
                         <Text>{isLogin ? 'Sign up' : 'Login'}</Text>
