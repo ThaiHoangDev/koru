@@ -9,6 +9,7 @@ import CIcon from '@Components/iconSvg/home/CIcon';
 import LuxIcon from '@Components/iconSvg/home/LuxIcon';
 import SoilIcon1 from '@Components/iconSvg/home/SoilIcon1';
 import { WIDTH } from '@Constants/app';
+import Chart from '@Components/chart';
 
 interface IProps {
   data: any;
@@ -143,7 +144,9 @@ const MoreInfo = (props: IProps) => {
             flexDirection: 'row',
           }}
         />
-        <View style={styles.chart}></View>
+        <View style={styles.chart}>
+          <Chart />
+        </View>
         <View style={styles.footerContent}>
           <Text style={[styles.temText, styles.fontFamily]}>Temprature</Text>
           <View style={styles.textFooter}>
@@ -199,8 +202,6 @@ const styles = StyleSheet.create({
     borderColor: colors.gray04,
   },
   chart: {
-    flexGrow: 3,
-    backgroundColor: colors.gray,
     width: '100%',
   },
   footerContent: {
