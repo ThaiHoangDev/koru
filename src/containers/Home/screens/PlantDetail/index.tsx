@@ -107,7 +107,7 @@ const PlantDetailContainer = (props: IProps) => {
     navigation.navigate('FanSpeedScreen');
   };
   const navigateMoreInfo = () => {
-    navigation.navigate('FanSpeedScreen');
+    navigation.navigate('SoilDetailScreen');
   };
 
   const renderScreen = ({ item, index }: any) => (
