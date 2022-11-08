@@ -1,5 +1,5 @@
-import React, { FC, useState, useRef, useCallback, useEffect } from 'react';
-import { PanResponder, Dimensions, Animated } from 'react-native';
+import React, { FC, useRef, useCallback } from 'react';
+import { PanResponder, Dimensions } from 'react-native';
 import Svg, { Path, Circle, G, Text } from 'react-native-svg';
 
 interface Props {
@@ -20,6 +20,7 @@ interface Props {
   onValueChange?: (x: number) => number;
   setAngle: (x: number) => void;
   angle: number;
+  handlePostFan: (x: number) => void;
 }
 
 const CircleSlider: FC<Props> = ({
@@ -40,18 +41,26 @@ const CircleSlider: FC<Props> = ({
   onValueChange = x => x,
   angle,
   setAngle,
+  handlePostFan,
 }) => {
-  const [stopPanResponder, setStopPanResponder] = useState(false);
-
   const panResponder = useRef(
     PanResponder.create({
-      // onShouldBlockNativeResponder:(e, gestureState) => false,
-      // onPanResponderEnd: (e, gestureState) => true,
       onStartShouldSetPanResponder: (e, gs) => true,
       onStartShouldSetPanResponderCapture: (e, gs) => true,
       onPanResponderTerminationRequest: () => true,
-      // onMoveShouldSetPanResponder: (e, gs) => true,
-      onMoveShouldSetPanResponder: (e, gestureState) => stopPanResponder,
+      onPanResponderRelease: (e, gs) => {
+        let xOrigin = xCenter - (dialRadius + btnRadius);
+        let yOrigin = yCenter - (dialRadius + btnRadius);
+        let a = cartesianToPolar(gs.moveX - xOrigin, gs.moveY - yOrigin);
+        if (a <= min) {
+          handlePostFan(min);
+        } else if (a >= max) {
+          handlePostFan(max);
+        } else {
+          handlePostFan(a);
+        }
+      },
+      onMoveShouldSetPanResponder: (e, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (e, gs) => false,
       onPanResponderMove: (e, gs) => {
         let xOrigin = xCenter - (dialRadius + btnRadius);
@@ -61,9 +70,7 @@ const CircleSlider: FC<Props> = ({
 
         if (a <= min) {
           setAngle(min);
-          setStopPanResponder(true);
         } else if (a >= max) {
-          setStopPanResponder(true);
           setAngle(max);
         } else {
           setAngle(a);
@@ -107,25 +114,21 @@ const CircleSlider: FC<Props> = ({
   var endCoord = polarToCartesian(angle);
 
   return (
-    <Animated.View>
-      <Svg width={width} height={width}>
-        <Circle r={dR} cx={width / 2} cy={width / 2} stroke={strokeColor} strokeWidth={strokeWidth} fill={fillColor} />
-
-        <Path
-          stroke={meterColor}
-          strokeWidth={dialWidth}
-          fill="none"
-          d={`M${startCoord.x} ${startCoord.y} A ${dR} ${dR} 0 ${angle > 180 ? 1 : 0} 1 ${endCoord.x} ${endCoord.y}`}
-        />
-
-        <G x={endCoord.x - bR} y={endCoord.y - bR}>
-          <Circle r={bR} cx={bR} cy={bR} fill={meterColor} {...panResponder.panHandlers} />
-          <Text x={bR} y={bR + textSize / 2} fontSize={textSize} fill={textColor} textAnchor="middle">
-            {angle + ''}
-          </Text>
-        </G>
-      </Svg>
-    </Animated.View>
+    <Svg width={width} height={width}>
+      <Circle r={dR} cx={width / 2} cy={width / 2} stroke={strokeColor} strokeWidth={strokeWidth} fill={fillColor} />
+      <Path
+        stroke={meterColor}
+        strokeWidth={dialWidth}
+        fill="none"
+        d={`M${startCoord.x} ${startCoord.y} A ${dR} ${dR} 0 ${angle > 180 ? 1 : 0} 1 ${endCoord.x} ${endCoord.y}`}
+      />
+      <G x={endCoord.x - bR} y={endCoord.y - bR}>
+        <Circle r={bR - 2} cx={bR} cy={bR} fill={meterColor} {...panResponder.panHandlers} />
+        <Text x={bR} y={bR + textSize / 2} fontSize={textSize} fill={textColor} textAnchor="middle">
+          {((angle * 100) / 360).toFixed(2) + ''}
+        </Text>
+      </G>
+    </Svg>
   );
 };
 

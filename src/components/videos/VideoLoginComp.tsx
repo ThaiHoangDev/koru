@@ -1,6 +1,5 @@
 import Video from 'react-native-video';
 import { View, Text, StyleProp, ViewStyle } from 'react-native';
-// import video from '../../assets/video/koruVideo.mp4';
 import React from 'react';
 import { HEIGHT, WIDTH } from '@Constants/app';
 
@@ -27,7 +26,6 @@ export default function VideoLoginComp() {
         resizeMode="cover"
         hideShutterView={true}
       />
-      <Text>Video</Text>
     </View>
   );
 }

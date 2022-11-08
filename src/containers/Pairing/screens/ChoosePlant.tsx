@@ -108,7 +108,7 @@ function ChoosePlantContainer(props: IProps) {
   const searchDebounce = useCallback(debounce(handleSearch, 400), []);
 
   const handleChoosePlant = (item: any) => () => {
-    navigation.navigate('NamePlant', { plant: item  });
+    navigation.navigate('NamePlant', { plant: item });
   };
 
   const handleFilter = (item: any) => {
@@ -122,7 +122,13 @@ function ChoosePlantContainer(props: IProps) {
           <Text style={styles.subTitle}>Search for the plant you watn to grow</Text>
         </View>
         <SearchComp onChangeText={handleChangeText} />
-        <View style={{ marginVertical: 10 }}>
+        <View
+          style={{
+            marginVertical: 10,
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
           <FilterComp data={listPlantGroup} onFilter={handleFilter} />
         </View>
       </View>
@@ -173,6 +179,7 @@ function ChoosePlantContainer(props: IProps) {
         ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.grey06 }}></View>}
         keyExtractor={item => item.name.toString()}
         showsVerticalScrollIndicator={false}
+        style={{ flex: 1 }}
       />
     </View>
   );
@@ -188,14 +195,15 @@ export default connect(mapStateToProps)(ChoosePlantContainer);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 20,
   },
   headerContainer: {
-    minHeight: HEIGHT / 5,
+    flex: 0.3,
   },
   txtTitle: {
     fontFamily: fontFamily.FreightBigProMedium,
     fontSize: 32,
-    color: colors.black2
+    color: colors.black2,
   },
   subTitle: {
     fontFamily: fontFamily.Strawford,

@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   bottomTabContainer: {
     display: 'flex',
     flexDirection: 'row',
-    // position: 'relative',
+    position: 'relative',
     paddingHorizontal: 20,
     backgroundColor: colors.white2,
     paddingBottom: Platform.OS === 'android' ? 20 : 0,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.02,
     shadowRadius: 25,
     elevation: 6,
-    zIndex: 2,
+    zIndex: 10,
   },
   badge: {
     backgroundColor: '#2EA65C',
