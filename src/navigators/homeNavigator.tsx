@@ -1,13 +1,13 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '@Screens/home/HomeScreen';
-// import PlantDetail from '@Screens/home/PlantDetail';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
-  Paring: undefined;
+  Paring: { screen: 'NamePlant' } | undefined;
   PlantDetail: undefined;
   FanSpeedScreen: undefined;
+  SoilDetailScreen: undefined;
 };
 
 const Stack = createStackNavigator();

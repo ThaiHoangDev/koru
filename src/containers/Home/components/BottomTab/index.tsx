@@ -25,7 +25,7 @@ export default function BottomTab({ onClickLeft, onClickRight, isDetail, isActiv
         title={'More Info'}
         handlePress={onPressBtnLeft}
         isLoading={false}
-        stylesTitle={isDetail || !isActiveRight ? styles.titleBtn : styles.titleBtnActive}
+        stylesTitle={isDetail || isActiveRight ? styles.titleBtn : styles.titleBtnActive}
       />
       <ButtonComp
         stylesBtn={[styles.btn, styles.btnRight, !isDetail && isActiveRight && styles.activeBtn]}

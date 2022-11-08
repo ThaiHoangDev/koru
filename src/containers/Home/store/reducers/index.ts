@@ -11,6 +11,7 @@ type ACTION = {
 export interface IPayload {
   isLoading: boolean;
   myPlant: any;
+  myMoreInfo: any;
   loadMore: any;
 }
 
@@ -18,6 +19,7 @@ export interface IPayload {
 export const initialState: IPayload = {
   isLoading: true,
   myPlant: [],
+  myMoreInfo: [],
   loadMore: null,
 };
 
@@ -33,6 +35,17 @@ const homeReducer = (state = initialState, { type, payload }: ACTION) =>
         draft.loadMore = payload.next;
         break;
       case HomeActions.Types.GET_MY_PLANT.failed:
+        draft.isLoading = false;
+        break;
+      //More Info
+      case HomeActions.Types.GET_MORE_INFO.begin:
+        draft.isLoading = true;
+        break;
+      case HomeActions.Types.GET_MORE_INFO.succeeded:
+        draft.isLoading = false;
+        draft.myMoreInfo = payload;
+        break;
+      case HomeActions.Types.GET_MORE_INFO.failed:
         draft.isLoading = false;
         break;
       default:

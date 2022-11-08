@@ -8,6 +8,7 @@ import OrderScreen from '@Screens/shop/OrderScreen';
 import PlantOrderDetailScreen from '@Screens/shop/PlantOrderDetailScreen';
 import PlantDetail from '@Screens/home/PlantDetail';
 import FanSpeedScreen from '@Screens/home/FanSpeedScreen';
+import SoilDetailScreen from '@Screens/home/SoilDetailScreen';
 
 const MainStack = createStackNavigator();
 export type MainStackParamList = {
@@ -32,6 +33,7 @@ const MainNavigator = () => {
       <MainStack.Screen name="PlantOrderDetailScreen" component={PlantOrderDetailScreen} />
       <MainStack.Screen name="PlantDetail" component={PlantDetail} options={{ headerShown: true }} />
       <MainStack.Screen name="FanSpeedScreen" component={FanSpeedScreen} options={{ headerShown: true }} />
+      <MainStack.Screen name="SoilDetailScreen" component={SoilDetailScreen} />
     </MainStack.Navigator>
   );
 };
