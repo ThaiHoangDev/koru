@@ -123,7 +123,7 @@ function SelectBLTContainer(props: IProps) {
   if (isLoading) {
     return <Searching />;
   }
-  
+
   return (
     <FlatList
       ListHeaderComponent={<TitleComp title={'We found your pot.'} subTitle={'Devices List'} />}
@@ -141,6 +141,7 @@ function SelectBLTContainer(props: IProps) {
       }
       ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.grey06 }}></View>}
       keyExtractor={item => item.serviceUuid.toString()}
+      style={styles.container}
     />
   );
 }
@@ -152,6 +153,9 @@ const mapStateToProps = createStructuredSelector({
 export default connect(mapStateToProps)(SelectBLTContainer);
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 20,
+  },
   txtTitle: {
     fontFamily: fontFamily.FreightBigProMedium,
     fontSize: 32,

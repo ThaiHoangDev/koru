@@ -36,7 +36,6 @@ function ChooseYourWifiContainer(props: IProps) {
 
   const handleSelectWifi = (ssid: any) => () => {
     navigation.navigate('TypePassword', { ssid });
-    // dispatch(PairActions.scanNetworks.request());
   };
 
   useEffect(() => {
@@ -71,6 +70,7 @@ function ChooseYourWifiContainer(props: IProps) {
 
   return (
     <FlatList
+      style={styles.root}
       ListHeaderComponent={<TitleComp title={'_Choose your wifi'} subTitle={'Wifi List'} />}
       ListHeaderComponentStyle={styles.headerContainerFlat}
       data={listWifiScan}
@@ -111,6 +111,9 @@ const mapStateToProps = createStructuredSelector({
 export default connect(mapStateToProps)(ChooseYourWifiContainer);
 
 const styles = StyleSheet.create({
+  root: {
+    paddingHorizontal: 20,
+  },
   contentFlatlist: {
     flexDirection: 'row',
     justifyContent: 'space-between',

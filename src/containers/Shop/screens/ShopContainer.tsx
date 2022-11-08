@@ -47,6 +47,8 @@ function ShopContainer(props: IProps) {
     });
   }, [navigation]);
 
+  console.log(listPlantGroup, 'lissss____');
+
   const handleSearch = (value: string) => {
     // const payload = {
     //   page,
@@ -86,7 +88,15 @@ function ShopContainer(props: IProps) {
   };
 
   const _renderItem = ({ item }: any) => {
-    return <PlantBoxComp data={item} />;
+    return (
+      <TouchableOpacity
+        style={{
+          flex: 0.5,
+          minHeight: 204,
+        }}>
+        <PlantBoxComp data={item} />
+      </TouchableOpacity>
+    );
   };
 
   const handleFilter = () => {};
@@ -100,7 +110,7 @@ function ShopContainer(props: IProps) {
             <CardIcon />
           </TouchableOpacity>
         </View>
-        <View style={{ marginVertical: 10 }}>
+        <View style={{ paddingVertical: 10, flex: 4 }}>
           <FilterComp data={listPlantGroup} onFilter={handleFilter} />
         </View>
       </View>
@@ -129,7 +139,7 @@ function ShopContainer(props: IProps) {
         onEndReachedThreshold={0.5}
         ListEmptyComponent={
           isLoading && !isRefresh ? (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
               <LoaderAnimationProgress source={require('@Assets/lotties/loading.json')} width={200} />
             </View>
           ) : myPlant.length <= 0 ? (
@@ -156,10 +166,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
   },
-  headerContainer: {},
+  headerContainer: {
+    flex: 0.3,
+  },
   searchContainer: {
+    flex: 1,
     flexDirection: 'row',
-    marginVertical: 10,
+    marginVertical: 20,
   },
   titleTab: {
     fontFamily: fontFamily.FreightBigProMedium,
@@ -180,7 +193,7 @@ const styles = StyleSheet.create({
   columnWrapper: {
     justifyContent: 'space-between',
   },
-  scrollList: { width: '100%', flex: 1 },
+  scrollList: { width: '100%', flex: 0.8 },
   contenContainer: {
     flex: 1,
   },

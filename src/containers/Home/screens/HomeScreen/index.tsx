@@ -89,7 +89,12 @@ function HomeContainer(props: IProps) {
 
   const _renderItem = ({ item }: any) => {
     return (
-      <TouchableOpacity onPress={handlePress}>
+      <TouchableOpacity
+        onPress={handlePress}
+        style={{
+          flex: 0.5,
+          minHeight: 204,
+        }}>
         <PlantBoxComp data={item} />
       </TouchableOpacity>
     );
@@ -128,7 +133,7 @@ function HomeContainer(props: IProps) {
         onEndReachedThreshold={0.5}
         ListEmptyComponent={
           isLoading && !isRefresh ? (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
               <LoaderAnimationProgress source={require('@Assets/lotties/loading.json')} width={200} />
             </View>
           ) : myPlant.length <= 0 ? (
@@ -136,7 +141,7 @@ function HomeContainer(props: IProps) {
           ) : null
         }
         contentContainerStyle={styles.contenContainer}
-        style={styles.scrollList}
+        style={[styles.scrollList]}
       />
     </View>
   );
@@ -152,11 +157,11 @@ export default connect(mapStateToProps)(HomeContainer);
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   headerContainer: {
     flexDirection: 'row',
-    marginVertical: 10,
+    marginVertical: 20,
   },
   titleTab: {
     fontFamily: fontFamily.FreightBigProMedium,
