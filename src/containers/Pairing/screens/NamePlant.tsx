@@ -43,7 +43,6 @@ const NamePlantContainer = (props: IProps) => {
       bluetooth_uid: bluetooth_uid || '',
       species: route.params?.plant?.uuid || '',
     };
-    console.log(body, 'bodyCreatePlant________');
     dispatch(PairActions.createPlant.request(body));
   };
 
@@ -83,6 +82,7 @@ export default connect(mapStateToProps)(NamePlantContainer);
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    paddingHorizontal: 20
   },
   txtTitle: {
     fontFamily: fontFamily.FreightBigProMedium,

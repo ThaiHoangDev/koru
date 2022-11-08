@@ -15,12 +15,11 @@ import { colors, fontFamily } from '@Theme/index';
 
 import StartPairing from '@Components/iconSvg/pairing/StartPairing';
 import TitleComp from '../components/TitleComp';
-import { PairActions } from '../store/actions';
 
 const PairYourPotContainer = () => {
   EspIdfProvisioningReactNative.create();
   const navigation: any = useNavigation();
-  const dispatch = useDispatch();
+
   const route: RouteProp<ParamListBase> | any = useRoute();
 
   React.useLayoutEffect(() => {

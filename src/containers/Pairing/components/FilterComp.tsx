@@ -2,11 +2,12 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { ButtonComp } from '@Components/button';
 import { colors } from '@Theme/index';
+import { isEmpty } from 'lodash';
 
 const SEARCH = [
-  { label: 'All', type: 'ALL' },
-  { label: 'orchideen', type: 'ORCH' },
-  { label: 'Indor', type: 'INDOR' },
+  { name: 'All', type: 'ALL' },
+  { name: 'orchideen', type: 'ORCH' },
+  { name: 'Indor', type: 'INDOR' },
 ];
 
 interface IProps {
@@ -31,11 +32,13 @@ const FilterComp = ({ data, onFilter }: IProps) => {
   };
   return (
     <FlatList
-      data={data}
+      data={!isEmpty(data) ? data : SEARCH}
       keyExtractor={item => item.toString()}
       renderItem={_renderItem}
       horizontal
       showsHorizontalScrollIndicator={false}
+      contentContainerStyle={{ flexGrow: 1 }}
+      style={{ flex: 1 }}
     />
   );
 };
@@ -44,6 +47,7 @@ export default FilterComp;
 
 const styles = StyleSheet.create({
   btn: {
+    flex: 1,
     marginHorizontal: 10,
     borderRadius: 8,
     paddingHorizontal: 26,

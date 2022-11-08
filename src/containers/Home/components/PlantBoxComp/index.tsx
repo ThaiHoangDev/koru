@@ -34,8 +34,10 @@ export default PlantBoxComp;
 
 const styles = StyleSheet.create({
   root: {
+    flex: 0.5,
     padding: 8,
     height: 204,
+    minHeight: 204,
     borderRadius: 8,
     borderWidth: 2,
     borderColor: colors.gray04,

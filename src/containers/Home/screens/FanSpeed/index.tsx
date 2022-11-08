@@ -1,14 +1,20 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+
+//
+// import { HomeActions } from '@Containers/Home/store/actions';
+//
 import TopNavigationBar from '@Navigators/topNavigation';
 import { HomeStackParamList } from '@Navigators/homeNavigator';
-import MenuIcon from '@Components/iconSvg/MenuIcon';
-import { colors, fontFamily } from '@Theme/index';
 import BottomTab from '@Containers/Home/components/BottomTab';
 import FanComp from '@Containers/Home/components/FanComp';
 import WidgetComp from '@Containers/Home/components/WidgetComp';
+import MenuIcon from '@Components/iconSvg/MenuIcon';
+//
+import { colors, fontFamily } from '@Theme/index';
 
 type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'FanSpeedScreen'>;
 type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'FanSpeedScreen'>;
@@ -21,7 +27,7 @@ interface IProps {
 
 const FanSpeedContainer = (props: IProps) => {
   const { navigation } = props;
-  
+  const dispatch = useDispatch();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -43,18 +49,13 @@ const FanSpeedContainer = (props: IProps) => {
     navigation.navigate('FanSpeedScreen');
   };
 
-  const handleChangeFan = (x: number) => {
-		console.log(x,"nnn")
-    // setValueFan(x);
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
         <WidgetComp title={'hhh'} subTitle={'jjj'} />
       </View>
       <View style={{ flex: 2, justifyContent: 'flex-end', paddingTop: 40 }}>
-        <FanComp handleChangeValueFan={handleChangeFan} />
+        <FanComp />
       </View>
       <BottomTab isActiveRight onClickLeft={navigateMoreInfo} onClickRight={navigateFanSpeed} isDetail={false} />
     </View>

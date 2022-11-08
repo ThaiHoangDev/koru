@@ -108,7 +108,7 @@ export default function TopNavigationBar(props: IProps) {
           },
           shadowRadius: 8,
           opacity: opacityInterpolate,
-          width: WIDTH,
+          width: WIDTH / 2,
           transform: [
             {
               translateY: h,
