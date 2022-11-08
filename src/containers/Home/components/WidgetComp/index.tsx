@@ -1,7 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
-import { Image } from 'react-native-svg';
 
 import { ImageBackgroundCompLayout } from '@Components/image-backgroundComp';
 import { colors, fontFamily } from '@Theme/index';
@@ -19,7 +17,12 @@ interface IProps {
 const WidgetComp = ({ title, subTitle, background, statusColor, status, unit, image }: IProps) => {
   return (
     <View style={styles.container}>
-      <ImageBackgroundCompLayout children={undefined} source={background} resizeMode="cover" />
+      <ImageBackgroundCompLayout
+        children={undefined}
+        source={background}
+        resizeMode="cover"
+        imageStyle={{ height: 130, marginTop: -20 }}
+      />
       <View style={styles.leftContent}>
         <View style={{ flexDirection: 'row', marginVertical: 10 }}>
           <View style={styles.iconView}>{image}</View>

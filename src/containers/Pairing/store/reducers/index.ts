@@ -20,7 +20,7 @@ export interface IPayload {
 
 // The initial state of the Login container
 export const initialState: IPayload = {
-  isRequesting: true,
+  isRequesting: false,
   uuid: '',
   listUuid: [],
   pop: '',

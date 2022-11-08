@@ -14,3 +14,13 @@ export interface Plant {
 export interface MyPlantProps {
   data: Plant;
 }
+
+export interface IMoreInfoProps {
+  title: string;
+  image: React.ReactNode;
+  status: string;
+  statusColor: string;
+  background: any;
+  subTitle: string;
+  unit: string;
+}

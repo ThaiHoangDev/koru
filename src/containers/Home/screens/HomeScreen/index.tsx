@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     color: colors.black2,
   },
   addContainer: {
-    width: 50,
+    width: 40,
     alignItems: 'flex-end',
   },
   columnWrapper: {
