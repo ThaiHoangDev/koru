@@ -2,30 +2,40 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { Image } from 'react-native-svg';
+
 import { ImageBackgroundCompLayout } from '@Components/image-backgroundComp';
-import { colors } from '@Theme/index';
+import { colors, fontFamily } from '@Theme/index';
 
 interface IProps {
   title: string;
   subTitle: string;
+  background: any;
+  statusColor: string;
+  status: string;
+  unit: string;
+  image: React.ReactNode;
 }
 
-const WidgetComp = ({ title, subTitle }: IProps) => {
+const WidgetComp = ({ title, subTitle, background, statusColor, status, unit, image }: IProps) => {
   return (
     <View style={styles.container}>
-      <ImageBackgroundCompLayout
-        children={undefined}
-        source={require('@Assets/image-background/warning.png')}
-        resizeMode="cover"
-      />
-      <View
-        style={{
-          height: '100%',
-          width: 28,
-          backgroundColor: colors.black2,
-          borderTopRightRadius: 8,
-          borderBottomRightRadius: 8,
-        }}></View>
+      <ImageBackgroundCompLayout children={undefined} source={background} resizeMode="cover" />
+      <View style={styles.leftContent}>
+        <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+          <View style={styles.iconView}>{image}</View>
+          <View>
+            <Text style={[styles.subTitleText]}>{title}</Text>
+            <Text style={[styles.subText, styles.textStyle]}>{unit}</Text>
+          </View>
+        </View>
+        <View style={styles.lineText} />
+        <View style={{ alignItems: 'center' }}>
+          <Text style={[{ color: statusColor }, styles.textStyle]}>{status}</Text>
+        </View>
+      </View>
+      <View style={styles.rightBackground}>
+        <View style={[styles.rightSmallBackground, { backgroundColor: statusColor }]}></View>
+      </View>
     </View>
   );
 };
@@ -42,25 +52,58 @@ const styles = StyleSheet.create({
     position: 'relative',
     shadowColor: colors.black2,
     shadowOffset: {
-      width:-1,
+      width: -1,
       height: 2,
     },
     shadowOpacity: 0.22,
     shadowRadius: 8,
     elevation: 6,
   },
-  linearGradient: {
+  leftContent: {
     position: 'absolute',
-    top: 0,
-    width: 0,
-    height: 0,
-    borderTopColor: 'transparent',
-    borderTopWidth: 106,
-    borderRightWidth: 173,
-
-    borderBottomWidth: 106,
-    borderBottomColor: 'transparent',
-    // transform: [{ rotate: '270deg' }],
-    zIndex: 2,
+    top: 1,
+    justifyContent: 'center',
+  },
+  iconView: {
+    height: 60,
+    width: 55,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  lineText: {
+    height: 1,
+    backgroundColor: colors.gray04,
+    width: 145,
+  },
+  subTitleText: {
+    fontFamily: fontFamily.Strawford,
+    fontSize: 32,
+    fontWeight: '500',
+    color: colors.black2,
+    textAlign: 'center',
+  },
+  textStyle: {
+    fontFamily: fontFamily.Strawford,
+    fontSize: 13,
+    fontWeight: '400',
+    textAlign: 'center',
+  },
+  subText: {
+    color: colors.grey06,
+  },
+  rightBackground: {
+    height: '100%',
+    width: 28,
+    backgroundColor: colors.black2,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  rightSmallBackground: {
+    height: 60,
+    width: 6,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
   },
 });

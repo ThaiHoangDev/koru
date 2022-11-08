@@ -8,12 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* koruTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* koruTests.m */; };
+		0E8C4B30D9B24B77B25B4DE3 /* gotham-book.otf in Resources */ = {isa = PBXBuildFile; fileRef = B5DF5536388C4705870F2A94 /* gotham-book.otf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7E182F5C8BA45A7535215CF4 /* libPods-koru-koruTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 95FBC701314FD1E8C76BF82F /* libPods-koru-koruTests.a */; };
+		39F974F7B29A4F92B43DA348 /* FreightBigProMedium-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 30BA0B3F79E247D080578D6D /* FreightBigProMedium-Regular.ttf */; };
+		3C4A49CA38905CD64F3B2F76 /* libPods-koru-koruTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA32AAA34411191B62533D3E /* libPods-koru-koruTests.a */; };
+		47215BB7D3DD4F2AA545AC92 /* gotham-medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4C9CBF667C174F268A8E3AB4 /* gotham-medium.otf */; };
+		655EBF36C21742D625AE7FB6 /* libPods-koru.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 724D736645C91A0F4E5C019F /* libPods-koru.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		C60106DEDB69C14A2D429419 /* libPods-koru.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B46DE774F1615C96420172 /* libPods-koru.a */; };
+		B404F31D7EE44A89B59C0FF7 /* Strawford-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0B3C06991AA04F25A3CF7C34 /* Strawford-Regular.otf */; };
+		BC6F63A6DCD845348F57CBC7 /* gotham-bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4B91D9F457E742D3AFEE49D0 /* gotham-bold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,20 +35,25 @@
 		00E356EE1AD99517003FC87E /* koruTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = koruTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* koruTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = koruTests.m; sourceTree = "<group>"; };
-		0231CD242C6CA9C271B40227 /* Pods-koru-koruTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-koru-koruTests.debug.xcconfig"; path = "Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests.debug.xcconfig"; sourceTree = "<group>"; };
+		0B3C06991AA04F25A3CF7C34 /* Strawford-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Strawford-Regular.otf"; path = "../src/assets/fonts/Strawford-Regular.otf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* koru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = koru.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = koru/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = koru/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = koru/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = koru/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = koru/main.m; sourceTree = "<group>"; };
+		2CD8E144175ED5848970C046 /* Pods-koru-koruTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-koru-koruTests.release.xcconfig"; path = "Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests.release.xcconfig"; sourceTree = "<group>"; };
+		30BA0B3F79E247D080578D6D /* FreightBigProMedium-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "FreightBigProMedium-Regular.ttf"; path = "../src/assets/fonts/FreightBigProMedium-Regular.ttf"; sourceTree = "<group>"; };
+		4B91D9F457E742D3AFEE49D0 /* gotham-bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "gotham-bold.otf"; path = "../src/assets/fonts/gotham-bold.otf"; sourceTree = "<group>"; };
+		4C9CBF667C174F268A8E3AB4 /* gotham-medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "gotham-medium.otf"; path = "../src/assets/fonts/gotham-medium.otf"; sourceTree = "<group>"; };
+		724D736645C91A0F4E5C019F /* libPods-koru.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-koru.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = koru/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		95FBC701314FD1E8C76BF82F /* libPods-koru-koruTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-koru-koruTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A8776AE76ADCE765E55700A3 /* Pods-koru.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-koru.release.xcconfig"; path = "Target Support Files/Pods-koru/Pods-koru.release.xcconfig"; sourceTree = "<group>"; };
-		CD4BA4B44ECF3DC2DC3359DB /* Pods-koru.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-koru.debug.xcconfig"; path = "Target Support Files/Pods-koru/Pods-koru.debug.xcconfig"; sourceTree = "<group>"; };
-		D2AB87EB7A39758B4AE45E35 /* Pods-koru-koruTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-koru-koruTests.release.xcconfig"; path = "Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests.release.xcconfig"; sourceTree = "<group>"; };
-		E0B46DE774F1615C96420172 /* libPods-koru.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-koru.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E401185E9D224034B1C3208 /* Pods-koru-koruTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-koru-koruTests.debug.xcconfig"; path = "Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B5DF5536388C4705870F2A94 /* gotham-book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "gotham-book.otf"; path = "../src/assets/fonts/gotham-book.otf"; sourceTree = "<group>"; };
+		EA32AAA34411191B62533D3E /* libPods-koru-koruTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-koru-koruTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F0FD75F64AD0994798490713 /* Pods-koru.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-koru.debug.xcconfig"; path = "Target Support Files/Pods-koru/Pods-koru.debug.xcconfig"; sourceTree = "<group>"; };
+		F6D610FA6F04BF00294AE647 /* Pods-koru.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-koru.release.xcconfig"; path = "Target Support Files/Pods-koru/Pods-koru.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E182F5C8BA45A7535215CF4 /* libPods-koru-koruTests.a in Frameworks */,
+				3C4A49CA38905CD64F3B2F76 /* libPods-koru-koruTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C60106DEDB69C14A2D429419 /* libPods-koru.a in Frameworks */,
+				655EBF36C21742D625AE7FB6 /* libPods-koru.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,10 +110,22 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				E0B46DE774F1615C96420172 /* libPods-koru.a */,
-				95FBC701314FD1E8C76BF82F /* libPods-koru-koruTests.a */,
+				724D736645C91A0F4E5C019F /* libPods-koru.a */,
+				EA32AAA34411191B62533D3E /* libPods-koru-koruTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5CC46F265D4D4E97A148769C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				30BA0B3F79E247D080578D6D /* FreightBigProMedium-Regular.ttf */,
+				4B91D9F457E742D3AFEE49D0 /* gotham-bold.otf */,
+				B5DF5536388C4705870F2A94 /* gotham-book.otf */,
+				4C9CBF667C174F268A8E3AB4 /* gotham-medium.otf */,
+				0B3C06991AA04F25A3CF7C34 /* Strawford-Regular.otf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -122,6 +144,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				5CC46F265D4D4E97A148769C /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -140,10 +163,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				CD4BA4B44ECF3DC2DC3359DB /* Pods-koru.debug.xcconfig */,
-				A8776AE76ADCE765E55700A3 /* Pods-koru.release.xcconfig */,
-				0231CD242C6CA9C271B40227 /* Pods-koru-koruTests.debug.xcconfig */,
-				D2AB87EB7A39758B4AE45E35 /* Pods-koru-koruTests.release.xcconfig */,
+				F0FD75F64AD0994798490713 /* Pods-koru.debug.xcconfig */,
+				F6D610FA6F04BF00294AE647 /* Pods-koru.release.xcconfig */,
+				9E401185E9D224034B1C3208 /* Pods-koru-koruTests.debug.xcconfig */,
+				2CD8E144175ED5848970C046 /* Pods-koru-koruTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -155,12 +178,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "koruTests" */;
 			buildPhases = (
-				887710CD2AE8B6CE50A48F86 /* [CP] Check Pods Manifest.lock */,
+				AD29EF1C023EC1B08A10D29A /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				162D41B62D6E791D7C506A43 /* [CP] Embed Pods Frameworks */,
-				4EEF302DBFA03C8ECE64DBAA /* [CP] Copy Pods Resources */,
+				FAE2E9B14DE322EE786C029E /* [CP] Embed Pods Frameworks */,
+				8400B9AB9C5A253BE7FD8CE7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -176,14 +199,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "koru" */;
 			buildPhases = (
-				9464B2EE629A11B860365404 /* [CP] Check Pods Manifest.lock */,
+				1E76D4F92AB8F35449DC6D64 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				AC4CD10464C41D6421063F08 /* [CP] Embed Pods Frameworks */,
-				5145993F8416343463BD40E4 /* [CP] Copy Pods Resources */,
+				4967189729EE7D262644F877 /* [CP] Embed Pods Frameworks */,
+				41E5A609551845E4B1D36C87 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -244,6 +267,11 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				39F974F7B29A4F92B43DA348 /* FreightBigProMedium-Regular.ttf in Resources */,
+				BC6F63A6DCD845348F57CBC7 /* gotham-bold.otf in Resources */,
+				0E8C4B30D9B24B77B25B4DE3 /* gotham-book.otf in Resources */,
+				47215BB7D3DD4F2AA545AC92 /* gotham-medium.otf in Resources */,
+				B404F31D7EE44A89B59C0FF7 /* Strawford-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,80 +292,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		162D41B62D6E791D7C506A43 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4EEF302DBFA03C8ECE64DBAA /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5145993F8416343463BD40E4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-koru/Pods-koru-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-koru/Pods-koru-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-koru/Pods-koru-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		887710CD2AE8B6CE50A48F86 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-koru-koruTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9464B2EE629A11B860365404 /* [CP] Check Pods Manifest.lock */ = {
+		1E76D4F92AB8F35449DC6D64 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -359,7 +314,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AC4CD10464C41D6421063F08 /* [CP] Embed Pods Frameworks */ = {
+		41E5A609551845E4B1D36C87 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-koru/Pods-koru-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-koru/Pods-koru-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-koru/Pods-koru-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4967189729EE7D262644F877 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -374,6 +346,62 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-koru/Pods-koru-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8400B9AB9C5A253BE7FD8CE7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AD29EF1C023EC1B08A10D29A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-koru-koruTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FAE2E9B14DE322EE786C029E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-koru-koruTests/Pods-koru-koruTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -428,7 +456,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0231CD242C6CA9C271B40227 /* Pods-koru-koruTests.debug.xcconfig */;
+			baseConfigurationReference = 9E401185E9D224034B1C3208 /* Pods-koru-koruTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -455,7 +483,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2AB87EB7A39758B4AE45E35 /* Pods-koru-koruTests.release.xcconfig */;
+			baseConfigurationReference = 2CD8E144175ED5848970C046 /* Pods-koru-koruTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -479,11 +507,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD4BA4B44ECF3DC2DC3359DB /* Pods-koru.debug.xcconfig */;
+			baseConfigurationReference = F0FD75F64AD0994798490713 /* Pods-koru.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = B4FK658ZHJ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = koru/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -506,11 +535,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A8776AE76ADCE765E55700A3 /* Pods-koru.release.xcconfig */;
+			baseConfigurationReference = F6D610FA6F04BF00294AE647 /* Pods-koru.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = B4FK658ZHJ;
 				INFOPLIST_FILE = koru/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
