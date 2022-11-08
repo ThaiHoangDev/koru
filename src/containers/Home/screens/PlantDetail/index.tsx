@@ -82,7 +82,7 @@ const PlantDetailContainer = (props: IProps) => {
         index: listRef.current.getCurrentIndex() + 1,
       });
     } else {
-      showAlert('', 'Emptry data!');
+      showAlert('', 'Empty data!');
     }
   };
 
@@ -108,6 +108,7 @@ const PlantDetailContainer = (props: IProps) => {
   };
   const navigateMoreInfo = () => {
     navigation.navigate('SoilDetailScreen');
+    // navigation.navigate('MoreInfoScreen');
   };
 
   const renderScreen = ({ item, index }: any) => (

@@ -6,6 +6,7 @@ import SoilIcon1 from '@Components/iconSvg/home/SoilIcon1';
 import CIcon from '@Components/iconSvg/home/CIcon';
 import LuxIcon from '@Components/iconSvg/home/LuxIcon';
 import WaterIcon from '@Components/iconSvg/home/WaterIcon';
+import Chartcompo from '@Components/chart';
 
 //assets
 import { colors, fontFamily } from '@Theme/index';
@@ -85,7 +86,9 @@ const Chart = () => {
           marginTop: 60,
         }}
       />
-      <View style={styles.chart}></View>
+      <View style={styles.chart}>
+        <Chartcompo />
+      </View>
       <View style={styles.footerContent}>
         <Text style={[styles.temText, styles.fontFamily]}>Temprature</Text>
         <View style={styles.textFooter}>
