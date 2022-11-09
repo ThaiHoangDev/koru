@@ -4,7 +4,7 @@ import HomeScreen from '@Screens/home/HomeScreen';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
-  Paring: undefined;
+  Paring: { screen: 'NamePlant' } | undefined;
   PlantDetail: undefined;
   FanSpeedScreen: undefined;
   SoilDetailScreen: undefined;

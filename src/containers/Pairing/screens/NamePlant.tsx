@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Formik, ErrorMessage } from 'formik';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import TopNavigationBar from '@Navigators/topNavigation';
 import { PropsScreen } from '@Interfaces/app';
@@ -12,19 +14,29 @@ import { ButtonComp } from '@Components/button';
 import { colors, fontFamily } from '@Theme/index';
 import { PairActions } from '../store/actions';
 
-import { makeSelectIsRequesting, makeSelectUuid, makeSelectUuidConnected } from '../store/selectors';
+import { makeSelectIsRequesting, makeSelectUuidConnected } from '../store/selectors';
+import { namePlantValidationSchema } from '../schema';
+import { HEIGHT, WIDTH } from '@Constants/app';
+import Plant from '@Components/iconSvg/pairing/Plant';
+
+interface InitvalueProps {
+  namePlant: string;
+}
 
 interface IProps extends PropsScreen {
   bluetooth_uid: string;
   isLoading: boolean;
 }
+const initialValues: InitvalueProps = {
+  namePlant: '',
+};
 
 const NamePlantContainer = (props: IProps) => {
   const { bluetooth_uid, isLoading, ...rest } = props;
   const navigation: any = useNavigation();
   const route: any = useRoute();
   const dispatch = useDispatch();
-  const [newName, setNewName] = useState('');
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -34,12 +46,9 @@ const NamePlantContainer = (props: IProps) => {
     });
   }, [navigation]);
 
-  const handleChangeText = (text: string) => {
-    setNewName(text);
-  };
-  const handleScanWifi = () => {
+  const handleScanWifi = (values: InitvalueProps) => {
     const body = {
-      name: newName,
+      name: values.namePlant,
       bluetooth_uid: bluetooth_uid || '',
       species: route.params?.plant?.uuid || '',
     };
@@ -47,28 +56,57 @@ const NamePlantContainer = (props: IProps) => {
   };
 
   return (
-    <View style={styles.root}>
-      <View style={{ flex: 0.2, marginTop: 30 }}>
-        <TextInputComp
-          value={newName}
-          handleChangeText={handleChangeText}
-          label={'Enter New name'}
-          placeholder="New name"
-        />
-      </View>
-      <View style={{ flex: 0.7, marginHorizontal: 28 }}>
-        <Image source={{ uri: route.params?.plant?.image_url }} resizeMode="contain" style={{ flex: 1 }} />
-      </View>
-      <View style={{ flex: 0.1, marginHorizontal: 28 }}>
-        <ButtonComp
-          title={'Grow Plant'}
-          handlePress={handleScanWifi}
-          stylesBtn={styles.btn}
-          stylesTitle={styles.titleBtn}
-          isLoading={isLoading}
-        />
-      </View>
-    </View>
+    <KeyboardAwareScrollView style={styles.root} showsVerticalScrollIndicator={false}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleScanWifi}
+        validationSchema={namePlantValidationSchema}
+        enableReinitialize>
+        {({ handleSubmit, handleChange, values, errors }) => {
+          return (
+            <View style={{ flex: 1, height: HEIGHT - 80 }}>
+              <View style={{ flex: 0.2, marginTop: 30, height: HEIGHT / 5 }}>
+                <TextInputComp
+                  clearTextOnFocus={true}
+                  value={values.namePlant}
+                  label={'Enter New name'}
+                  placeholder="New name"
+                  stylesTxt={styles.textInput}
+                  handleChangeText={handleChange('namePlant')}
+                />
+                <ErrorMessage
+                  name={values.namePlant}
+                  children={() => <Text style={styles.errorMessage}>{errors.namePlant}</Text>}
+                />
+              </View>
+
+              {!!route.params?.plant?.image_url ? (
+                <Image
+                  source={{ uri: route.params?.plant?.image_url }}
+                  resizeMode="contain"
+                  style={{ flexGrow: 0.62 }}
+                />
+              ) : (
+                <View style={{ flexGrow: 0.6, alignItems: 'center', justifyContent: 'center' }}>
+                  <Plant width={WIDTH / 1.5} height={HEIGHT / 1.5} />
+                </View>
+              )}
+
+              <View style={{ flex: 0.1 }}>
+                <ButtonComp
+                  title={'Grow Plant'}
+                  handlePress={handleSubmit}
+                  stylesBtn={styles.btn}
+                  stylesTitle={styles.titleBtn}
+                  isLoading={isLoading}
+                  disabled={isLoading}
+                />
+              </View>
+            </View>
+          );
+        }}
+      </Formik>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -82,7 +120,7 @@ export default connect(mapStateToProps)(NamePlantContainer);
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   txtTitle: {
     fontFamily: fontFamily.FreightBigProMedium,
@@ -94,5 +132,15 @@ const styles = StyleSheet.create({
   },
   titleBtn: {
     color: colors.white,
+  },
+  errorMessage: {
+    color: colors.error,
+    textAlign: 'left',
+    marginHorizontal: 40,
+    marginBottom: 10,
+    fontFamily: fontFamily.Strawford,
+  },
+  textInput: {
+    paddingHorizontal: 0,
   },
 });

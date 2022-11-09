@@ -7,6 +7,7 @@ import { Formik, FormikErrors, ErrorMessage } from 'formik';
 import TextInputComp from '@Components/input';
 import { ButtonComp } from '@Components/button';
 import VideoLoginComp from '@Components/videos/VideoLoginComp';
+import EyeIcon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 import { colors, fontFamily } from '@Theme/index';
@@ -36,6 +37,11 @@ export const FormComp = ({
   ...rest
 }: IProps) => {
   const navigation: any = useNavigation();
+  const [eyeOpen, setEyeOpen] = useState(false);
+
+  const onEyePress = () => {
+    setEyeOpen(!eyeOpen);
+  };
 
   const goToSignUp = () => {
     navigation.navigate('Login', { isLogin: !isLogin });
@@ -62,8 +68,19 @@ export const FormComp = ({
                   handleChangeText={handleChange(item.value + '')}
                   stylesTxt={styles.txtContainer}
                   selectionColor={colors.black}
-                  secureTextEntry={item.value === 'password'}
+                  secureTextEntry={item.value === 'password' && !eyeOpen}
                   error={!!errors[item.value + ''] && !!touched[item.value + '']}
+                  rightIcon={
+                    item.value === 'password' ? (
+                      <EyeIcon
+                        name={eyeOpen ? 'eye-outline' : 'eye-off-outline'}
+                        size={24}
+                        color={colors.black}
+                        style={{ position: 'absolute', top: 28, right: 8 }}
+                        onPress={onEyePress}
+                      />
+                    ) : null
+                  }
                 />
                 <ErrorMessage
                   name={item.value + ''}
