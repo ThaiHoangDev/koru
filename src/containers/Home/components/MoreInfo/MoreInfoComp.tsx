@@ -40,8 +40,8 @@ const MoreInfoComp = (props: IProps) => {
       data={myMoreInfo}
       renderItem={renderItem}
       keyExtractor={(item, index) => index.toString()}
-      contentContainerStyle={{ marginTop: 60 }}
-      style={[styles.containerScreen, styles.styleMoreInfo]}
+      contentContainerStyle={[{ marginTop: 60 }, styles.styleMoreInfo]}
+      style={[styles.containerScreen]}
     />
   );
 };
