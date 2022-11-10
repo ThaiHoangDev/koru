@@ -24,6 +24,7 @@ export default StyleSheet.create({
     fontFamily: fontFamily.Strawford,
     fontSize: 13,
     textAlign: 'center',
+    marginRight: 4,
   },
   btnStyle: {
     display: 'flex',
@@ -69,10 +70,12 @@ export default StyleSheet.create({
   formStyle: {
     position: 'absolute',
     width: '100%',
-    height: '100%',
+    height: HEIGHT / 1.12,
+    zIndex: 2,
+    flex: 1,
   },
   contentStyle: {
-    flex: 1,
+    flexGrow: 1,
     paddingTop: HEIGHT / 3,
   },
   listHeader: {

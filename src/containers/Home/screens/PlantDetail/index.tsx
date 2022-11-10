@@ -65,7 +65,7 @@ const PlantDetailContainer = (props: IProps) => {
   const { navigation } = props;
   let listRef: any = useRef(null);
   const [index, setIndex] = useState(0);
-  const disconected = true;
+  const disconected = false;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -135,7 +135,7 @@ const PlantDetailContainer = (props: IProps) => {
         <View style={styles.networkStyle}>
           {disconected && <NotConected />}
           <Text style={[{ color: disconected ? colors.red : colors.green1 }, styles.headerTitleLeft]}>Conected</Text>
-          <NetworkIcon disconected={true} />
+          <NetworkIcon disconected={disconected} />
         </View>
       </View>
 
@@ -187,16 +187,17 @@ const PlantDetailContainer = (props: IProps) => {
           resizeMode="contain"></ImageBackgroundCompLayout>
         <BottomTab onClickLeft={navigateMoreInfo} onClickRight={navigateFanSpeed} isDetail />
       </View>
-
-      <View style={styles.reconnectBtn}>
-        <ButtonComp
-          title={'Reconnect'}
-          handlePress={handleReconect}
-          stylesBtn={styles.btn}
-          stylesTitle={styles.titleBtn}
-          isLoading={false}
-        />
-      </View>
+      {disconected && (
+        <View style={styles.reconnectBtn}>
+          <ButtonComp
+            title={'Reconnect'}
+            handlePress={handleReconect}
+            stylesBtn={styles.btn}
+            stylesTitle={styles.titleBtn}
+            isLoading={false}
+          />
+        </View>
+      )}
     </View>
   );
 };

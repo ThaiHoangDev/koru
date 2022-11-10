@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const PlantBoxComp = ({ data }: IProps) => {
-  const disconected = true;
+  const disconected = false;
 
   const handleNotConected = () => {};
   return (
