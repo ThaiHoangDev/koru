@@ -34,15 +34,15 @@ const MoreInfoComp = (props: IProps) => {
       />
     </View>
   );
-
   return (
-    <FlatList
-      data={myMoreInfo}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
-      contentContainerStyle={{ marginTop: 60 }}
-      style={[styles.containerScreen, styles.styleMoreInfo]}
-    />
+    <View style={[styles.containerScreen, styles.styleMoreInfo]}>
+      <FlatList
+        data={myMoreInfo}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={{ marginTop: 60 }}
+      />
+    </View>
   );
 };
 

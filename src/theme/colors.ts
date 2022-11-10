@@ -22,5 +22,6 @@ export default {
   green: '#D0E8E4',
   green2: '#33704D',
   green1: '#8BD242',
-  green3: '#D9F7BE'
+  green3: '#D9F7BE',
+  red: '#F12C1F',
 };

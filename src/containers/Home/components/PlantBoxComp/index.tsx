@@ -1,8 +1,11 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 
 import { Plant } from '@Containers/Home/interfaces';
 import { ImageBackgroundCompLayout } from '@Components/image-backgroundComp';
+import PlantIcon from '@Components/iconSvg/pairing/Plant';
+import { ButtonComp } from '@Components/button';
+import NotConected from '@Components/iconSvg/home/NotConected';
 
 import { colors, fontFamily } from '@Theme/index';
 
@@ -11,21 +14,46 @@ interface IProps {
 }
 
 const PlantBoxComp = ({ data }: IProps) => {
+  const disconected = true;
+
+  const handleNotConected = () => {};
   return (
-    <View style={styles.root}>
-      <View style={styles.headerContainer}>
-        <View>
-          <Text style={styles.title}>{data.name}</Text>
-          <Text style={styles.subTitle}>{data.species_name}</Text>
+    <View>
+      {disconected && (
+        <View style={styles.notConected}>
+          <View style={styles.notConectedIcon}>
+            <NotConected />
+          </View>
+          <ButtonComp
+            title={'Not Conected'}
+            handlePress={handleNotConected}
+            stylesBtn={styles.btn}
+            stylesTitle={styles.titleBtn}
+            isLoading={false}
+          />
         </View>
-        <View style={styles.status}></View>
+      )}
+      <View style={[styles.root, { opacity: disconected ? 0.3 : 1 }]}>
+        <View style={styles.headerContainer}>
+          <View>
+            <Text style={styles.title}>{data.name}</Text>
+            <Text style={styles.subTitle}>{data.species_name}</Text>
+          </View>
+          <View style={styles.status}></View>
+        </View>
+        <ImageBackgroundCompLayout
+          children={
+            data.species_image ? (
+              <Image source={{ uri: data.species_image }} resizeMode="contain" style={styles.image} />
+            ) : (
+              <PlantIcon />
+            )
+          }
+          source={require('@Assets/image-background/box-plant.png')}
+          resizeMode="cover"
+          imageStyle={{ flex: 1, width: '100%' }}
+        />
       </View>
-      <ImageBackgroundCompLayout
-        children={<Image source={{ uri: data.species_image }} resizeMode="contain" style={styles.image} />}
-        source={require('@Assets/image-background/box-plant.png')}
-        resizeMode="cover"
-        imageStyle={{ flex: 1, width: '100%' }}
-      />
     </View>
   );
 };
@@ -65,5 +93,35 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  notConected: {
+    position: 'absolute',
+    height: 204,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    zIndex: 1,
+  },
+  btn: {
+    backgroundColor: '#FFE6E6',
+    borderRadius: 25,
+    paddingHorizontal: 10,
+    height: 28,
+    marginBottom: 10,
+    zIndex: 2,
+    width: '100%',
+    justifyContent: 'flex-end',
+  },
+  titleBtn: {
+    color: '#F12C1F',
+    fontFamily: fontFamily.Strawford,
+  },
+  notConectedIcon: {
+    position: 'absolute',
+    bottom: 27,
+    left: 20,
+    zIndex: 3,
   },
 });

@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
     borderColor: colors.gray04,
   },
   chart: {
-    flexGrow: 3,
     backgroundColor: colors.gray,
     width: '100%',
   },

@@ -66,6 +66,15 @@ export default StyleSheet.create({
     marginTop: -10,
     fontFamily: fontFamily.Strawford,
   },
+  formStyle: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  contentStyle: {
+    flex: 1,
+    paddingTop: HEIGHT / 3,
+  },
   listHeader: {
     flexGrow: 1,
     alignItems: 'center',
