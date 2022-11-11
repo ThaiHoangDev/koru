@@ -1,4 +1,4 @@
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Pressable, StyleSheet, Text, TouchableOpacity, View, StatusBar, Animated } from 'react-native';
 import React, { useState } from 'react';
 import { CollapsibleHeaderTabView } from 'react-native-tab-view-collapsible-header';
 import { TabViewProps, Route, SceneRendererProps, TabBar, NavigationState } from 'react-native-tab-view';
@@ -32,30 +32,49 @@ const AboutPlant = () => {
 
   const handleSetTabView = (index: number) => setIndex(index);
 
-  const renderTabBar = (
+  const _renderTabBar = (
     tabbarProps: SceneRendererProps & {
       navigationState: NavigationState<any>;
     },
   ) => {
+    const inputRange = tabbarProps.navigationState.routes.map((x, i) => i);
+
     return (
-      <TabBar
-        {...tabbarProps}
-        // labelStyle={{fontFamily: MONTSERRAT_SEMIBOLD}}
-        inactiveColor={'#000'}
-        // activeColor={THEME_TEXT_GREEN_2}
-        indicatorContainerStyle={styles.indicatorContainerStyle}
-        style={styles.tabBar}
-        renderTabBarItem={p => (
-          <Pressable key={p.key} onPress={p.onPress} style={[styles.tabItem]}>
-            <Text
-              style={[index == p.route.key ? { color: p.activeColor } : { color: p.inactiveColor }, styles.tabTitle]}>
-              {p.route.title}
-            </Text>
-          </Pressable>
-        )}
-      />
+      <View style={styles.tabBar}>
+        {tabbarProps.navigationState.routes.map((route: any, i: number) => {
+          const opacity = tabbarProps.position.interpolate({
+            inputRange,
+            outputRange: inputRange.map((inputIndex: any) => (inputIndex === i ? 1 : 0.5)),
+          });
+          const opacityBorder = tabbarProps.position.interpolate({
+            inputRange,
+            outputRange: inputRange.map((inputIndex: any) => (inputIndex === i ? 1 : 0)),
+          });
+          const y = tabbarProps.position.interpolate({
+            inputRange,
+            outputRange: [0, 6, 8],
+          });
+
+          return (
+            <TouchableOpacity style={[styles.tabItem]} onPress={() => setIndex(i)}>
+              <Animated.Text style={{ opacity, fontFamily: fontFamily.Strawford }}>{route.title}</Animated.Text>
+              <Animated.View
+                style={{
+                  height: 2,
+                  borderRadius: 20,
+                  marginTop: 6,
+                  width: 60,
+                  backgroundColor: colors.black,
+                  opacity: opacityBorder,
+                  transform: [{ translateX: y }],
+                }}></Animated.View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     );
   };
+
   const _renderScene = (
     sceneProps: SceneRendererProps & {
       route: any;
@@ -89,7 +108,7 @@ const AboutPlant = () => {
         renderScene={_renderScene}
         onIndexChange={handleSetTabView}
         initialLayout={{ width: WIDTH }}
-        renderTabBar={renderTabBar}
+        renderTabBar={_renderTabBar}
         style={styles.containerScreen}
       />
     </View>
@@ -109,17 +128,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tabBar: {
-    flex: 1,
-    width: WIDTH,
+    width: WIDTH / 2,
+    backgroundColor: colors.white,
+    height: 50,
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    paddingTop: StatusBar.currentHeight,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 16,
   },
   indicatorContainerStyle: {
     width: '100%',
-  },
-  tabItem: {
-    width: WIDTH / 3,
-    borderWidth: 1,
   },
   tabTitle: {
     fontFamily: fontFamily.Strawford,
