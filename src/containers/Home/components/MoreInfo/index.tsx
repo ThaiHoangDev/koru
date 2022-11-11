@@ -20,9 +20,3 @@ const MoreInfo = ({ data }: IProps) => {
 };
 export default MoreInfo;
 const styles = StyleSheet.create({});
-
-
-
-
-
-

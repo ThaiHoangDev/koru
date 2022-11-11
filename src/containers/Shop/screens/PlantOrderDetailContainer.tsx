@@ -45,7 +45,7 @@ const plantData = {
   quantity: 1,
   description:
     'Lörem ipsum dor epitärat. Teligt mina saras ett mikroföse. Anat. Ghosta videv, i göra en labrador. Trafikmaktordning ihår. Lat negt dilig. Hypor. Begen otrohetsdejting därför att euroren. Ytt piheliga,',
-  image: <PlantIcon4 />,
+  image: <PlantIcon4 width={WIDTH / 1.2} height={HEIGHT / 3} />,
 };
 
 const ItemDetailContainer = (props: IProps) => {
@@ -83,14 +83,12 @@ const ItemDetailContainer = (props: IProps) => {
   return (
     <View style={styles.container}>
       <ScrollView style={{ flex: 0.8 }}>
-        {/* <ImageBackgroundCompLayout
-          source={require('@Assets/image-background/plant.png')}
-          children={ */}
-        <View style={styles.itemImage}>
-          <PlantIcon4 />
-        </View>
-        {/* }
-        /> */}
+        <ImageBackgroundCompLayout
+          children={<View style={styles.itemImage}>{plantData.image}</View>}
+          source={require('@Assets/image-background/box-plant.png')}
+          resizeMode="cover"
+          imageStyle={{ flex: 1, width: '100%' }}
+        />
         <View style={{ flex: 0.4, paddingHorizontal: 20 }}>
           <View style={styles.textHead}>
             <Text style={[styles.itemName, styles.fontStyle]}>{plantData.name}</Text>

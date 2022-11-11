@@ -1,19 +1,16 @@
 import Video from 'react-native-video';
-import { View, Text, StyleProp, ViewStyle } from 'react-native';
+import { View, Text, StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import React from 'react';
 import { HEIGHT, WIDTH } from '@Constants/app';
 
 const videoStyle: StyleProp<ViewStyle> = {
   height: HEIGHT,
   width: WIDTH,
-  bottom: 100,
 };
-
-const viewStyle = { height: HEIGHT / 5 };
 
 export default function VideoLoginComp() {
   return (
-    <View style={viewStyle}>
+    <View style={styles.viewStyle}>
       <Video
         source={require('../../assets/video/koruVideo.mp4')}
         paused={false}
@@ -29,3 +26,9 @@ export default function VideoLoginComp() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  viewStyle: {
+    bottom: 40,
+  },
+});

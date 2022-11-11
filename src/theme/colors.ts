@@ -11,6 +11,7 @@ export default {
   secondary: '#4CD964',
   secondaryDark: '#4CD964',
   yellow: '#ffea00',
+  grey: 'grey',
   gray: '#e5e5e5',
   gray01: '#8e8e8e',
   gray02: '#727675',
@@ -22,5 +23,6 @@ export default {
   green: '#D0E8E4',
   green2: '#33704D',
   green1: '#8BD242',
-  green3: '#D9F7BE'
+  green3: '#D9F7BE',
+  red: '#F12C1F',
 };

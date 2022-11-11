@@ -4,8 +4,10 @@ import { CollapsibleHeaderTabView } from 'react-native-tab-view-collapsible-head
 import { TabViewProps, Route, SceneRendererProps, TabBar, NavigationState } from 'react-native-tab-view';
 import { HScrollView } from 'react-native-head-tab-view';
 import { HEIGHT, WIDTH } from '@Constants/app';
-import { colors, fontFamily } from '@Theme/index';
+import PlantIcon from '@Components/iconSvg/shop/PlantIcon4';
+import { ImageBackgroundCompLayout } from '@Components/image-backgroundComp';
 import AboutTab from './AboutTab';
+import { colors, fontFamily } from '@Theme/index';
 
 const AboutPlant = () => {
   const [index, setIndex] = useState(0);
@@ -17,8 +19,13 @@ const AboutPlant = () => {
 
   const topHeader = () => {
     return (
-      <View style={{ height: HEIGHT / 2.6, backgroundColor: 'red' }}>
-        <Text>Image</Text>
+      <View style={styles.plantImage}>
+        <ImageBackgroundCompLayout
+          children={<PlantIcon width={WIDTH / 1.6} height={HEIGHT / 1.6} />}
+          source={require('@Assets/image-background/box-plant.png')}
+          resizeMode="cover"
+          imageStyle={{ flex: 1, width: '100%' }}
+        />
       </View>
     );
   };
@@ -129,5 +136,17 @@ const styles = StyleSheet.create({
   },
   indicatorContainerStyle: {
     width: '100%',
+  },
+  tabItem: {
+    width: WIDTH / 3,
+    borderWidth: 1,
+  },
+  tabTitle: {
+    fontFamily: fontFamily.Strawford,
+    fontSize: 13,
+    fontWeight: '400',
+  },
+  tabTitleActive: {
+    fontWeight: '700',
   },
 });

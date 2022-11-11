@@ -1,13 +1,6 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
 import { ChartData } from 'react-native-chart-kit/dist/HelperTypes';
 
@@ -29,18 +22,16 @@ const chartConfig: AbstractChartConfig = {
   decimalPlaces: 0,
   linejoinType: 'round',
   style: {
-    borderRadius: 16
+    borderRadius: 16,
   },
   propsForDots: {
-    r: "10",
-    strokeWidth: "4",
+    r: '10',
+    strokeWidth: '4',
     stroke: colors.black2,
-    fill: '#fff'
+    fill: '#fff',
   },
-  propsForBackgroundLines: { 
-  
-  },
- 
+  propsForBackgroundLines: {},
+
   useShadowColorFromDataset: false, // optional
 };
 
@@ -80,7 +71,7 @@ const Chart = () => {
       withOuterLines={false}
       withInnerLines={false}
       withShadow={false}
-      
+
       // renderDotContent={({indexData})=> <View><Text>{indexData}</Text></View>}
       // getDotProps={(d, i)=> { console.log(d, i); return {}}}
     />

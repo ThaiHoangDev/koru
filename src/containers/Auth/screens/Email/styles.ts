@@ -40,8 +40,15 @@ export default StyleSheet.create({
   txtContainer: {
     height: 30,
     paddingHorizontal: 2,
-    marginVertical: 10,
+    marginTop: 10,
     fontSize: 16,
+    fontFamily: fontFamily.Strawford,
+  },
+  errorMessage: {
+    color: colors.error,
+    marginHorizontal: 40,
+    marginBottom: 20,
+    textAlign: 'left',
     fontFamily: fontFamily.Strawford,
   },
   btn: {
