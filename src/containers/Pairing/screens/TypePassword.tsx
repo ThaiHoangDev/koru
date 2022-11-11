@@ -7,6 +7,8 @@ import TopNavigationBar from '@Navigators/topNavigation';
 import TitleComp from '../components/TitleComp';
 import TextInputComp from '@Components/input';
 import { ButtonComp } from '@Components/button';
+import ShowPassword from '@Components/showPassword';
+
 import { colors, fontFamily } from '@Theme/index';
 
 const TypePasswordContainer = (props: PropsScreen) => {
@@ -15,12 +17,17 @@ const TypePasswordContainer = (props: PropsScreen) => {
   const dispatch = useDispatch();
   const [passwordWifi, setPasswordWifi] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       header: (p: any) => <TopNavigationBar {...p} isLeft />,
     });
   }, [navigation]);
+
+  const onShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleChangeText = (text: string) => {
     setPasswordWifi(text);
@@ -43,16 +50,18 @@ const TypePasswordContainer = (props: PropsScreen) => {
           label={'Password'}
           placeholder={'Your password'}
           stylesTxt={styles.input}
-          secureTextEntry={secureTextEntry}
+          secureTextEntry={secureTextEntry && !showPassword}
+          rightIcon={<ShowPassword showPassword={showPassword} onShowPassword={onShowPassword} top={43} right={6} />}
         />
       </View>
       <View style={styles.footer}>
         <ButtonComp
           title={'Connect to Wifi'}
           handlePress={handleConnectWifi}
-          stylesBtn={styles.btn}
+          stylesBtn={passwordWifi.length == 0 ? styles.disabledBtn : styles.btn}
           stylesTitle={styles.titleBtn}
           isLoading={false}
+          disabled={passwordWifi.length == 0}
         />
       </View>
     </View>
@@ -68,10 +77,15 @@ const styles = StyleSheet.create({
   titleContainer: { flex: 0.2, paddingVertical: 40 },
   content: { flex: 0.8 },
   footer: {
-    flex: 0.1,
+    flex: 0.15,
+    paddingHorizontal: 40,
   },
   btn: {
     backgroundColor: colors.black2,
+    borderRadius: 25,
+  },
+  disabledBtn: {
+    backgroundColor: colors.gray04,
     borderRadius: 25,
   },
   input: {

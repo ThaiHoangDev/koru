@@ -52,7 +52,15 @@ const FanSpeedContainer = (props: IProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
-        <WidgetComp title={'hhh'} subTitle={'jjj'} />
+        <WidgetComp
+          title={'hhh'}
+          subTitle={'jjj'}
+          background={undefined}
+          statusColor={''}
+          status={''}
+          unit={''}
+          image={undefined}
+        />
       </View>
       <View style={{ flex: 2, justifyContent: 'flex-end', paddingTop: 40 }}>
         <FanComp />

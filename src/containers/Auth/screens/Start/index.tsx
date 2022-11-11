@@ -64,7 +64,7 @@ const StartContainer = () => {
         <View style={styles.socialText}>
           <Text>Or social media below</Text>
         </View>
-        <View style={[styles.socialBtn, { bottom: Platform.OS === 'android' ? 40 : 0 }]}>
+        <View style={[styles.socialBtn]}>
           <ButtonComp
             title={''}
             handlePress={handleLogin}

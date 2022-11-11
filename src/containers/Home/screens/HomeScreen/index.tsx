@@ -13,6 +13,7 @@ import AddIcon from '@Components/iconSvg/AddIcon';
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import NoPlantComp from '@Containers/Home/components/NoPlantComp';
 
+import { WIDTH } from '@Constants/app';
 import PlantBoxComp from '@Containers/Home/components/PlantBoxComp';
 import { HomeActions } from '@Containers/Home/store/actions';
 import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/store/selectors';

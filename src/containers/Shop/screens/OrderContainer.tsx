@@ -61,7 +61,7 @@ const OrderContainer = (props: IProps) => {
 
   const _renderItem = ({ item, index }: any) => {
     return (
-      <TouchableOpacity onPress={() => ItemDetailScreen(item)}>
+      <TouchableOpacity activeOpacity={1} onPress={() => ItemDetailScreen(item)} style={{ paddingHorizontal: 10 }}>
         <OrderItemComp data={item} index={index} />
       </TouchableOpacity>
     );
@@ -77,7 +77,7 @@ const OrderContainer = (props: IProps) => {
         data={orderList}
         keyExtractor={(item, index) => `${item.uuid.toString()}_${item.name.toString()}_${index.toString()}`}
         renderItem={_renderItem}
-        style={{ paddingHorizontal: 20, flex: 0.55 }}
+        style={{ paddingHorizontal: 10, flex: 0.55 }}
         // ListFooterComponent={<View style={{ height: 100 }}></View>}
       />
       <View style={{ flexGrow: 0.45 }}>

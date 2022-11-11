@@ -4,11 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import HomeIcon from '@Components/iconSvg/HomeIcon';
-import ShopIcon from '@Components/iconSvg/ShopIcon';
-import SettingIcon from '@Components/iconSvg/SettingIcon';
+import HomeIcon from '@Components/iconSvg/home/HomeIcon';
+import ShopIcon from '@Components/iconSvg/home/ShopIcon';
+import SettingIcon from '@Components/iconSvg/home/SettingIcon';
 
-import { colors } from '@Theme/index';
+import { colors, fontFamily } from '@Theme/index';
 import { HEIGHT, WIDTH } from '@Constants/app';
 
 interface IProps {
@@ -65,12 +65,15 @@ export default function TopNavigationBar(props: IProps) {
     return (
       <Animated.View
         style={{
-          margin: 6,
+          marginVertical: 10,
         }}>
         <TouchableOpacity
-          style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 6 }}
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
           onPress={handleNavigationTab(item)}>
-          <Text>{item.label}</Text>
+          <Text style={styles.menuLabel}>{item.label}</Text>
           {item.icon}
         </TouchableOpacity>
       </Animated.View>
@@ -119,6 +122,7 @@ export default function TopNavigationBar(props: IProps) {
           data={DATA}
           keyExtractor={item => item.label.toString()}
           renderItem={_renderItem}
+          contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
           ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.gray04 }}></View>}
         />
       </Animated.View>
@@ -136,7 +140,12 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: colors.white2,
   },
-
+  menuLabel: {
+    fontFamily: fontFamily.Strawford,
+    fontSize: 13,
+    fontWeight: '400',
+    color: colors.black,
+  },
   backButton: {
     paddingHorizontal: 16,
   },
