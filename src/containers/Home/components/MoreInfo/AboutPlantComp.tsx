@@ -57,13 +57,15 @@ const AboutPlant = () => {
 
           return (
             <TouchableOpacity style={[styles.tabItem]} onPress={() => setIndex(i)}>
-              <Animated.Text style={{ opacity, fontFamily: fontFamily.Strawford }}>{route.title}</Animated.Text>
+              <Animated.Text style={{ opacity, fontFamily: fontFamily.Strawford, width: WIDTH / 1.8 }}>
+                {route.title}
+              </Animated.Text>
               <Animated.View
                 style={{
                   height: 2,
                   borderRadius: 20,
                   marginTop: 6,
-                  width: 60,
+                  width: 35,
                   backgroundColor: colors.black,
                   opacity: opacityBorder,
                   transform: [{ translateX: y }],
@@ -122,24 +124,26 @@ const styles = StyleSheet.create({
     flex: 1,
     width: WIDTH,
   },
+  plantImage: {
+    height: HEIGHT / 2.6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   tabBar: {
-    width: WIDTH / 2,
-    backgroundColor: colors.white,
+    width: WIDTH / 1.8,
+    backgroundColor: colors.white2,
     height: 50,
     flexDirection: 'row',
     paddingTop: StatusBar.currentHeight,
+    paddingHorizontal: 6,
+    marginTop: 20,
   },
   tabItem: {
     flex: 1,
-    alignItems: 'center',
     padding: 16,
   },
   indicatorContainerStyle: {
     width: '100%',
-  },
-  tabItem: {
-    width: WIDTH / 3,
-    borderWidth: 1,
   },
   tabTitle: {
     fontFamily: fontFamily.Strawford,

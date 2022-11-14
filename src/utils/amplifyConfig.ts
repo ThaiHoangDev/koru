@@ -58,4 +58,4 @@ const poolData = {
 
 const cognitoPool = new CognitoUserPool(poolData);
 
-export { cognitoPool };
+export { cognitoPool, poolData };

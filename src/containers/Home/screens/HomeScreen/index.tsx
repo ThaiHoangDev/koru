@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, RefreshControl, FlatListProps } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect, useDispatch } from 'react-redux';
 import { debounce, isEmpty } from 'lodash';
@@ -13,20 +13,21 @@ import AddIcon from '@Components/iconSvg/AddIcon';
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import NoPlantComp from '@Containers/Home/components/NoPlantComp';
 
-import { WIDTH } from '@Constants/app';
 import PlantBoxComp from '@Containers/Home/components/PlantBoxComp';
 import { HomeActions } from '@Containers/Home/store/actions';
 import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/store/selectors';
 
 import { colors, fontFamily } from '@Theme/index';
 import { HomeStackParamList } from '@Navigators/homeNavigator';
+import { MQTTActions } from '@Containers/MQTT/store/actions';
+import { PlantProps } from '@Containers/Home/store/interfaces';
 
 type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
 type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'HomeScreen'>;
 
 interface IProps {
   isLoading: boolean;
-  myPlant: any;
+  myPlant: PlantProps[];
   navigation: HomeScreenNavigationProp;
   route: HomeScreenRouteProp;
 }
@@ -79,6 +80,14 @@ function HomeContainer(props: IProps) {
         setIsRefresh(false);
       }, 1000);
   }, [page, isRefresh, dispatch]);
+
+  useEffect(() => {
+    dispatch(MQTTActions.init_MQTT.request());
+  }, []);
+
+  useEffect(() => {
+    myPlant.length > 0 && dispatch(HomeActions.attachPolicy.request(myPlant));
+  }, [myPlant]);
 
   const handleGoToPairing = () => {
     navigation.navigate('Paring');

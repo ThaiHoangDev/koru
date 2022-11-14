@@ -1,5 +1,6 @@
 import { AuthenticationDetails, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
 import { put, takeLatest, call } from 'redux-saga/effects';
+import { Auth } from 'aws-amplify';
 import { AppActions } from '@Containers/App/store/actions';
 
 import axiosClient from '@Utils/axios';
@@ -13,7 +14,7 @@ import { REFRESH_TOKEN, TOKEN_NAME } from '@Constants/app';
 import * as apiService from '../services';
 import { AuthActions } from '../actions';
 import { LoginAction } from '../../interfaces';
-import { showErrorWithString } from './../../../../utils/helper';
+import { showErrorMessage, showErrorWithString } from './../../../../utils/helper';
 
 function* loginApiSaga({ payload }: any) {
   const { cognitoToken } = payload;
@@ -44,20 +45,11 @@ function* loginCognitoSaga({ payload }: LoginAction): any {
       Username: email,
       Pool: cognitoPool,
     };
-    const authenticationDetails = yield new AuthenticationDetails(authenticationData);
-    const cognitoUser = yield new CognitoUser(userData);
-    yield cognitoUser.authenticateUser(authenticationDetails, {
-      onSuccess: (result: any) => {
-        const cognitoToken = result.getAccessToken();
-        store.dispatch(AuthActions.loginApi.request({ cognitoToken }));
-      },
-      onFailure: (err: any) => {
-        console.log(err, 'errLogin');
-        store.dispatch(AuthActions.login.fail({ errors: err }));
-      },
-    });
+    const user = yield Auth.signIn({ username: email, password });
+    const cognitoToken = user.signInUserSession.accessToken;
+    store.dispatch(AuthActions.loginApi.request({ cognitoToken }));
   } catch (error: any) {
-    console.log(error, 'errLogin_____');
+    showErrorMessage(error, () => {});
     yield put(AuthActions.login.fail(error));
   }
 }
@@ -151,6 +143,19 @@ function* refreshTokenSaga(): any {
     yield put(AuthActions.refreshToken.fail());
     yield put(AppActions.initApp.success({ isLoggedIn: false }));
   }
+}
+
+function* logoutSaga(): any {
+  const userData = {
+    Username: '',
+    Pool: cognitoPool,
+  };
+  const cognitoUser = yield new CognitoUser(userData);
+  yield cognitoUser.signOut();
+  asyncStorage.removeItem(TOKEN_NAME);
+  asyncStorage.removeItem(REFRESH_TOKEN);
+  yield put(AppActions.initApp.success({ isLoggedIn: false }));
+  // yield put(AuthActions.login.success());
 }
 
 export default function* fetchData() {
