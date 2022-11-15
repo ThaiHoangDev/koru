@@ -15,7 +15,7 @@ import NoPlantComp from '@Containers/Home/components/NoPlantComp';
 
 import PlantBoxComp from '@Containers/Home/components/PlantBoxComp';
 import { HomeActions } from '@Containers/Home/store/actions';
-import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/store/selectors';
+import { makeSelectIsRequesting, makeSelectLoadMore, makeSelectMyPlant } from '@Containers/Home/store/selectors';
 
 import { colors, fontFamily } from '@Theme/index';
 import { HomeStackParamList } from '@Navigators/homeNavigator';
@@ -27,13 +27,14 @@ type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'HomeScreen'>;
 
 interface IProps {
   isLoading: boolean;
-  myPlant: PlantProps[];
+  myPlant: any;
+  loadMore: any;
   navigation: HomeScreenNavigationProp;
   route: HomeScreenRouteProp;
 }
 
 function HomeContainer(props: IProps) {
-  const { isLoading, myPlant, navigation, route } = props;
+  const { isLoading, myPlant, loadMore, navigation, route } = props;
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
@@ -63,14 +64,20 @@ function HomeContainer(props: IProps) {
     searchDebounce(text);
   };
 
-  const loadMoreMyPlant = () => {};
+  const loadMoreMyPlant = () => {
+    if (loadMore) {
+      setPage(page + 1);
+    } else {
+      setPage(page);
+    }
+  };
   const handleRefresh = () => {
     setIsRefresh(true);
   };
 
   useEffect(() => {
     const payload = {
-      page,
+      page: isRefresh ? 1 : page,
       perpage: 10,
       search: searchText,
     };
@@ -78,6 +85,7 @@ function HomeContainer(props: IProps) {
     isRefresh &&
       setTimeout(() => {
         setIsRefresh(false);
+        setPage(1);
       }, 1000);
   }, [page, isRefresh, dispatch]);
 
@@ -93,19 +101,22 @@ function HomeContainer(props: IProps) {
     navigation.navigate('Paring');
   };
 
-  const handlePress = () => {
-    navigation.navigate('PlantDetail');
+  const handlePress = (uuid: any) => () => {
+    navigation.navigate('PlantDetail', { uuid });
   };
+
+  const onAddToCard = () => {};
 
   const _renderItem = ({ item }: any) => {
     return (
       <TouchableOpacity
-        onPress={handlePress}
+        onPress={handlePress(item.uuid)}
         style={{
-          flex: 0.5,
+          flex: 0.48,
           minHeight: 204,
+          marginBottom: 20,
         }}>
-        <PlantBoxComp data={item} />
+        <PlantBoxComp data={item} shopScreen={false} onAddToCard={onAddToCard} />
       </TouchableOpacity>
     );
   };
@@ -120,7 +131,7 @@ function HomeContainer(props: IProps) {
       </View>
       <FlatList
         data={myPlant}
-        keyExtractor={(item, index) => `${item.uuid.toString()}_${item.name.toString()}_${index.toString()}`}
+        keyExtractor={(item, index) => `${item.uuid.toString()}_${index.toString()}`}
         renderItem={_renderItem}
         numColumns={2}
         columnWrapperStyle={styles.columnWrapper}
@@ -150,7 +161,6 @@ function HomeContainer(props: IProps) {
             <NoPlantComp />
           ) : null
         }
-        contentContainerStyle={styles.contenContainer}
         style={[styles.scrollList]}
       />
     </View>
@@ -159,6 +169,7 @@ function HomeContainer(props: IProps) {
 
 const mapStateToProps = createStructuredSelector({
   myPlant: makeSelectMyPlant(),
+  loadMore: makeSelectLoadMore(),
   isLoading: makeSelectIsRequesting(),
 });
 
@@ -187,7 +198,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   scrollList: { width: '100%', flex: 1 },
-  contenContainer: {
-    flex: 1,
-  },
 });

@@ -1,6 +1,7 @@
 export default {
   white: '#FFFFFF',
   white2: '#FBFBFB',
+  white3: '#F5F5F5',
   black: '#000000',
   black2: '#191919',
   error: '#EB5757',

@@ -13,6 +13,7 @@ export interface IPayload {
   isLoading: boolean;
   myPlant: PlantProps[];
   myMoreInfo: any;
+  myPlantHistory: any;
   loadMore: any;
 }
 
@@ -21,6 +22,7 @@ export const initialState: IPayload = {
   isLoading: true,
   myPlant: [],
   myMoreInfo: [],
+  myPlantHistory: [],
   loadMore: null,
 };
 
@@ -33,7 +35,7 @@ const homeReducer = (state = initialState, { type, payload }: ACTION) =>
       case HomeActions.Types.GET_MY_PLANT.succeeded:
         draft.isLoading = false;
         draft.myPlant = !!payload.next ? [...draft.myPlant, ...payload?.results] : payload?.results;
-        draft.loadMore = payload.next;
+        draft.loadMore = !!payload.next;
         break;
       case HomeActions.Types.GET_MY_PLANT.failed:
         draft.isLoading = false;
@@ -66,6 +68,16 @@ const homeReducer = (state = initialState, { type, payload }: ACTION) =>
           },
         ];
         draft.myPlant = dataUpdate;
+      // Plant state history
+      case HomeActions.Types.GET_PLANT_STATE_HISTORY.begin:
+        draft.isLoading = true;
+        break;
+      case HomeActions.Types.GET_PLANT_STATE_HISTORY.succeeded:
+        draft.isLoading = false;
+        draft.myPlantHistory = payload;
+        break;
+      case HomeActions.Types.GET_PLANT_STATE_HISTORY.failed:
+        draft.isLoading = false;
         break;
       default:
         break;

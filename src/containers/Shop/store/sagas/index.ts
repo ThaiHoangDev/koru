@@ -16,27 +16,35 @@ function* getMyOrderSaga({ payload }: any) {
 
 function* increaseMyItemSaga({ payload }: any) {
   try {
-    yield put(ShopActions.InCreaseMyItem.success(payload));
+    yield put(ShopActions.inCreaseMyItem.success(payload));
   } catch (error) {
-    yield put(ShopActions.InCreaseMyItem.fail(error));
+    yield put(ShopActions.inCreaseMyItem.fail(error));
   }
 }
 
 function* decreaseMyItemSaga({ payload }: any) {
   try {
-    yield put(ShopActions.DecreaseMyItem.success(payload));
+    yield put(ShopActions.decreaseMyItem.success(payload));
     // yield put(ShopActions.DecreaseMyItem.success(payload));
   } catch (error) {
-    yield put(ShopActions.DecreaseMyItem.fail(error));
+    yield put(ShopActions.decreaseMyItem.fail(error));
   }
 }
 
 function* deleteMyItemSaga({ payload }: any) {
   try {
     const newMyOrder = MY_ORDER_LIST_DATA.filter((item: any, index: number) => index !== payload);
-    yield put(ShopActions.DeleteMyItem.success(newMyOrder));
+    yield put(ShopActions.deleteMyItem.success(newMyOrder));
   } catch (error) {
-    yield put(ShopActions.DeleteMyItem.fail(error));
+    yield put(ShopActions.deleteMyItem.fail(error));
+  }
+}
+
+function* addToCardSaga({ payload }: any) {
+  try {
+    yield put(ShopActions.addToCard.success(payload));
+  } catch (error) {
+    yield put(ShopActions.addToCard.fail(error));
   }
 }
 
@@ -45,4 +53,5 @@ export default function* fetchData() {
   yield takeLatest(ShopActions.Types.INCREASE_MY_ITEM.begin, increaseMyItemSaga);
   yield takeLatest(ShopActions.Types.DECREASE_MY_ITEM.begin, decreaseMyItemSaga);
   yield takeLatest(ShopActions.Types.DELETE_MY_ITEM.begin, deleteMyItemSaga);
+  yield takeLatest(ShopActions.Types.ADD_TO_CARD.begin, addToCardSaga);
 }

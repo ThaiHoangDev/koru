@@ -21,6 +21,8 @@ import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/stor
 import { makeSelectListPlantGroup } from '@Containers/Pairing/store/selectors';
 
 import { colors, fontFamily } from '@Theme/index';
+import { makeSelectMyOrder } from '../store/selectors';
+import { ShopActions } from '../store/actions';
 
 type ShopScreenNavigationProp = StackNavigationProp<ShopStackParamList, 'ShopScreen'>;
 type ShopScreenRouteProp = RouteProp<ShopStackParamList, 'ShopScreen'>;
@@ -28,13 +30,14 @@ type ShopScreenRouteProp = RouteProp<ShopStackParamList, 'ShopScreen'>;
 interface IProps {
   isLoading: boolean;
   myPlant: any;
+  myOrder: any;
   listPlantGroup: any;
   navigation: ShopScreenNavigationProp;
   route: ShopScreenRouteProp;
 }
 
 function ShopContainer(props: IProps) {
-  const { isLoading, myPlant, listPlantGroup, navigation, route } = props;
+  const { isLoading, myPlant, myOrder, listPlantGroup, navigation, route } = props;
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
@@ -65,7 +68,9 @@ function ShopContainer(props: IProps) {
     searchDebounce(text);
   };
 
-  const loadMoreMyPlant = () => {};
+  const loadMoreMyPlant = () => {
+    dispatch(ShopActions.getMyOrder.request());
+  };
   const handleRefresh = () => {
     setIsRefresh(true);
   };
@@ -87,14 +92,14 @@ function ShopContainer(props: IProps) {
     navigation.navigate('OrderScreen');
   };
 
-  const _renderItem = ({ item }: any) => {
+  const onAddToCard = (uuid: any) => () => {
+    dispatch(ShopActions.addToCard.request(uuid));
+  };
+
+  const _renderItem = ({ item, index }: any) => {
     return (
-      <TouchableOpacity
-        style={{
-          flex: 0.5,
-          minHeight: 204,
-        }}>
-        <PlantBoxComp data={item} />
+      <TouchableOpacity style={styles.item}>
+        <PlantBoxComp data={item} shopScreen={true} onAddToCard={onAddToCard(item.uuid)} />
       </TouchableOpacity>
     );
   };
@@ -107,6 +112,9 @@ function ShopContainer(props: IProps) {
         <View style={styles.searchContainer}>
           <SearchComp onChangeText={handleChangeText} />
           <TouchableOpacity style={styles.addContainer} onPress={handleGoToCard}>
+            <View style={styles.numOrder}>
+              <Text style={styles.orderTotal}>{myOrder.length}</Text>
+            </View>
             <CardIcon />
           </TouchableOpacity>
         </View>
@@ -155,6 +163,7 @@ function ShopContainer(props: IProps) {
 
 const mapStateToProps = createStructuredSelector({
   myPlant: makeSelectMyPlant(),
+  myOrder: makeSelectMyOrder(),
   isLoading: makeSelectIsRequesting(),
   listPlantGroup: makeSelectListPlantGroup(),
 });
@@ -180,6 +189,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.black2,
   },
+  item: {
+    flex: 0.48,
+    minHeight: 204,
+    marginBottom: 20,
+  },
   addContainer: {
     width: 32,
     height: 32,
@@ -189,6 +203,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 6,
     marginLeft: 8,
+  },
+  numOrder: {
+    position: 'absolute',
+    backgroundColor: 'red',
+    width: 15,
+    borderRadius: 50,
+    right: -6,
+    top: -6,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  orderTotal: {
+    color: colors.white2,
+    fontFamily: fontFamily.Strawford,
+    fontWeight: '400',
+    fontSize: 12,
   },
   columnWrapper: {
     justifyContent: 'space-between',

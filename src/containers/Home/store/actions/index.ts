@@ -11,6 +11,7 @@ export namespace HomeActions {
     'GET_MORE_INFO',
     'UPDATE_LIST_PLANT',
     'ATTACH_POLICY',
+    'GET_PLANT_STATE_HISTORY',
   );
 
   export const getMyPlant = createActionGenerator(Types.GET_MY_PLANT);
@@ -18,4 +19,5 @@ export namespace HomeActions {
   export const getMoreInfo = createActionGenerator(Types.GET_MORE_INFO);
   export const attachPolicy = createActionGenerator(Types.ATTACH_POLICY);
   export const updateListPlant = createAction(Types.UPDATE_LIST_PLANT.default);
+  export const getPlantStateHistory = createActionGenerator(Types.GET_PLANT_STATE_HISTORY);
 }

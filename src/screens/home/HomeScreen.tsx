@@ -21,6 +21,7 @@ type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'HomeScreen'>;
 interface IProps {
   isLoading: boolean;
   myPlant: any;
+  loadMore: any;
   navigation: HomeScreenNavigationProp;
   route: HomeScreenRouteProp;
 }

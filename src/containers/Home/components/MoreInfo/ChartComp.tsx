@@ -1,5 +1,8 @@
 import { Dimensions, FlatList, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, connect } from 'react-redux';
+import { HomeActions } from '@Containers/Home/store/actions';
+import { makeSelectIsRequesting, makeSelectMyPlantHistory } from '@Containers/Home/store/selectors';
 
 import { WIDTH } from '@Constants/app';
 import SoilIcon1 from '@Components/iconSvg/home/SoilIcon1';
@@ -10,6 +13,9 @@ import Chartcompo from '@Components/chart';
 
 //assets
 import { colors, fontFamily } from '@Theme/index';
+import LineChartComp from '@Components/line-chart-comp';
+import { createStructuredSelector } from 'reselect';
+import { number } from 'yup';
 
 interface ITextProps {
   title: string;
@@ -17,20 +23,31 @@ interface ITextProps {
 }
 
 interface IChartIconProps {
+  uuid: number;
   image: React.ReactNode;
+}
+
+interface IProps {
+  isLoading: boolean;
+  myPlantHistory: any;
+  plantId?: string;
 }
 
 const DATA: IChartIconProps[] = [
   {
+    uuid: 0,
     image: <WaterIcon />,
   },
   {
+    uuid: 1,
     image: <SoilIcon1 />,
   },
   {
+    uuid: 2,
     image: <CIcon />,
   },
   {
+    uuid: 3,
     image: <LuxIcon />,
   },
 ];
@@ -50,18 +67,30 @@ const TEXTDATA: ITextProps[] = [
   },
 ];
 
-const Chart = () => {
-  const [isActive, setIsActive] = useState(false);
+const Chart = (props: IProps) => {
+  const [isActive, setIsActive] = useState(3);
+  const { myPlantHistory, plantId } = props;
+  const dispatch = useDispatch();
 
-  const onPress = () => {
-    setIsActive(!isActive);
+  useEffect(() => {
+    const payload = {
+      from: 1666256999,
+      to: 1666258081,
+      plantId: plantId,
+    };
+    dispatch(HomeActions.getPlantStateHistory.request(payload));
+    console.log(myPlantHistory, 'ffffff');
+  }, [dispatch]);
+
+  const onPress = (id: number) => {
+    setIsActive(id);
   };
   const renderItemIcon = ({ item, index }: any) => (
     <View style={styles.iconBtn}>
       <View style={styles.lineStyles} />
       <TouchableHighlight
-        style={[styles.btnIcon, { backgroundColor: isActive ? colors.black2 : colors.white2 }]}
-        onPress={onPress}>
+        style={[styles.btnIcon, { backgroundColor: isActive === item.uuid ? colors.black2 : colors.white2 }]}
+        onPress={() => onPress(item.uuid)}>
         {item.image}
       </TouchableHighlight>
       <View style={styles.lineStyles} />
@@ -87,7 +116,8 @@ const Chart = () => {
         }}
       />
       <View style={styles.chart}>
-        <Chartcompo />
+        {/* <Chartcompo /> */}
+        <LineChartComp />
       </View>
       <View style={styles.footerContent}>
         <Text style={[styles.temText, styles.fontFamily]}>Temprature</Text>
@@ -105,7 +135,12 @@ const Chart = () => {
   );
 };
 
-export default Chart;
+const mapStateToProps = createStructuredSelector({
+  myPlantHistory: makeSelectMyPlantHistory(),
+  isLoading: makeSelectIsRequesting(),
+});
+
+export default connect(mapStateToProps)(Chart);
 
 const styles = StyleSheet.create({
   containerScreen: {
@@ -133,7 +168,6 @@ const styles = StyleSheet.create({
     borderColor: colors.gray04,
   },
   chart: {
-    backgroundColor: colors.gray,
     width: '100%',
   },
   footerContent: {

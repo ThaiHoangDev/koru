@@ -34,6 +34,14 @@ function* getMoreInfoSaga({ payload }: any) {
     yield put(HomeActions.getMoreInfo.fail(error));
   }
 }
+function* getPlantStateHistorySaga({ payload }: any) {
+  try {
+    const { data } = yield call(apiService.getPlantStateHistoryAPI, payload);
+    yield put(HomeActions.getPlantStateHistory.success(data.states));
+  } catch (error) {
+    yield put(HomeActions.getPlantStateHistory.fail(error));
+  }
+}
 
 function* attachPolicySaga({ payload }: any): any {
   try {
@@ -76,4 +84,5 @@ export default function* fetchData() {
   yield takeLatest(HomeActions.Types.POST_FAN.begin, postFan);
   yield takeLatest(HomeActions.Types.GET_MORE_INFO.begin, getMoreInfoSaga);
   yield takeLatest(HomeActions.Types.ATTACH_POLICY.begin, attachPolicySaga);
+  yield takeLatest(HomeActions.Types.GET_PLANT_STATE_HISTORY.begin, getPlantStateHistorySaga);
 }

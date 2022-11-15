@@ -15,3 +15,8 @@ export const attachPolicyService = async (data: any) => {
   };
   return await axiosClient.put(`/policies/attachments`, rawBody);
 };
+
+export const getPlantStateHistoryAPI = async (payload: any) => {
+  const { from = payload.from, to = payload.to, plantId = payload.plantId } = payload;
+  return await axiosClient.get(`/plants/${plantId}/history?from=${from}&to=${to}`);
+};

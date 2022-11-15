@@ -46,9 +46,11 @@ const DATA: IPropIntro[] = [
 ];
 
 const SoilDetailContainer = (props: IProps) => {
+  const { route } = props;
   let listRef: any = useRef(null);
   const navigation: any = useNavigation();
   const [index, setIndex] = useState(0);
+  const [plantId, setPlantId] = useState(route.params?.uuid);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -74,7 +76,7 @@ const SoilDetailContainer = (props: IProps) => {
 
   const onChangeIndex = ({ index }: { index: number }) => setIndex(index);
 
-  const renderScreen = ({ item, index }: any) => <MoreInfo data={item} />;
+  const renderScreen = ({ item, index }: any) => <MoreInfo data={item} plantId={plantId} />;
 
   return (
     <SafeAreaView style={styles.safeView}>
