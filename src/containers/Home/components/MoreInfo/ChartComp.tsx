@@ -4,7 +4,7 @@ import { useDispatch, connect } from 'react-redux';
 import { HomeActions } from '@Containers/Home/store/actions';
 import { makeSelectIsRequesting, makeSelectMyPlantHistory } from '@Containers/Home/store/selectors';
 
-import { WIDTH } from '@Constants/app';
+import { HEIGHT, WIDTH } from '@Constants/app';
 import SoilIcon1 from '@Components/iconSvg/home/SoilIcon1';
 import CIcon from '@Components/iconSvg/home/CIcon';
 import LuxIcon from '@Components/iconSvg/home/LuxIcon';
@@ -79,10 +79,9 @@ const Chart = (props: IProps) => {
       plantId: plantId,
     };
     dispatch(HomeActions.getPlantStateHistory.request(payload));
-    console.log(myPlantHistory, 'ffffff');
   }, [dispatch]);
 
-  const onPress = (id: number) => {
+  const onPress = (id: number) => () => {
     setIsActive(id);
   };
   const renderItemIcon = ({ item, index }: any) => (
@@ -90,7 +89,7 @@ const Chart = (props: IProps) => {
       <View style={styles.lineStyles} />
       <TouchableHighlight
         style={[styles.btnIcon, { backgroundColor: isActive === item.uuid ? colors.black2 : colors.white2 }]}
-        onPress={() => onPress(item.uuid)}>
+        onPress={onPress(item.uuid)}>
         {item.image}
       </TouchableHighlight>
       <View style={styles.lineStyles} />
