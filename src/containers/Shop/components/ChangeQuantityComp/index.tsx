@@ -14,19 +14,16 @@ interface IProps {
 
 const ChangeQuantityComp = (props: IProps) => {
   const { data } = props;
-  const [quantityItem, setQuantity] = useState(data?.quantity ? data?.quantity : 0);
   const dispatch = useDispatch();
   const handleIncrease = () => {
-    setQuantity(quantityItem + 1);
     const payload = { ...data, quantity: data?.quantity };
-    dispatch(ShopActions.InCreaseMyItem.request(payload));
+    dispatch(ShopActions.inCreaseMyItem.request(payload));
   };
 
   const handleDecrease = () => {
-    if (quantityItem > 0) {
-      setQuantity(quantityItem - 1);
+    if (data?.quantity > 0) {
       const payload = { ...data, quantity: data?.quantity };
-      dispatch(ShopActions.DecreaseMyItem.request(payload));
+      dispatch(ShopActions.decreaseMyItem.request(payload));
     }
   };
   return (
@@ -34,7 +31,7 @@ const ChangeQuantityComp = (props: IProps) => {
       <TouchableHighlight style={styles.button} onPress={handleDecrease}>
         <Text style={styles.textButton}>-</Text>
       </TouchableHighlight>
-      <Text style={styles.textButton}>{quantityItem}</Text>
+      <Text style={styles.textButton}>{data?.quantity}</Text>
       <TouchableHighlight style={styles.button} onPress={handleIncrease}>
         <Text style={styles.textButton}>+</Text>
       </TouchableHighlight>

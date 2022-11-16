@@ -5,15 +5,16 @@ import MoreInfoComp from './MoreInfoComp';
 import AboutPlant from './AboutPlantComp';
 interface IProps {
   data: any;
+  plantId?: string;
 }
-const MoreInfo = ({ data }: IProps) => {
+const MoreInfo = ({ data, plantId }: IProps) => {
   switch (data.uuid) {
     case 1:
       return <AboutPlant />;
     case 2:
       return <MoreInfoComp />;
     case 3:
-      return <Chart />;
+      return <Chart plantId={plantId} />;
     default:
       return <></>;
   }

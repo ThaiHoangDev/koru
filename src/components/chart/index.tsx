@@ -9,7 +9,7 @@ import { colors } from '@Theme/index';
 const screenWidth = Dimensions.get('window').width;
 
 const chartConfig: AbstractChartConfig = {
-  color: (opacity = 1) => `rgba(115, 115, 115, 1)`,
+  color: (opacity = 1) => `#fff`,
   stackedBar: false,
   strokeWidth: 2, // optional, default 3
   // barPercentage: 0.5,

@@ -18,7 +18,7 @@ const OrderComp = ({ data, index }: IProps) => {
 
   const deleteItem = (index: number) => () => {
     const payload = { ...data, index };
-    dispatch(ShopActions.DeleteMyItem.request(payload));
+    dispatch(ShopActions.deleteMyItem.request(payload));
   };
 
   const handleIncrease = () => {};
@@ -32,11 +32,7 @@ const OrderComp = ({ data, index }: IProps) => {
       </TouchableHighlight>
       <View style={styles.itemContent}>
         <View style={styles.image}>
-          <Image
-            source={{
-              uri: data.image,
-            }}
-          />
+          <Text>{data.image}</Text>
         </View>
         <View style={{ flex: 0.9 }}>
           <View>

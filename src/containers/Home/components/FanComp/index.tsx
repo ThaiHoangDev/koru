@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { WIDTH } from '@Constants/app';
 import { colors, fontFamily } from '@Theme/index';
 import LoaderAnimationProgress from '@Components/lottie/loader';
-import CircularSliderComp from '@Components/CircularSlider/CircularSlider';
+// import CircularSliderComp from '@Components/CircularSlider/CircularSlider';
 import StopIcon from '@Components/iconSvg/home/StopIcon';
 import { useDispatch } from 'react-redux';
 import { HomeActions } from '@Containers/Home/store/actions';
@@ -51,7 +51,7 @@ const FanComp = () => {
               height: -2,
             },
           }}>
-          <CircularSliderComp
+          {/* <CircularSliderComp
             angle={angle}
             setAngle={setAngle}
             min={0}
@@ -64,7 +64,7 @@ const FanComp = () => {
             strokeColor={colors.black2}
             textColor={colors.black2}
             handlePostFan={handleChangeValueFan}
-          />
+          /> */}
         </View>
         <TouchableOpacity style={{ position: 'absolute', zIndex: 5, left: -50 }} onPress={handleChange(359)}>
           <Text style={{ color: colors.black2, fontFamily: fontFamily.Strawford, fontSize: 16 }}>Fast</Text>

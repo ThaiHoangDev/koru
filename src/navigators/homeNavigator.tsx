@@ -5,9 +5,9 @@ import HomeScreen from '@Screens/home/HomeScreen';
 export type HomeStackParamList = {
   HomeScreen: undefined;
   Paring: { screen: 'NamePlant' } | undefined;
-  PlantDetail: undefined;
+  PlantDetail: { uuid: string } | undefined;
   FanSpeedScreen: undefined;
-  SoilDetailScreen: undefined;
+  SoilDetailScreen: { uuid?: string } | undefined;
 };
 
 const Stack = createStackNavigator();

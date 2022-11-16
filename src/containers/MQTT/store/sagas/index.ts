@@ -11,6 +11,7 @@ function subscribe() {
   const unsubscribe = () => {
     disconnect();
   };
+
   return eventChannel((emit: any) => {
     MQTTClient.attachMessageHandler((topic: string, message: any) => {
       console.log('topic xxxxxxx', topic, message.toString());
@@ -62,6 +63,7 @@ function* disconnect() {
 
 function* read(socket: any): any {
   const channel: any = yield call(subscribe);
+  console.log('read MQTT____');
   yield takeEvery(channel, function* (value) {
     yield put(value);
   });
@@ -75,8 +77,11 @@ function* initMQTTSaga(): any {
   try {
     const websocketInstance = yield connect();
     yield fork(handleMQTT, websocketInstance);
+    console.log('INIT_MQTT_REQUESTED', websocketInstance);
+    yield put(MQTTActions.init_MQTT.success());
   } catch (error) {
-    console.log('INIT_MQTT_REQUESTED', 'ERROR', error);
+    console.log('INIT_MQTT_REQUESTED_ERROR', error);
+    yield put(MQTTActions.init_MQTT.fail());
   }
 }
 
@@ -90,7 +95,13 @@ function* mqttPublishSaga(action: any) {
   MQTTClient.publish(topic, message);
 }
 
+function* mqttSubscriptions(action: any) {
+  const { topic } = action.payload;
+  MQTTClient.subscribe(topic);
+}
+
 export default function* watchWebsocket() {
   yield takeLatest(MQTTActions.Types.INIT_MQTT.begin, initMQTTSaga);
   yield takeEvery(MQTTActions.Types.MQTT_PUBLISH.begin, mqttPublishSaga);
+  yield takeLatest(MQTTActions.Types.MQTT_ADD_SUBSCRIPTIONS.begin, mqttSubscriptions);
 }

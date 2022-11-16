@@ -12,11 +12,18 @@ import {
 import React, { useRef, useState } from 'react';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 
+import { connect, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { HomeActions } from '@Containers/Home/store/actions';
+import { createStructuredSelector } from 'reselect';
+import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/store/selectors';
+
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@Navigators/homeNavigator';
 import { RouteProp } from '@react-navigation/native';
 import TopNavigationBar from '@Navigators/topNavigation';
 import NetworkIcon from '@Components/iconSvg/home/NetworkIcon';
+import PlantIcon from '@Components/iconSvg/pairing/Plant';
 
 import { colors, fontFamily } from '@Theme/index';
 
@@ -30,42 +37,24 @@ import NotConected from '@Components/iconSvg/home/NotConected';
 import { ButtonComp } from '@Components/button';
 import { showAlert } from '@Utils/helper';
 
-const DATA = [
-  {
-    txtBtn: 'Get Started',
-    title: 'Smart tree planting',
-    image: <Plant />,
-    subtitle: 'Have a nice day. Choose the right tree to plant.',
-  },
-  {
-    txtBtn: 'Next',
-    title: 'Smart pots',
-    image: <Plant />,
-    subtitle: 'And smart features will help plants grow comprehensively',
-  },
-  {
-    txtBtn: 'Let’s try',
-    title: 'Easy to use',
-    image: <Plant />,
-    subtitle: 'And smart features will help plants grow comprehensively',
-  },
-];
-
 type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'PlantDetail'>;
 type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'PlantDetail'>;
 
 interface IProps {
   isLoading: boolean;
-  plantDetail: any;
+  myPlant: any;
   navigation: HomeScreenNavigationProp;
   route: HomeScreenRouteProp;
 }
 
 const PlantDetailContainer = (props: IProps) => {
-  const { navigation } = props;
+  const { navigation, route, myPlant } = props;
   let listRef: any = useRef(null);
   const [index, setIndex] = useState(0);
   const disconected = false;
+  const dispatch = useDispatch();
+  const [page, setPage] = useState(1);
+  const [plantId, setPlantId] = useState('');
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -74,12 +63,22 @@ const PlantDetailContainer = (props: IProps) => {
     });
   }, [navigation]);
 
+  useEffect(() => {
+    const payload = {
+      page,
+      perpage: 10,
+      search: '',
+    };
+    dispatch(HomeActions.getMyPlant.request(payload));
+  }, [page, dispatch]);
+
   const onChangeIndex = ({ index }: any) => {
     setIndex(index);
+    setPlantId(myPlant.filter((item: any, i: any) => index === i).uuid);
   };
 
   const handleNextPlant = () => {
-    if (listRef.current.getCurrentIndex() < 2) {
+    if (listRef.current.getCurrentIndex() < myPlant.length - 1) {
       setIndex(listRef.current.getCurrentIndex() + 1);
       listRef.current.scrollToIndex({
         index: listRef.current.getCurrentIndex() + 1,
@@ -99,8 +98,8 @@ const PlantDetailContainer = (props: IProps) => {
             style={{ borderRadius: 10, top: -HEIGHT / 100 }}></Image>
         </View>
         <View style={styles.rightContainer}>
-          <Text style={[styles.title, styles.fontFamily]}>{item?.name || 'assssssss'}</Text>
-          <Text style={[styles.subTitle, styles.fontFamily]}>{item?.type || 'âsaaaaa99999'}</Text>
+          <Text style={[styles.title, styles.fontFamily]}>{item?.name}</Text>
+          <Text style={[styles.subTitle, styles.fontFamily]}>{item?.type}</Text>
         </View>
       </View>
     );
@@ -110,15 +109,18 @@ const PlantDetailContainer = (props: IProps) => {
     navigation.navigate('FanSpeedScreen');
   };
   const navigateMoreInfo = () => {
-    navigation.navigate('SoilDetailScreen');
-    // navigation.navigate('MoreInfoScreen');
+    navigation.navigate('SoilDetailScreen', { uuid: plantId });
   };
 
   const handleReconect = () => {};
 
   const renderScreen = ({ item, index }: any) => (
     <ImageBackgroundCompLayout
-      children={<View style={styles.imageBg}>{item.image}</View>}
+      children={
+        <View style={styles.imageBg}>
+          {!!item?.image_url ? <Image source={{ uri: item?.image_url }} /> : <PlantIcon />}
+        </View>
+      }
       source={require('@Assets/image-background/box-plant.png')}
       resizeMode="cover"
       imageStyle={{ flex: 1, width: '100%' }}
@@ -141,7 +143,7 @@ const PlantDetailContainer = (props: IProps) => {
 
       <View style={styles.middleContainer}>
         <FlatList
-          data={[1, 2, 3, 4]}
+          data={myPlant}
           keyExtractor={item => item.toString()}
           renderItem={_renderItem}
           contentContainerStyle={{ flexGrow: 1 }}
@@ -154,11 +156,12 @@ const PlantDetailContainer = (props: IProps) => {
           showPagination
           ref={listRef}
           autoplayLoopKeepAnimation
-          data={DATA}
+          data={myPlant}
           renderItem={renderScreen}
           paginationStyle={{
             position: 'absolute',
-            right: WIDTH / 8,
+            width: WIDTH / 2,
+            right: 0,
           }}
           paginationStyleItem={styles.paginationDot}
           paginationStyleItemInactive={styles.itemInactive}
@@ -201,8 +204,12 @@ const PlantDetailContainer = (props: IProps) => {
     </View>
   );
 };
+const mapStateToProps = createStructuredSelector({
+  myPlant: makeSelectMyPlant(),
+  isLoading: makeSelectIsRequesting(),
+});
 
-export default PlantDetailContainer;
+export default connect(mapStateToProps)(PlantDetailContainer);
 
 const styles = StyleSheet.create({
   titleTab: {

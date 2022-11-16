@@ -6,14 +6,17 @@ import { ImageBackgroundCompLayout } from '@Components/image-backgroundComp';
 import PlantIcon from '@Components/iconSvg/pairing/Plant';
 import { ButtonComp } from '@Components/button';
 import NotConected from '@Components/iconSvg/home/NotConected';
+import AddToCardIcon from '@Components/iconSvg/shop/AddToCardIcon';
 
 import { colors, fontFamily } from '@Theme/index';
 
 interface IProps {
   data: Plant;
+  shopScreen: boolean;
+  onAddToCard: () => void;
 }
 
-const PlantBoxComp = ({ data }: IProps) => {
+const PlantBoxComp = ({ data, shopScreen, onAddToCard }: IProps) => {
   const disconected = false;
 
   const handleNotConected = () => {};
@@ -35,11 +38,22 @@ const PlantBoxComp = ({ data }: IProps) => {
       )}
       <View style={[styles.root, { opacity: disconected ? 0.3 : 1 }]}>
         <View style={styles.headerContainer}>
-          <View>
-            <Text style={styles.title}>{data.name}</Text>
-            <Text style={styles.subTitle}>{data.species_name}</Text>
-          </View>
-          <View style={styles.status}></View>
+          {shopScreen ? (
+            <>
+              <View></View>
+              <TouchableOpacity style={styles.addToCardBtn} onPress={onAddToCard}>
+                <AddToCardIcon />
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <View>
+                <Text style={styles.title}>{data.name}</Text>
+                <Text style={styles.subTitle}>{data.species_name}</Text>
+              </View>
+              <View style={styles.status}></View>
+            </>
+          )}
         </View>
         <ImageBackgroundCompLayout
           children={
@@ -53,6 +67,12 @@ const PlantBoxComp = ({ data }: IProps) => {
           resizeMode="cover"
           imageStyle={{ flex: 1, width: '100%' }}
         />
+        {shopScreen && (
+          <View>
+            <Text style={[styles.plantName, styles.textStyle]}>{data.name}</Text>
+            <Text style={[styles.plantPrice, styles.textStyle]}>$40.00</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -89,6 +109,26 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
     backgroundColor: colors.green,
+  },
+  addToCardBtn: {
+    backgroundColor: colors.black2,
+    borderRadius: 50,
+    height: 20,
+    width: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+  },
+  textStyle: {
+    fontFamily: fontFamily.Strawford,
+    fontWeight: '500',
+    fontSize: 16,
+  },
+  plantName: {
+    color: colors.black,
+  },
+  plantPrice: {
+    color: colors.grey,
   },
   headerContainer: {
     flexDirection: 'row',

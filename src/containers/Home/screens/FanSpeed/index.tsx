@@ -46,7 +46,7 @@ const FanSpeedContainer = (props: IProps) => {
     navigation.navigate('FanSpeedScreen');
   };
   const navigateMoreInfo = () => {
-    navigation.navigate('FanSpeedScreen');
+    navigation.navigate('SoilDetailScreen');
   };
 
   return (

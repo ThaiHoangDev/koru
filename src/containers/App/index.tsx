@@ -7,6 +7,11 @@ import { AppNavigator } from '../../navigators';
 import { AppState, NativeModules, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { HEIGHT, WIDTH } from '@Constants/app';
+import { useInjectReducer } from '@Utils/injectReducer';
+import { useInjectSaga } from '@Utils/injectSaga';
+
+import reducer from '@Containers/MQTT/store/reducers';
+import saga from '@Containers/MQTT/store/sagas';
 
 const AppContainer = () => {
   // useEffect(() => {
@@ -16,6 +21,8 @@ const AppContainer = () => {
   //     isMountedRef.current = false;
   //   };
   // }, []);
+  useInjectReducer({ key: 'mqtt', reducer });
+  useInjectSaga({ key: 'mqtt', saga });
 
   useEffect(() => {
     const subAppState = AppState.addEventListener('change', async nextAppState => {

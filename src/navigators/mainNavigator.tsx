@@ -16,6 +16,7 @@ export type MainStackParamList = {
   Paring: undefined;
   PlantDetail: undefined;
   FanSpeedScreen: undefined;
+  OrderScreen: undefined;
 };
 
 const MainNavigator = () => {
@@ -29,11 +30,22 @@ const MainNavigator = () => {
         options={{ headerShown: false, presentation: 'card' }}
       />
       <MainStack.Screen name="TabBar" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <MainStack.Screen name="OrderScreen" component={OrderScreen} />
-      <MainStack.Screen name="PlantOrderDetailScreen" component={PlantOrderDetailScreen} />
-      <MainStack.Screen name="PlantDetail" component={PlantDetail} options={{ headerShown: true }} />
-      <MainStack.Screen name="FanSpeedScreen" component={FanSpeedScreen} options={{ headerShown: true }} />
-      <MainStack.Screen name="SoilDetailScreen" component={SoilDetailScreen} />
+      <MainStack.Screen name="OrderScreen" component={(props: any) => <OrderScreen {...props} />} />
+      <MainStack.Screen
+        name="PlantOrderDetailScreen"
+        component={(props: any) => <PlantOrderDetailScreen {...props} />}
+      />
+      <MainStack.Screen
+        name="PlantDetail"
+        component={(props: any) => <PlantDetail {...props} />}
+        options={{ headerShown: true }}
+      />
+      <MainStack.Screen
+        name="FanSpeedScreen"
+        component={(props: any) => <FanSpeedScreen {...props} />}
+        options={{ headerShown: true }}
+      />
+      <MainStack.Screen name="SoilDetailScreen" component={(props: any) => <SoilDetailScreen {...props} />} />
     </MainStack.Navigator>
   );
 };

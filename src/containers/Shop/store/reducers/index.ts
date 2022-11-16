@@ -48,7 +48,6 @@ const shopReducer = (state = initialState, { type, payload }: ACTION) =>
         );
         draft.isLoading = false;
         draft.myOrder = incrementt;
-        console.log(draft.myOrder);
         break;
       case ShopActions.Types.INCREASE_MY_ITEM.failed:
         draft.isLoading = false;
@@ -83,6 +82,19 @@ const shopReducer = (state = initialState, { type, payload }: ACTION) =>
         draft.myOrder = deleteItemm;
         break;
       case ShopActions.Types.DELETE_MY_ITEM.failed:
+        draft.isLoading = false;
+        break;
+      // Add To Card
+      case ShopActions.Types.ADD_TO_CARD.begin:
+        const add = draft.myOrder.filter((item: IMyOrderList) => (item.uuid === payload ? ++item.quantity : payload));
+        draft.isLoading = true;
+        draft.myOrder = add;
+        break;
+      case ShopActions.Types.ADD_TO_CARD.succeeded:
+        draft.isLoading = false;
+        draft.myOrder = [...draft.myOrder, { ...draft.myOrder[0], uuid: payload }];
+        break;
+      case ShopActions.Types.ADD_TO_CARD.failed:
         draft.isLoading = false;
         break;
       default:

@@ -12,7 +12,7 @@ type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'PlantDetail'>;
 
 interface IProps {
   isLoading: boolean;
-  plantDetail: any;
+  myPlant: any;
   navigation: HomeScreenNavigationProp;
   route: HomeScreenRouteProp;
 }
