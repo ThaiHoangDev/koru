@@ -12,12 +12,13 @@ export namespace HomeActions {
     'UPDATE_LIST_PLANT',
     'ATTACH_POLICY',
     'GET_PLANT_STATE_HISTORY',
+    'GET_THING_SHADOW',
   );
 
   export const getMyPlant = createActionGenerator(Types.GET_MY_PLANT);
   export const postFan = createActionGenerator(Types.POST_FAN);
   export const getMoreInfo = createActionGenerator(Types.GET_MORE_INFO);
-  export const attachPolicy = createActionGenerator(Types.ATTACH_POLICY);
+  export const getThingShadow = createActionGenerator(Types.GET_THING_SHADOW);
   export const updateListPlant = createAction(Types.UPDATE_LIST_PLANT.default);
   export const getPlantStateHistory = createActionGenerator(Types.GET_PLANT_STATE_HISTORY);
 }

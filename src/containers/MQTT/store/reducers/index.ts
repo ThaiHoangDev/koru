@@ -1,10 +1,8 @@
 import { uniqueId } from 'lodash';
+import { MQTTActions } from '../actions';
 
 import {
   UPDATE_SETTING_MQTT_REQUEST,
-  MQTT_CONNECT_REQUEST,
-  MQTT_CONNECT_SUCCESS,
-  MQTT_CONNECT_ERROR,
   MQTT_ADD_SUBSCRIPTIONS,
   MQTT_MESSAGES_TEST,
   MQTT_REMOVE_SUBSCRIPTIONS,
@@ -87,7 +85,7 @@ const mqttReducer = (state = initialState, action: any) => {
         },
       };
     }
-    case MQTT_CONNECT_REQUEST: {
+    case MQTTActions.Types.INIT_MQTT.begin: {
       return {
         ...state,
         testMQTT: {
@@ -96,14 +94,14 @@ const mqttReducer = (state = initialState, action: any) => {
         connecting: true,
       };
     }
-    case MQTT_CONNECT_SUCCESS: {
+    case MQTTActions.Types.INIT_MQTT.succeeded: {
       return {
         ...state,
         connecting: false,
         status: true,
       };
     }
-    case MQTT_CONNECT_ERROR: {
+    case MQTTActions.Types.INIT_MQTT.failed: {
       return {
         ...state,
         connecting: false,

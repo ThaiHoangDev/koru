@@ -26,6 +26,7 @@ export namespace AuthActions {
   export const resendEmailVerification = createActionGenerator(Types.RESEND_EMAIL_VERIFICATION);
   export const stepSignUp = createActionGenerator(Types.STEP_SIGNUP);
   export const refreshToken = createActionGenerator(Types.REFRESH_TOKEN);
+  // export const logout = createActionGenerator(Types.LOGOUT);
 
   export const toggleAuthModal = createAction<boolean>(Types.TOGGLE_AUTH_MODAL.default);
   export const resetRegisterState = createAction(Types.RESET_REGISTER_STATE.default);

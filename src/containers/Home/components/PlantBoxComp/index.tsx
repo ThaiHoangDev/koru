@@ -1,7 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 
-import { Plant } from '@Containers/Home/interfaces';
 import { ImageBackgroundCompLayout } from '@Components/image-backgroundComp';
 import PlantIcon from '@Components/iconSvg/pairing/Plant';
 import { ButtonComp } from '@Components/button';
@@ -9,20 +8,21 @@ import NotConected from '@Components/iconSvg/home/NotConected';
 import AddToCardIcon from '@Components/iconSvg/shop/AddToCardIcon';
 
 import { colors, fontFamily } from '@Theme/index';
+import { totalStatus } from '@Utils/helper';
+import { PlantProps } from '@Containers/Home/store/interfaces';
 
 interface IProps {
-  data: Plant;
+  data: PlantProps;
   shopScreen: boolean;
-  onAddToCard: () => void;
+  onAddToCard?: () => void;
 }
 
 const PlantBoxComp = ({ data, shopScreen, onAddToCard }: IProps) => {
-  const disconected = false;
-
   const handleNotConected = () => {};
+
   return (
     <View>
-      {disconected && (
+      {!data?.status && (
         <View style={styles.notConected}>
           <View style={styles.notConectedIcon}>
             <NotConected />
@@ -36,22 +36,19 @@ const PlantBoxComp = ({ data, shopScreen, onAddToCard }: IProps) => {
           />
         </View>
       )}
-      <View style={[styles.root, { opacity: disconected ? 0.3 : 1 }]}>
+      <View style={[styles.root, { opacity: !data?.status ? 0.3 : 1 }]}>
         <View style={styles.headerContainer}>
           {shopScreen ? (
-            <>
-              <View></View>
-              <TouchableOpacity style={styles.addToCardBtn} onPress={onAddToCard}>
-                <AddToCardIcon />
-              </TouchableOpacity>
-            </>
+            <TouchableOpacity style={styles.addToCardBtn} onPress={onAddToCard}>
+              <AddToCardIcon />
+            </TouchableOpacity>
           ) : (
             <>
               <View>
                 <Text style={styles.title}>{data.name}</Text>
                 <Text style={styles.subTitle}>{data.species_name}</Text>
               </View>
-              <View style={styles.status}></View>
+              <View style={!!data.reported && totalStatus(data) ? styles.status : styles.noStatus}></View>
             </>
           )}
         </View>
@@ -108,7 +105,13 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     height: 20,
     width: 20,
-    backgroundColor: colors.green,
+    backgroundColor: colors.green1,
+  },
+  noStatus: {
+    borderRadius: 50,
+    height: 20,
+    width: 20,
+    backgroundColor: colors.red,
   },
   addToCardBtn: {
     backgroundColor: colors.black2,

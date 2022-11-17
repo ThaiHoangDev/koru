@@ -16,7 +16,7 @@ export default StyleSheet.create({
   label: {
     fontFamily: fontFamily.Strawford,
     color: colors.black2,
-    fontSizes: 13,
+    fontSize: 13,
     fontWeight: '400',
   },
 });

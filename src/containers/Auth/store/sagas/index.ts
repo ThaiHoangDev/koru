@@ -2,6 +2,7 @@ import { AuthenticationDetails, CognitoUserAttribute, CognitoUser } from 'amazon
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { Auth } from 'aws-amplify';
 import { AppActions } from '@Containers/App/store/actions';
+import * as AWS from 'aws-sdk/global';
 
 import axiosClient from '@Utils/axios';
 import asyncStorage from '@Utils/asyncStorage';
@@ -15,6 +16,7 @@ import * as apiService from '../services';
 import { AuthActions } from '../actions';
 import { LoginAction } from '../../interfaces';
 import { showErrorMessage, showErrorWithString } from './../../../../utils/helper';
+import { AWSConfig, MQTTConfig } from '@Utils/constants';
 
 function* loginApiSaga({ payload }: any) {
   const { cognitoToken } = payload;
@@ -37,17 +39,44 @@ function* loginApiSaga({ payload }: any) {
 function* loginCognitoSaga({ payload }: LoginAction): any {
   const { email = '', password } = payload;
   try {
-    const authenticationData = {
-      Username: email,
-      Password: password,
-    };
-    const userData = {
-      Username: email,
-      Pool: cognitoPool,
-    };
+    // const authenticationData = {
+    //   Username: email,
+    //   Password: password,
+    // };
+    // const userData = {
+    //   Username: email,
+    //   Pool: cognitoPool,
+    // };
     const user = yield Auth.signIn({ username: email, password });
     const cognitoToken = user.signInUserSession.accessToken;
+    // var cognitoUser = new CognitoUser(userData);
+    // var authenticationDetails = new AuthenticationDetails(authenticationData);
+    // cognitoUser.authenticateUser(authenticationDetails, {
+    //   onSuccess: function (result) {
+    //     var cognitoToken = result.getAccessToken();
+    //     console.log(cognitoToken, 'token____');
+
+    //     //POTENTIAL: Region needs to be set if not already set previously elsewhere.
+    //     AWS.config.region = MQTTConfig.region;
+
+    //     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    //       IdentityPoolId: MQTTConfig.identityPoolId, // your identity pool id here
+    //       Logins: {
+    //         'cognito-idp.eu-central-1.amazonaws.com/3d2b82aa-bebf-40de-972d-e5660105a090': result
+    //           .getIdToken()
+    //           .getJwtToken(),
+    //       },
+    //     });
+    //     store.dispatch(AuthActions.loginApi.request({ cognitoToken }));
+    //     //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
+    //   },
+
+    //   onFailure: function (err) {},
+    // });
+
     store.dispatch(AuthActions.loginApi.request({ cognitoToken }));
+    // const data = yield Auth.currentCredentials();
+    // console.log(data, 'dataqqqq___jjjjjj');
   } catch (error: any) {
     showErrorMessage(error, () => {});
     yield put(AuthActions.login.fail(error));
@@ -145,18 +174,19 @@ function* refreshTokenSaga(): any {
   }
 }
 
-function* logoutSaga(): any {
-  const userData = {
-    Username: '',
-    Pool: cognitoPool,
-  };
-  const cognitoUser = yield new CognitoUser(userData);
-  yield cognitoUser.signOut();
-  asyncStorage.removeItem(TOKEN_NAME);
-  asyncStorage.removeItem(REFRESH_TOKEN);
-  yield put(AppActions.initApp.success({ isLoggedIn: false }));
-  // yield put(AuthActions.login.success());
-}
+// function* logoutSaga(): any {
+//   console.log('logout ')
+//   try {
+//     yield Auth.signOut();
+//     asyncStorage.removeItem(TOKEN_NAME);
+//     asyncStorage.removeItem(REFRESH_TOKEN);
+//     yield put(AppActions.initApp.success({ isLoggedIn: false }));
+//     yield put(AuthActions.logout.success());
+//   } catch (error) {
+//     console.log('logout error')
+//     yield put(AuthActions.logout.fail(error));
+//   }
+// }
 
 export default function* fetchData() {
   yield takeLatest(AuthActions.Types.LOGIN.begin, loginCognitoSaga);
@@ -165,4 +195,5 @@ export default function* fetchData() {
   yield takeLatest(AuthActions.Types.VERIFY_CODE.begin, confirmSignUpSaga);
   yield takeLatest(AuthActions.Types.RESEND_EMAIL_VERIFICATION.begin, reSendEmailVeriSaga);
   yield takeLatest(AuthActions.Types.REFRESH_TOKEN.begin, refreshTokenSaga);
+  // yield takeLatest(AuthActions.Types.LOGOUT.begin, logoutSaga);
 }

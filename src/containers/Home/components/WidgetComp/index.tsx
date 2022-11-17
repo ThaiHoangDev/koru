@@ -6,39 +6,43 @@ import { colors, fontFamily } from '@Theme/index';
 
 interface IProps {
   title: string;
-  subTitle: string;
+  subTitle?: string;
   background: any;
   statusColor: string;
   status: string;
   unit: string;
   image: React.ReactNode;
+  fontSize: number;
 }
 
-const WidgetComp = ({ title, subTitle, background, statusColor, status, unit, image }: IProps) => {
+const WidgetComp = ({ title, subTitle, background, statusColor, status, unit, image, fontSize }: IProps) => {
   return (
     <View style={styles.container}>
       <ImageBackgroundCompLayout
-        children={undefined}
+        children={
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={styles.leftContent}>
+              <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+                {!!image && <View style={styles.iconView}>{image}</View>}
+                <View style={{ paddingHorizontal: 10, flex: 1, alignItems: 'flex-start' }}>
+                  <Text style={[styles.subTitleText, { fontSize }]}>{title}</Text>
+                  <Text style={[styles.subText, styles.textStyle]}>{unit}</Text>
+                </View>
+              </View>
+              <View style={styles.lineText} />
+              <View style={{ alignItems: 'center' }}>
+                <Text style={[{ color: statusColor }, styles.textStyle]}>{status}</Text>
+              </View>
+            </View>
+            <View style={styles.rightBackground}>
+              <View style={[styles.rightSmallBackground, { backgroundColor: statusColor }]}></View>
+            </View>
+          </View>
+        }
         source={background}
         resizeMode="cover"
-        imageStyle={{ height: 130, marginTop: -20 }}
+        imageStyle={{ height: 130, marginTop: -20, marginRight: 28 }}
       />
-      <View style={styles.leftContent}>
-        <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-          <View style={styles.iconView}>{image}</View>
-          <View>
-            <Text style={[styles.subTitleText]}>{title}</Text>
-            <Text style={[styles.subText, styles.textStyle]}>{unit}</Text>
-          </View>
-        </View>
-        <View style={styles.lineText} />
-        <View style={{ alignItems: 'center' }}>
-          <Text style={[{ color: statusColor }, styles.textStyle]}>{status}</Text>
-        </View>
-      </View>
-      <View style={styles.rightBackground}>
-        <View style={[styles.rightSmallBackground, { backgroundColor: statusColor }]}></View>
-      </View>
     </View>
   );
 };
@@ -63,7 +67,6 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   leftContent: {
-    position: 'absolute',
     top: 1,
     justifyContent: 'center',
   },
@@ -80,7 +83,6 @@ const styles = StyleSheet.create({
   },
   subTitleText: {
     fontFamily: fontFamily.Strawford,
-    fontSize: 32,
     fontWeight: '500',
     color: colors.black2,
     textAlign: 'center',

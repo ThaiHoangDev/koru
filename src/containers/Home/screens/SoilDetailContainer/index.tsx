@@ -1,4 +1,4 @@
-import { Dimensions, Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import React, { useRef, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp, useNavigation } from '@react-navigation/native';
@@ -50,7 +50,6 @@ const SoilDetailContainer = (props: IProps) => {
   let listRef: any = useRef(null);
   const navigation: any = useNavigation();
   const [index, setIndex] = useState(0);
-  const [plantId, setPlantId] = useState(route.params?.uuid);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -76,7 +75,7 @@ const SoilDetailContainer = (props: IProps) => {
 
   const onChangeIndex = ({ index }: { index: number }) => setIndex(index);
 
-  const renderScreen = ({ item, index }: any) => <MoreInfo data={item} plantId={plantId} />;
+  const renderScreen = ({ item, index }: any) => <MoreInfo data={item} plant={route.params?.plant} />;
 
   return (
     <SafeAreaView style={styles.safeView}>

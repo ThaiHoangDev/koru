@@ -8,16 +8,40 @@ import StopIcon from '@Components/iconSvg/home/StopIcon';
 import { useDispatch } from 'react-redux';
 import { HomeActions } from '@Containers/Home/store/actions';
 
-const FanComp = () => {
+type SeclectedProps = 'Low' | 'Auto' | 'Fast';
+interface IProps {
+  fanValue: number;
+}
+
+const handleSelected = (fanValue: number) => {
+  if (fanValue <= 25) {
+    return 'Low';
+  } else if (fanValue <= 50) {
+    return 'Auto';
+  } else if (fanValue <= 100) {
+    return 'Fast';
+  }
+  return 'Auto';
+};
+
+const FanComp = ({ fanValue }: IProps) => {
   const dispatch = useDispatch();
-  const [angle, setAngle] = useState(10);
+  const [angle, setAngle] = useState(fanValue);
+  const [selected, setSelected] = useState<SeclectedProps>(handleSelected(fanValue));
   const handleChange = (x: number) => () => {
     handleChangeValueFan(x);
   };
 
   const handleChangeValueFan = (x: number) => {
     setAngle(x);
-    dispatch(HomeActions.postFan.request(((x * 100) / 360).toFixed(2)));
+    if ((x * 100) / 360 <= 25) {
+      setSelected('Low');
+    } else if ((x * 100) / 360 <= 50) {
+      setSelected('Auto');
+    } else if ((x * 100) / 360 <= 100) {
+      setSelected('Fast');
+    }
+    dispatch(HomeActions.postFan.request(((x * 100) / 360).toFixed(0)));
   };
 
   return (
@@ -66,19 +90,23 @@ const FanComp = () => {
             handlePostFan={handleChangeValueFan}
           /> */}
         </View>
-        <TouchableOpacity style={{ position: 'absolute', zIndex: 5, left: -50 }} onPress={handleChange(359)}>
-          <Text style={{ color: colors.black2, fontFamily: fontFamily.Strawford, fontSize: 16 }}>Fast</Text>
+        <TouchableOpacity
+          style={{ position: 'absolute', zIndex: 5, left: selected === 'Fast' ? -70 : -40 }}
+          onPress={handleChange(359)}>
+          <Text style={[styles.btn, selected === 'Fast' ? styles.btnSelect : styles.btnNoSelect]}>Fast</Text>
         </TouchableOpacity>
         <TouchableOpacity style={{ position: 'absolute', height: 60, zIndex: 5, top: -40 }} onPress={handleChange(0)}>
           <StopIcon />
         </TouchableOpacity>
-        <TouchableOpacity style={{ position: 'absolute', zIndex: 5, right: -40 }} onPress={handleChange(90)}>
-          <Text style={{ color: colors.black2, fontFamily: fontFamily.Strawford }}>Low</Text>
+        <TouchableOpacity
+          style={{ position: 'absolute', zIndex: 5, right: selected === 'Low' ? -70 : -40 }}
+          onPress={handleChange(90)}>
+          <Text style={[styles.btn, selected === 'Low' ? styles.btnSelect : styles.btnNoSelect]}>Low</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ position: 'absolute', zIndex: 5, height: 30, bottom: -40 }}
           onPress={handleChange(180)}>
-          <Text style={{ color: colors.black2, fontFamily: fontFamily.Strawford }}>Auto</Text>
+          <Text style={[styles.btn, selected === 'Auto' ? styles.btnSelect : styles.btnNoSelect]}>Auto</Text>
         </TouchableOpacity>
         <View style={styles.fanContainer}>
           <LoaderAnimationProgress source={require('@Assets/lotties/fan.json')} speed={angle / 10} width={40} />
@@ -114,5 +142,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
+  },
+  btn: {
+    fontFamily: fontFamily.Strawford,
+  },
+  btnSelect: {
+    fontSize: 32,
+    color: colors.green1,
+  },
+  btnNoSelect: {
+    color: colors.black2,
+    fontSize: 16,
   },
 });

@@ -15,12 +15,17 @@ export interface MyPlantProps {
   data: Plant;
 }
 
+export type MoreInfoType = 'mst' | 'temp' | 'tvoc' | 'br' | string;
+type MoreInfoStatus = 'Good' | 'Warning' | 'To low' | string;
+
 export interface IMoreInfoProps {
   title: string;
   image: React.ReactNode;
-  status: string;
+  status: MoreInfoStatus;
   statusColor: string;
   background: any;
   subTitle: string;
   unit: string;
+  name: string;
+  type: MoreInfoType;
 }

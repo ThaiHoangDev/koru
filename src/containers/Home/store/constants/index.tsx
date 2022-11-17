@@ -4,20 +4,14 @@ import LuxIcon from '@Components/iconSvg/home/LuxIcon';
 import WaterIcon from '@Components/iconSvg/home/WaterIcon';
 
 import { colors } from '@Theme/index';
+import { IMoreInfoProps } from '@Containers/Home/interfaces';
 
-export interface IMoreInfoProps {
-  title: string;
-  image: React.ReactNode;
-  status: string;
-  statusColor: string;
-  background: any;
-  subTitle: string;
-  unit: string;
-}
 
-export const MORE_INFO_DATA = [
+export const MORE_INFO_DATA: IMoreInfoProps[] = [
   {
     title: '75',
+    name: 'Soil moist',
+    type: 'mst',
     image: <WaterIcon />,
     status: 'Good',
     statusColor: colors.green1,
@@ -27,6 +21,8 @@ export const MORE_INFO_DATA = [
   },
   {
     title: '25',
+    name: 'Air Quality',
+    type: 'tvoc',
     image: <SoilIcon1 />,
     status: 'Good',
     statusColor: colors.green1,
@@ -36,6 +32,8 @@ export const MORE_INFO_DATA = [
   },
   {
     title: '20',
+    name: 'Temperature',
+    type: 'temp',
     image: <CIcon />,
     status: 'To low',
     statusColor: '#FFBC57',
@@ -45,6 +43,8 @@ export const MORE_INFO_DATA = [
   },
   {
     title: '1400',
+    name: 'Light',
+    type: 'br',
     image: <LuxIcon />,
     status: 'Warning',
     statusColor: '#F12C1F',

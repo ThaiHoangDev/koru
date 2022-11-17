@@ -1,5 +1,8 @@
+
 import dayjs from 'dayjs';
 import { Alert } from 'react-native';
+
+import { PlantProps, ReportedProps } from 'containers/Home/store/interfaces';
 
 interface IProps {
   lastDay: number;
@@ -126,4 +129,42 @@ export const showConfirmationAlert = (
       },
     },
   ]);
+};
+
+export const formatAsStatus = (min: number, max: number, value: number) => {
+  if (value >= min && value <= max) {
+    return true;
+  }
+  return false;
+};
+
+export const formatValueMQTT = (value: ReportedProps, type: string) => {
+  switch (type) {
+    case 'Soil moist':
+      return `${value.mst}%`;
+    case 'Air Quality':
+      return `${value.tvoc} ug/m3`;
+    case 'Temperature':
+      return `${value.temp} C`;
+    case 'Light':
+      return `${Math.max(value.br1, value.br2, value.br3)} lux`;
+    default:
+      return 0;
+  }
+};
+
+export const totalStatus = (plant: PlantProps) => {
+  const brStatus = formatAsStatus(
+    plant.species_bright_min_h,
+    plant.species_bright_max_h,
+    Math.max(plant?.reported.br1 || 0, plant?.reported.br2 || 0, plant?.reported.br3 || 0),
+  );
+  const tempStatus = formatAsStatus(plant.species_bright_min_h, plant.species_bright_max_h, plant?.reported.temp);
+  const hmStatus = formatAsStatus(plant.species_humidity_min, plant.species_humidity_max, plant?.reported.hm);
+
+  return brStatus && tempStatus && hmStatus && true;
+};
+
+export const qualityDay = (plant: PlantProps) => {
+  return (+plant?.reported?.wtl * +plant?.species_watering_frequency) / 100;
 };
