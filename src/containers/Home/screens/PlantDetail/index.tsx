@@ -25,7 +25,6 @@ import { formatValueMQTT, qualityDay, showAlert } from '@Utils/helper';
 import { PlantProps } from '@Containers/Home/store/interfaces';
 import { ReportData } from '@Containers/Home/constants';
 
-
 type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'PlantDetail'>;
 type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'PlantDetail'>;
 
@@ -96,11 +95,19 @@ const PlantDetailContainer = (props: IProps) => {
 
   const handleReconect = () => {};
 
-  const renderScreen = ({ item, index }: any) => (
+  const renderScreen = ({ item, index }: { item: PlantProps; index: number }) => (
     <ImageBackgroundCompLayout
       children={
         <View style={styles.imageBg}>
-          {!!item?.image_url ? <Image source={{ uri: item?.image_url }} /> : <PlantIcon />}
+          {!!item?.species_image ? (
+            <Image
+              source={{ uri: item?.species_image }}
+              style={{ width: '100%', height: '100%' }}
+              resizeMode="contain"
+            />
+          ) : (
+            <PlantIcon />
+          )}
         </View>
       }
       source={require('@Assets/image-background/box-plant.png')}
@@ -113,8 +120,8 @@ const PlantDetailContainer = (props: IProps) => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={{ flex: 2 }}>
-          <Text style={styles.headerTitle}>Balu</Text>
-          <Text style={styles.headerSubTitle}>Monstera</Text>
+          <Text style={styles.headerTitle}>{currentPlant.name}</Text>
+          <Text style={styles.headerSubTitle}>{currentPlant.species_name}</Text>
         </View>
         <View style={styles.networkStyle}>
           {!currentPlant?.status && <NotConected />}
@@ -163,11 +170,13 @@ const PlantDetailContainer = (props: IProps) => {
         <ImageBackgroundCompLayout
           children={
             <TouchableOpacity style={styles.bgLayout}>
-             {!isEmpty(currentPlant) && <View style={styles.wateringText}>
-                <Text style={styles.mlText}>{currentPlant?.reported?.wtl || 0} ml</Text>
-                <Text style={styles.numText}>{!!currentPlant?.reported?.wtl ? qualityDay(currentPlant) : 0}</Text>
-                <Text style={styles.dayText}>days</Text>
-              </View>}
+              {!isEmpty(currentPlant) && (
+                <View style={styles.wateringText}>
+                  <Text style={styles.mlText}>{currentPlant?.reported?.wtl || 0} ml</Text>
+                  <Text style={styles.numText}>{!!currentPlant?.reported?.wtl ? qualityDay(currentPlant) : 0}</Text>
+                  <Text style={styles.dayText}>days</Text>
+                </View>
+              )}
               <LoaderAnimationProgress source={require('@Assets/lotties/water.json')} width={200} />
             </TouchableOpacity>
           }

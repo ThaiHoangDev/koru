@@ -49,6 +49,7 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 25,
+    marginBottom: 20,
   },
 
   txtBtn: {

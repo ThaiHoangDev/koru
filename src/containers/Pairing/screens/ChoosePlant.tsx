@@ -10,6 +10,7 @@ import {
   makeSelectIsRequesting,
   makeSelectListPlant,
   makeSelectListPlantGroup,
+  makeSelectListPlantLoadMore,
   makeSelectUuid,
 } from '../store/selectors';
 import { PairActions } from '../store/actions';
@@ -31,16 +32,22 @@ interface IProps extends PropsScreen {
   isLoading: boolean;
   listPlant: any;
   listPlantGroup: any;
+  loadMore: boolean;
+}
+
+export interface IPropsFilterGroup {
+  group: string;
+  ordering: string;
 }
 
 function ChoosePlantContainer(props: IProps) {
   EspIdfProvisioningReactNative.create();
-  const { isLoading, listPlant, listPlantGroup, ...rest } = props;
+  const { isLoading, listPlant, listPlantGroup, loadMore, ...rest } = props;
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
-  const [filterGroup, setFilterGroup] = useState({
+  const [filterGroup, setFilterGroup] = useState<IPropsFilterGroup>({
     group: '',
     ordering: '',
   });
@@ -84,7 +91,11 @@ function ChoosePlantContainer(props: IProps) {
     dispatch(PairActions.getListPlantGroup.request(payload));
   }, []);
 
-  const loadMorePlant = () => {};
+  const loadMorePlant = () => {
+    if (loadMore) {
+      setPage(page + 1);
+    }
+  };
   const handleRefresh = () => {
     setIsRefresh(true);
   };
@@ -124,12 +135,11 @@ function ChoosePlantContainer(props: IProps) {
         <SearchComp onChangeText={handleChangeText} />
         <View
           style={{
-            marginVertical: 10,
-            flex: 1,
+            height: 50,
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <FilterComp data={listPlantGroup} onFilter={handleFilter} />
+          <FilterComp data={listPlantGroup} onFilter={handleFilter} filterGroup={filterGroup} />
         </View>
       </View>
     );
@@ -138,7 +148,7 @@ function ChoosePlantContainer(props: IProps) {
   const _renderItem = ({ item, index }: any) => {
     return (
       <TouchableOpacity
-        style={[styles.element, { borderTopWidth: index === 0 ? 1 : 0 }]}
+        style={[styles.element, { borderTopWidth: index === 0 ? 1 : 0, borderTopColor: colors.gray04 }]}
         onPress={handleChoosePlant(item)}>
         <PlantBox name={item?.name} type={item?.latin_name} uri={item?.image_url} />
       </TouchableOpacity>
@@ -176,7 +186,7 @@ function ChoosePlantContainer(props: IProps) {
             <NoPlantComp />
           ) : null
         }
-        ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.grey06 }}></View>}
+        ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.gray04 }}></View>}
         keyExtractor={item => item.name.toString()}
         showsVerticalScrollIndicator={false}
         style={{ flex: 1 }}
@@ -189,6 +199,7 @@ const mapStateToProps = createStructuredSelector({
   isLoading: makeSelectIsRequesting(),
   listPlant: makeSelectListPlant(),
   listPlantGroup: makeSelectListPlantGroup(),
+  loadMore: makeSelectListPlantLoadMore(),
 });
 export default connect(mapStateToProps)(ChoosePlantContainer);
 

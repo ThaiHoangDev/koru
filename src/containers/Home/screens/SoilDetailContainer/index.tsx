@@ -15,6 +15,7 @@ import TopNavigationBar from '@Navigators/topNavigation';
 import MenuIcon from '@Components/iconSvg/MenuIcon';
 //assets
 import { colors, fontFamily } from '@Theme/index';
+import { IS_ANDROID } from '@Constants/app';
 
 type SoilDetailScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'SoilDetailScreen'>;
 type SoilDetailScreenRouteProp = RouteProp<HomeStackParamList, 'SoilDetailScreen'>;
@@ -66,11 +67,11 @@ const SoilDetailContainer = (props: IProps) => {
   }, [navigation, index]);
 
   const navigateFanSpeed = () => {
-    navigation.navigate('FanSpeedScreen');
+    navigation.navigate('FanSpeedScreen', { plant: route.params?.plant });
   };
 
   const navigateMoreInfo = () => {
-    navigation.navigate('SoilDetailScreen');
+    navigation.navigate('SoilDetailScreen', { plant: route.params?.plant });
   };
 
   const onChangeIndex = ({ index }: { index: number }) => setIndex(index);
@@ -93,7 +94,7 @@ const SoilDetailContainer = (props: IProps) => {
         keyExtractor={(item, index) => index.toString()}
         onChangeIndex={onChangeIndex}
       />
-      <View style={{ flex: 0.2, justifyContent: 'center' }}>
+      <View style={{ flex: 0.2, justifyContent: 'center', marginBottom: IS_ANDROID ? 20 : 10 }}>
         <BottomTab onClickLeft={navigateMoreInfo} onClickRight={navigateFanSpeed} />
       </View>
     </SafeAreaView>

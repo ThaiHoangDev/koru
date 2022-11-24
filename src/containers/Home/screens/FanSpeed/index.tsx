@@ -59,7 +59,7 @@ const FanSpeedContainer = (props: IProps) => {
     formatAsStatus(
       0,
       220,
-      Math.max(currentPlant.reported.tvoc, currentPlant.reported.tvoc_1_lvl_ppb, currentPlant.reported.tvoc_2_lvl_ppb),
+      Math.max(currentPlant?.reported.tvoc, currentPlant?.reported.tvoc_1_lvl_ppb, currentPlant?.reported.tvoc_2_lvl_ppb),
     )
       ? type === 'title'
         ? 'Clean'
@@ -68,9 +68,9 @@ const FanSpeedContainer = (props: IProps) => {
           221,
           660,
           Math.max(
-            currentPlant.reported.tvoc,
-            currentPlant.reported.tvoc_1_lvl_ppb,
-            currentPlant.reported.tvoc_2_lvl_ppb,
+            currentPlant?.reported.tvoc,
+            currentPlant?.reported.tvoc_1_lvl_ppb,
+            currentPlant?.reported.tvoc_2_lvl_ppb,
           ),
         )
       ? type === 'title'
@@ -98,7 +98,7 @@ const FanSpeedContainer = (props: IProps) => {
         />
       </View>
       <View style={{ flex: 2, justifyContent: 'flex-end', paddingTop: 40 }}>
-        <FanComp fanValue={currentPlant.reported.fan} />
+        <FanComp fanValue={currentPlant?.reported.fan} />
       </View>
       <BottomTab isActiveRight onClickLeft={navigateMoreInfo} onClickRight={navigateFanSpeed} isDetail={false} />
     </View>

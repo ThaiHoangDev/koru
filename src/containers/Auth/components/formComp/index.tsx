@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, TextStyle, View, KeyboardTypeOptions, TextInputProps, TouchableOpacity } from 'react-native';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
-import { Formik, FormikErrors, ErrorMessage } from 'formik';
+import { Formik, ErrorMessage } from 'formik';
 
 import TextInputComp from '@Components/input';
 import { ButtonComp } from '@Components/button';
@@ -112,7 +112,7 @@ export const FormComp = ({
                       <View style={styles.accountView}>
                         <Text style={styles.subTitle}> {!isLogin ? 'Have an account?' : 'Don’t have an account?'}</Text>
                         <TouchableOpacity onPress={goToSignUp}>
-                          <Text>{isLogin ? 'Sign up' : 'Login'}</Text>
+                          <Text style={styles.subTitle}>{isLogin ? 'Sign up' : 'Login'}</Text>
                         </TouchableOpacity>
                       </View>
                       <ButtonComp

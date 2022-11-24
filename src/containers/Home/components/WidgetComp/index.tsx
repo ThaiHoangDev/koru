@@ -6,7 +6,6 @@ import { colors, fontFamily } from '@Theme/index';
 
 interface IProps {
   title: string;
-  subTitle?: string;
   background: any;
   statusColor: string;
   status: string;
@@ -15,22 +14,28 @@ interface IProps {
   fontSize: number;
 }
 
-const WidgetComp = ({ title, subTitle, background, statusColor, status, unit, image, fontSize }: IProps) => {
+const WidgetComp = ({ title, background, statusColor, status, unit, image, fontSize }: IProps) => {
   return (
     <View style={styles.container}>
       <ImageBackgroundCompLayout
         children={
           <View style={{ flex: 1, flexDirection: 'row' }}>
             <View style={styles.leftContent}>
-              <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+              <View style={{ flexDirection: 'row', minHeight: 80, alignItems: 'center', justifyContent: 'center' }}>
                 {!!image && <View style={styles.iconView}>{image}</View>}
-                <View style={{ paddingHorizontal: 10, flex: 1, alignItems: 'flex-start' }}>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: !image ? 'center' : 'flex-start',
+                    marginRight: 10,
+                    justifyContent: 'center',
+                  }}>
                   <Text style={[styles.subTitleText, { fontSize }]}>{title}</Text>
-                  <Text style={[styles.subText, styles.textStyle]}>{unit}</Text>
+                  {!!unit && <Text style={[styles.subText, styles.textStyle]}>{unit}</Text>}
                 </View>
               </View>
               <View style={styles.lineText} />
-              <View style={{ alignItems: 'center' }}>
+              <View style={{ alignItems: 'center', justifyContent: 'center', height: 26 }}>
                 <Text style={[{ color: statusColor }, styles.textStyle]}>{status}</Text>
               </View>
             </View>
@@ -52,7 +57,7 @@ export default WidgetComp;
 const styles = StyleSheet.create({
   container: {
     width: 173,
-    height: 106,
+    minHeight: 106,
     backgroundColor: colors.white,
     flexDirection: 'row',
     borderRadius: 8,
@@ -67,12 +72,11 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   leftContent: {
-    top: 1,
     justifyContent: 'center',
   },
   iconView: {
     height: 60,
-    width: 55,
+    width: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -85,6 +89,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.Strawford,
     fontWeight: '500',
     color: colors.black2,
+    minWidth: 50,
     textAlign: 'center',
   },
   textStyle: {
@@ -92,9 +97,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '400',
     textAlign: 'center',
+    paddingHorizontal: 6,
   },
   subText: {
     color: colors.grey06,
+    minWidth: 50,
+    textAlign: 'center',
   },
   rightBackground: {
     height: '100%',

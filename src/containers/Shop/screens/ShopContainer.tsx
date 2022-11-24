@@ -42,6 +42,10 @@ function ShopContainer(props: IProps) {
   const [page, setPage] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [filterGroup, setFilterGroup] = useState({
+    group: '',
+    ordering: '',
+  })
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -49,8 +53,6 @@ function ShopContainer(props: IProps) {
       header: (p: any) => <TopNavigationBar {...p} children={<Text style={styles.titleTab}>{'Choose Plant'}</Text>} />,
     });
   }, [navigation]);
-
-  console.log(listPlantGroup, 'lissss____');
 
   const handleSearch = (value: string) => {
     // const payload = {
@@ -113,13 +115,13 @@ function ShopContainer(props: IProps) {
           <SearchComp onChangeText={handleChangeText} />
           <TouchableOpacity style={styles.addContainer} onPress={handleGoToCard}>
             <View style={styles.numOrder}>
-              <Text style={styles.orderTotal}>{myOrder.length}</Text>
+              <Text style={styles.orderTotal}>{myOrder?.length}</Text>
             </View>
             <CardIcon />
           </TouchableOpacity>
         </View>
-        <View style={{ paddingVertical: 10, flex: 4 }}>
-          <FilterComp data={listPlantGroup} onFilter={handleFilter} />
+        <View style={{ paddingVertical: 10, flex: 1, }}>
+          <FilterComp data={listPlantGroup} onFilter={handleFilter} filterGroup={filterGroup}/>
         </View>
       </View>
       <FlatList
@@ -176,12 +178,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   headerContainer: {
-    flex: 0.3,
+    flexGrow: 0.16,
   },
   searchContainer: {
     flex: 1,
     flexDirection: 'row',
-    marginVertical: 20,
+    marginVertical: 10,
   },
   titleTab: {
     fontFamily: fontFamily.FreightBigProMedium,

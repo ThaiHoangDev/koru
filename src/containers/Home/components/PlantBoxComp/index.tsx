@@ -22,7 +22,7 @@ const PlantBoxComp = ({ data, shopScreen, onAddToCard }: IProps) => {
 
   return (
     <View>
-      {!data?.status && (
+      {!data?.status && !shopScreen && (
         <View style={styles.notConected}>
           <View style={styles.notConectedIcon}>
             <NotConected />
@@ -36,9 +36,9 @@ const PlantBoxComp = ({ data, shopScreen, onAddToCard }: IProps) => {
           />
         </View>
       )}
-      <View style={[styles.root, { opacity: !data?.status ? 0.3 : 1 }]}>
-        <View style={styles.headerContainer}>
-          {shopScreen ? (
+      <View style={[styles.root, { opacity: !data?.status && !shopScreen ? 0.3 : 1 }]}>
+        <View style={[styles.headerContainer, { justifyContent: !!shopScreen ? 'flex-end' : 'space-between' }]}>
+          {!!shopScreen ? (
             <TouchableOpacity style={styles.addToCardBtn} onPress={onAddToCard}>
               <AddToCardIcon />
             </TouchableOpacity>
@@ -55,16 +55,16 @@ const PlantBoxComp = ({ data, shopScreen, onAddToCard }: IProps) => {
         <ImageBackgroundCompLayout
           children={
             data.species_image ? (
-              <Image source={{ uri: data.species_image }} resizeMode="contain" style={styles.image} />
+              <Image source={{ uri: data?.species_image }} resizeMode="contain" style={styles.image} />
             ) : (
               <PlantIcon />
             )
           }
           source={require('@Assets/image-background/box-plant.png')}
           resizeMode="cover"
-          imageStyle={{ flex: 1, width: '100%' }}
+          imageStyle={{ flex: 1, width: '100%', marginVertical: 6 }}
         />
-        {shopScreen && (
+        {!!shopScreen && (
           <View>
             <Text style={[styles.plantName, styles.textStyle]}>{data.name}</Text>
             <Text style={[styles.plantPrice, styles.textStyle]}>$40.00</Text>
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     height: 160,
+    width: '100%',
   },
   status: {
     borderRadius: 50,
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     width: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'flex-end',
     padding: 5,
   },
   textStyle: {
@@ -135,36 +137,33 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   notConected: {
     position: 'absolute',
-    height: 204,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    height: 28,
     paddingVertical: 10,
     paddingHorizontal: 10,
+    bottom: 20,
     zIndex: 1,
-  },
-  btn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 20,
     backgroundColor: '#FFE6E6',
     borderRadius: 25,
-    paddingHorizontal: 10,
-    height: 28,
-    marginBottom: 10,
+  },
+  btn: {
+    paddingVertical: 6,
+    paddingHorizontal: 6,
     zIndex: 2,
-    width: '100%',
-    justifyContent: 'flex-end',
   },
   titleBtn: {
-    color: '#F12C1F',
+    color: colors.red,
     fontFamily: fontFamily.Strawford,
+    fontSize: 13,
   },
   notConectedIcon: {
-    position: 'absolute',
-    bottom: 27,
-    left: 20,
-    zIndex: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

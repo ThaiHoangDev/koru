@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, StyleProp, Text, Animated, FlatList, Easing, Modal } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Animated, FlatList, Easing, PanResponder } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -39,6 +39,18 @@ export default function TopNavigationBar(props: IProps) {
     inputRange: [0, 1],
     outputRange: [0, 110],
   });
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetPanResponder: (evt, gestureState) => true,
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onPanResponderGrant: (evt, gestureState) => {
+        setShowMenu(false);
+      },
+    }),
+  ).current;
 
   const backButtonOnPress = () => {
     navigation.goBack();
@@ -95,34 +107,51 @@ export default function TopNavigationBar(props: IProps) {
       </TouchableOpacity>
 
       <Animated.View
+        {...panResponder.panHandlers}
         style={{
-          borderRadius: 8,
           position: 'absolute',
           zIndex: 1,
           flex: 1,
-          backgroundColor: colors.green,
+          top: showMenu ? 0 : -HEIGHT - 80,
+          width: WIDTH,
+          height: HEIGHT,
+          alignItems: 'flex-end',
+        }}></Animated.View>
+      <Animated.View
+        style={{
+          position: 'absolute',
+          zIndex: 1,
+          flex: 1,
           right: 10,
-          top: showMenu ? 0 : -40,
-          shadowOpacity: 0.22,
-          shadowColor: colors.green2,
-          shadowOffset: {
-            width: -2,
-            height: 2,
-          },
-          shadowRadius: 8,
+          top: showMenu ? 0 : -HEIGHT - 80,
           opacity: opacityInterpolate,
-          width: WIDTH / 2,
+          width: WIDTH,
           transform: [
             {
               translateY: h,
             },
           ],
+          flexDirection: 'row',
         }}>
+        <View {...panResponder.panHandlers} style={{ width: WIDTH / 2, height: 145 }}></View>
         <FlatList
           data={DATA}
           keyExtractor={item => item.label.toString()}
           renderItem={_renderItem}
-          contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            width: WIDTH / 2,
+            backgroundColor: colors.green,
+            borderRadius: 8,
+            shadowOpacity: 0.22,
+            shadowColor: colors.green,
+            shadowOffset: {
+              width: -2,
+              height: 2,
+            },
+            shadowRadius: 8,
+          }}
           ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.gray04 }}></View>}
         />
       </Animated.View>

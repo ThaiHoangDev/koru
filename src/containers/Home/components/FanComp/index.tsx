@@ -8,7 +8,7 @@ import StopIcon from '@Components/iconSvg/home/StopIcon';
 import { useDispatch } from 'react-redux';
 import { HomeActions } from '@Containers/Home/store/actions';
 
-type SeclectedProps = 'Low' | 'Auto' | 'Fast';
+type SeclectedProps = 'Low' | 'Auto' | 'Fast' | 'Stop';
 interface IProps {
   fanValue: number;
 }
@@ -21,7 +21,7 @@ const handleSelected = (fanValue: number) => {
   } else if (fanValue <= 100) {
     return 'Fast';
   }
-  return 'Auto';
+  return 'Stop';
 };
 
 const FanComp = ({ fanValue }: IProps) => {
@@ -34,7 +34,9 @@ const FanComp = ({ fanValue }: IProps) => {
 
   const handleChangeValueFan = (x: number) => {
     setAngle(x);
-    if ((x * 100) / 360 <= 25) {
+    if ((x * 100) / 360 <= 0) {
+      setSelected('Stop');
+    } else if ((x * 100) / 360 <= 25) {
       setSelected('Low');
     } else if ((x * 100) / 360 <= 50) {
       setSelected('Auto');
@@ -95,8 +97,14 @@ const FanComp = ({ fanValue }: IProps) => {
           onPress={handleChange(359)}>
           <Text style={[styles.btn, selected === 'Fast' ? styles.btnSelect : styles.btnNoSelect]}>Fast</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ position: 'absolute', height: 60, zIndex: 5, top: -40 }} onPress={handleChange(0)}>
-          <StopIcon />
+        <TouchableOpacity
+          style={{ position: 'absolute', height: 60, zIndex: 5, top: selected === 'Stop' ? -70 : -40 }}
+          onPress={handleChange(0)}>
+          <StopIcon
+            width={selected === 'Stop' ? 60 : 30}
+            height={selected === 'Stop' ? 60 : 30}
+            stroke={selected === 'Stop' ? colors.red : colors.green1}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ position: 'absolute', zIndex: 5, right: selected === 'Low' ? -70 : -40 }}

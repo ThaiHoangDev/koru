@@ -1,29 +1,38 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet} from 'react-native';
 import React from 'react';
 import { ButtonComp } from '@Components/button';
 import { colors } from '@Theme/index';
 import { isEmpty } from 'lodash';
-
-const SEARCH = [
-  { name: 'All', type: 'ALL' },
-  { name: 'orchideen', type: 'ORCH' },
-  { name: 'Indor', type: 'INDOR' },
-];
+import { ListFilterGroupProps } from '../interfaces';
+import { IPropsFilterGroup } from '../screens/ChoosePlant';
 
 interface IProps {
-  data: any;
+  data: ListFilterGroupProps[];
   onFilter: (item: any) => void;
+  filterGroup: IPropsFilterGroup;
 }
 
-const FilterComp = ({ data, onFilter }: IProps) => {
+const FilterComp = ({ data, onFilter, filterGroup }: IProps) => {
   const handleFilter = (item: any) => () => {
     onFilter({ group: item?.uuid, ordering: item?.created_at });
   };
-  const _renderItem = ({ item, index }: any) => {
+
+  const _header = () => {
+    return (
+      <ButtonComp
+        title={'All'}
+        stylesBtn={[styles.btn, { backgroundColor: !filterGroup.group ? colors.black2 : colors.gray04 }]}
+        stylesTitle={styles.title}
+        handlePress={handleFilter({ group: '', ordering: '' })}
+        isLoading={false}
+      />
+    );
+  };
+  const _renderItem = ({ item, index }: { item: ListFilterGroupProps; index: number }) => {
     return (
       <ButtonComp
         title={item.name}
-        stylesBtn={[styles.btn, { backgroundColor: index === 0 ? colors.black2 : colors.gray04 }]}
+        stylesBtn={[styles.btn, { backgroundColor: filterGroup.group === item.uuid ? colors.black2 : colors.gray04 }]}
         stylesTitle={styles.title}
         handlePress={handleFilter(item)}
         isLoading={false}
@@ -32,10 +41,12 @@ const FilterComp = ({ data, onFilter }: IProps) => {
   };
   return (
     <FlatList
-      data={!isEmpty(data) ? data : SEARCH}
+      data={data}
       keyExtractor={item => item.toString()}
       renderItem={_renderItem}
       horizontal
+      ListHeaderComponent={_header}
+      ListHeaderComponentStyle={{ height: 36 }}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{ flexGrow: 1 }}
       style={{ flex: 1 }}
@@ -50,6 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 10,
     borderRadius: 8,
+    height: 36,
     paddingHorizontal: 26,
   },
   title: {

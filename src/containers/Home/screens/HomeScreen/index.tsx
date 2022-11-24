@@ -1,11 +1,10 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { PlantProps } from '@Containers/Home/store/interfaces';
 import { Auth } from 'aws-amplify';
 import { RouteProp, useIsFocused } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect, useDispatch } from 'react-redux';
-import { debounce, isEmpty } from 'lodash';
+import { debounce } from 'lodash';
 import { createStructuredSelector } from 'reselect';
 //components
 import TopNavigationBar from '@Navigators/topNavigation';
@@ -16,6 +15,7 @@ import LoaderAnimationProgress from '@Components/lottie/loader';
 import NoPlantComp from '@Containers/Home/components/NoPlantComp';
 
 import PlantBoxComp from '@Containers/Home/components/PlantBoxComp';
+import { PlantProps } from '@Containers/Home/store/interfaces';
 import { HomeActions } from '@Containers/Home/store/actions';
 import { makeSelectIsRequesting, makeSelectLoadMore, makeSelectMyPlant } from '@Containers/Home/store/selectors';
 

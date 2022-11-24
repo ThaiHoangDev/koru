@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -10,14 +10,14 @@ import TopNavigationBar from '@Navigators/topNavigation';
 import { PropsScreen } from '@Interfaces/app';
 import TextInputComp from '@Components/input';
 import { ButtonComp } from '@Components/button';
+import Plant from '@Components/iconSvg/pairing/Plant';
 
 import { colors, fontFamily } from '@Theme/index';
 import { PairActions } from '../store/actions';
 
 import { makeSelectIsRequesting, makeSelectUuidConnected } from '../store/selectors';
 import { namePlantValidationSchema } from '../schema';
-import { HEIGHT, WIDTH } from '@Constants/app';
-import Plant from '@Components/iconSvg/pairing/Plant';
+import { HEIGHT, IS_ANDROID, WIDTH } from '@Constants/app';
 
 interface InitvalueProps {
   namePlant: string;
@@ -56,7 +56,7 @@ const NamePlantContainer = (props: IProps) => {
   };
 
   return (
-    <KeyboardAwareScrollView style={styles.root} showsVerticalScrollIndicator={false}>
+    <KeyboardAwareScrollView style={styles.root} showsVerticalScrollIndicator={false} enableOnAndroid scrollEnabled>
       <Formik
         initialValues={initialValues}
         onSubmit={handleScanWifi}
@@ -87,12 +87,12 @@ const NamePlantContainer = (props: IProps) => {
                   style={{ flexGrow: 0.62 }}
                 />
               ) : (
-                <View style={{ flexGrow: 0.6, alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ flexGrow: 0.4, alignItems: 'center', justifyContent: 'center' }}>
                   <Plant width={WIDTH / 1.5} height={HEIGHT / 1.5} />
                 </View>
               )}
 
-              <View style={{ flex: 0.1 }}>
+              <View style={{ flex: 0.2 }}>
                 <ButtonComp
                   title={'Grow Plant'}
                   handlePress={handleSubmit}
@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     paddingHorizontal: 20,
+    backgroundColor: colors.white2,
   },
   txtTitle: {
     fontFamily: fontFamily.FreightBigProMedium,

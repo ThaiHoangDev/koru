@@ -1,5 +1,5 @@
-import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import React from 'react';
 
 import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -8,8 +8,10 @@ import WidgetComp from '../WidgetComp';
 import { MORE_INFO_DATA } from '@Containers/Home/store/constants';
 import { PlantProps } from '@Containers/Home/store/interfaces';
 import { IMoreInfoProps } from '@Containers/Home/interfaces';
+
 import { formatAsStatus } from '@Utils/helper';
 import { colors } from '@Theme/index';
+import { WIDTH } from '@Constants/app';
 
 interface IProps {
   isLoading: boolean;
@@ -28,7 +30,7 @@ const MoreInfoComp = (props: IProps) => {
           plant?.reported.hm || 0,
         );
         return (
-          <View style={{ marginVertical: 10 }}>
+          <View style={{ marginVertical: 10, width: '100%' }}>
             <WidgetComp
               title={plant?.reported.temp + ''}
               background={
@@ -91,7 +93,6 @@ const MoreInfoComp = (props: IProps) => {
           <View style={{ marginVertical: 10 }}>
             <WidgetComp
               title={Math.max(plant?.reported.br1 || 0, plant?.reported.br2 || 0, plant?.reported.br3 || 0) + ''}
-              subTitle={item.subTitle}
               background={
                 statusBr
                   ? require('@Assets/image-background/good.png')
@@ -110,12 +111,17 @@ const MoreInfoComp = (props: IProps) => {
     }
   };
   return (
-    <View style={[styles.containerScreen, styles.styleMoreInfo]}>
+    <View style={[styles.containerScreen]}>
       <FlatList
         data={MORE_INFO_DATA}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={{ marginTop: 60 }}
+        contentContainerStyle={{
+          marginTop: 60,
+          flexGrow: 1,
+          width: WIDTH,
+          alignItems: 'center',
+        }}
       />
     </View>
   );
@@ -130,8 +136,9 @@ export default connect(mapStateToProps)(MoreInfoComp);
 const styles = StyleSheet.create({
   containerScreen: {
     flex: 1,
-    width: Dimensions.get('screen').width,
-    flexDirection: 'column',
+    width: WIDTH,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   styleMoreInfo: {
     alignItems: 'center',
