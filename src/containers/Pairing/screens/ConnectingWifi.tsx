@@ -1,11 +1,11 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { StyleSheet } from 'react-native';
 
 // utils
-import { makeSelectIsRequesting, makeSelectNetworks, makeSelectUuid } from '../store/selectors';
+import { makeSelectIsRequesting } from '../store/selectors';
 import { PropsScreen } from '@Interfaces/app';
 // components by self
 import ConnectingComp from '../components/ConnectingComp';

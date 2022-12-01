@@ -19,6 +19,7 @@ function subscribe() {
     MQTTClient.attachMessageHandler((topic: string, message: any) => {
       const data = JSON.parse(message.toString());
       // console.log(data, topic.split('/')[2], 'sub MOTT______DATA');
+      console.log(moment(data.state.reported.ts).format('yyyy, dd, hh:mm'), 'get shadow success');
       store.dispatch(
         HomeActions.updateListPlant({
           uuid: topic.split('/')[2],
@@ -31,7 +32,6 @@ function subscribe() {
           console.log('thing__________1', thing);
           // emit(upgradeThingAccepted(thing, JSON.parse(message.toString())));
         }
-        console.log('thing__________ll');
         if (/\$aws\/events\/jobExecution\/Continuous-Job-Firmware-\w{4,5}-\w{1,}\/succeeded/.test(topic)) {
           const data = JSON.parse(message.toString());
           console.log('data____', data);

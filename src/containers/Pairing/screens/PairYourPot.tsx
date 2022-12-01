@@ -29,7 +29,7 @@ const PairYourPotContainer = () => {
     });
   }, [navigation]);
 
-  const scanFunc = useCallback(async () => {}, []);
+  // const scanFunc = useCallback(async () => {}, []);
 
   const handlePairing = () => {
     navigation.navigate('SelectBLT');

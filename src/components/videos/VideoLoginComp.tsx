@@ -1,5 +1,5 @@
 import Video from 'react-native-video';
-import { View, Text, StyleProp, ViewStyle, StyleSheet } from 'react-native';
+import { View, StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import React from 'react';
 import { HEIGHT, WIDTH } from '@Constants/app';
 
@@ -29,6 +29,6 @@ export default function VideoLoginComp() {
 
 const styles = StyleSheet.create({
   viewStyle: {
-    bottom: 40,
+    bottom: HEIGHT / 7,
   },
 });

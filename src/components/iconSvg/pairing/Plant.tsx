@@ -14,4 +14,4 @@ const xmlNormal = `
 
 `;
 
-export default ({ width, height }: any) => <SvgXml xml={xmlNormal} width={width} height={width} />;
+export default ({ width, height }: any) => <SvgXml xml={xmlNormal} width={width} height={height} />;

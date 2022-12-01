@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     color: colors.black2,
     fontFamily: fontFamily.Strawford,
     fontSize: 24,
+    fontWeight: '700'
   },
   subTitle: {
     marginTop: 20,

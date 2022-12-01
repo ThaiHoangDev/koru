@@ -46,7 +46,6 @@ function SelectBLTContainer(props: IProps) {
   }, [navigation, isLoading]);
 
   const scanBLT = useCallback(async () => {
-    console.log('sacnnnn____');
     try {
       dispatch(PairActions.scanDevices.request());
       if (IS_ANDROID) {
@@ -55,20 +54,18 @@ function SelectBLTContainer(props: IProps) {
       }
       await EspIdfProvisioningReactNative.scanBleDevices('SPOT_')
         .then((res: any[]) => {
-          console.log(res, 'sacnnnnningggggggg____');
           if (res.length > 0) {
             dispatch(PairActions.scanDevices.success(res));
           } else {
             dispatch(PairActions.scanDevices.fail());
-            showErrorMessage({ message: 'Scan BLE failed!' }, () => {
+            showErrorMessage({ message: `Don't have device!` }, () => {
               navigation.goBack();
             });
           }
         })
         .catch((e: any) => {
-          console.log(e, 'sacnnnnn');
           dispatch(PairActions.scanDevices.fail());
-          showErrorMessage({ message: 'Scan BLE failed!' }, () => {
+          showErrorMessage({ message: e?.message || 'Scan BLE failed!' }, () => {
             navigation.goBack();
           });
         });
@@ -81,31 +78,34 @@ function SelectBLTContainer(props: IProps) {
     scanBLT();
   }, [navigation]);
 
-  const connectToBLEDevice = useCallback(async (uuid: any) => {
-    try {
-      dispatch(PairActions.connectBLE.request());
-      IS_ANDROID && (await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT));
-      EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
-      EspIdfProvisioningReactNative.connectToBLEDevice(uuid)
-        .then((_res: any) => {
-          dispatch(PairActions.connectBLE.success(uuid));
-          console.log(uuid, _res, 'uuu___IDDD');
-          navigation.navigate('ChoosePlant', { bluetooth_uid: uuid });
-          ToastAndroid.show('Connected to device', ToastAndroid.LONG);
-        })
-        .catch((e: any) => {
-          dispatch(PairActions.connectBLE.fail(e));
-          console.log(e, 'uuu___IDDD_FAILED');
-          showErrorMessage(e, () => {});
-          ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
-        });
-    } catch (error) {
-      console.log(error, 'connect error');
-      showErrorMessage(error, () => {});
-    }
-  }, []);
+  const connectToBLEDevice = useCallback(
+    async (uuid: any) => {
+      console.log('connect BLT____');
+      try {
+        dispatch(PairActions.connectBLE.request());
+        EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
+        EspIdfProvisioningReactNative.connectToBLEDevice(uuid)
+          .then((_res: any) => {
+            dispatch(PairActions.connectBLE.success(uuid));
+            navigation.navigate('ChoosePlant', { bluetooth_uid: uuid });
+            ToastAndroid.show('Connected to device', ToastAndroid.LONG);
+          })
+          .catch((e: any) => {
+            dispatch(PairActions.connectBLE.fail(e));
+            showErrorMessage(e, () => {
+              navigation.goBack();
+            });
+            ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
+          });
+      } catch (error) {
+        showErrorMessage(error, () => {});
+      }
+    },
+    [uuid],
+  );
 
-  const handleSelectBLT = (uuid: any) => () => {
+  const handleSelectBLT = (uuid: any) => async () => {
+    IS_ANDROID && (await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT));
     connectToBLEDevice(uuid);
   };
 
@@ -121,7 +121,7 @@ function SelectBLTContainer(props: IProps) {
   };
 
   if (isLoading) {
-    return <Searching />;
+    return <Searching title="" />;
   }
 
   return (

@@ -11,6 +11,7 @@ import { PropsScreen } from '@Interfaces/app';
 import TextInputComp from '@Components/input';
 import { ButtonComp } from '@Components/button';
 import Plant from '@Components/iconSvg/pairing/Plant';
+import Balloons from '@Components/iconSvg/pairing/Balloons';
 
 import { colors, fontFamily } from '@Theme/index';
 import { PairActions } from '../store/actions';
@@ -64,7 +65,7 @@ const NamePlantContainer = (props: IProps) => {
         enableReinitialize>
         {({ handleSubmit, handleChange, values, errors }) => {
           return (
-            <View style={{ flex: 1, height: HEIGHT - 80 }}>
+            <View style={{ flex: 1, height: HEIGHT / 1.16 }}>
               <View style={{ flex: 0.2, marginTop: 30, height: HEIGHT / 5 }}>
                 <TextInputComp
                   clearTextOnFocus={true}
@@ -73,24 +74,53 @@ const NamePlantContainer = (props: IProps) => {
                   placeholder="New name"
                   stylesTxt={styles.textInput}
                   handleChangeText={handleChange('namePlant')}
+                  placeholderTextColor={colors.black2}
+                  underlineColor={colors.black2}
                 />
                 <ErrorMessage
                   name={values.namePlant}
                   children={() => <Text style={styles.errorMessage}>{errors.namePlant}</Text>}
                 />
               </View>
-
-              {!!route.params?.plant?.image_url ? (
-                <Image
-                  source={{ uri: route.params?.plant?.image_url }}
-                  resizeMode="contain"
-                  style={{ flexGrow: 0.62 }}
-                />
-              ) : (
-                <View style={{ flexGrow: 0.4, alignItems: 'center', justifyContent: 'center' }}>
-                  <Plant width={WIDTH / 1.5} height={HEIGHT / 1.5} />
+              <View
+                style={{
+                  alignSelf: 'flex-end',
+                  marginHorizontal: 20,
+                  position: 'absolute',
+                  zIndex: 3,
+                  bottom: HEIGHT / 2,
+                  right: 30
+                }}>
+                <View
+                  style={{
+                    backgroundColor: colors.green,
+                    borderBottomLeftRadius: 120,
+                    borderBottomRightRadius: 80,
+                    borderTopLeftRadius: 260,
+                    borderTopRightRadius: 160,
+                    width: WIDTH / 3,
+                    height: HEIGHT / 10,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 10,
+                  }}>
+                  <Text
+                    style={{ color: colors.black2, fontSize: 13, fontWeight: '700', fontFamily: fontFamily.Strawford }}>
+                    Please Name me !
+                  </Text>
                 </View>
-              )}
+                <Balloons />
+              </View>
+              <View style={{ flexGrow: 0.6, bottom: 10, marginTop: HEIGHT / 5 }}>
+                {!!route.params?.plant?.image_url ? (
+                  <Image source={{ uri: route.params?.plant?.image_url }} resizeMode="cover" style={{ flexGrow: 1 }} />
+                ) : (
+                  <View
+                    style={{ flexGrow: 0.6, alignItems: 'center', justifyContent: 'center' }}>
+                    <Plant width={WIDTH / 1.5} height={HEIGHT / 5} />
+                  </View>
+                )}
+              </View>
 
               <View style={{ flex: 0.2 }}>
                 <ButtonComp
@@ -126,6 +156,7 @@ const styles = StyleSheet.create({
   txtTitle: {
     fontFamily: fontFamily.FreightBigProMedium,
     fontSize: 32,
+    color: colors.black2
   },
   btn: {
     backgroundColor: colors.black2,

@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   headerContainer: {
-    flex: 0.3,
+    height: HEIGHT / 6,
   },
   txtTitle: {
     fontFamily: fontFamily.FreightBigProMedium,

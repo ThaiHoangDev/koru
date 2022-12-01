@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 import { PropsScreen } from '@Interfaces/app';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -10,6 +12,8 @@ import { ButtonComp } from '@Components/button';
 import ShowPassword from '@Components/showPassword';
 
 import { colors, fontFamily } from '@Theme/index';
+import { HEIGHT } from '@Constants/app';
+
 
 const TypePasswordContainer = (props: PropsScreen) => {
   const navigation: any = useNavigation();
@@ -38,7 +42,7 @@ const TypePasswordContainer = (props: PropsScreen) => {
   };
 
   return (
-    <View style={styles.root}>
+    <KeyboardAwareScrollView style={styles.root}>
       <View style={styles.titleContainer}>
         <TitleComp title={'_Type password'} subTitle={'Add your pot to your wifi:'} />
       </View>
@@ -64,7 +68,7 @@ const TypePasswordContainer = (props: PropsScreen) => {
           disabled={passwordWifi.length == 0}
         />
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -75,7 +79,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleContainer: { flex: 0.2, paddingVertical: 40 },
-  content: { flex: 0.8 },
+  content: { height: HEIGHT / 1.7 },
   footer: {
     flex: 0.15,
     paddingHorizontal: 40,

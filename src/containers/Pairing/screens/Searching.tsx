@@ -5,15 +5,16 @@ import { StyleSheet } from 'react-native';
 // utils
 
 // components by self
-
-// assets
-
-import { colors, fontFamily } from '@Theme/index';
 import TitleComp from '../components/TitleComp';
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import Startpairing2 from '@Components/iconSvg/pairing/Startpairing2';
+// assets
+import { colors, fontFamily } from '@Theme/index';
+interface Iprops {
+  title: string;
+}
 
-const Searching = () => {
+const Searching = ({ title }: Iprops) => {
   const width = useRef(new Animated.Value(109)).current;
   const height = useRef(new Animated.Value(100)).current;
 
@@ -50,7 +51,7 @@ const Searching = () => {
   return (
     <View style={styles.root}>
       <View style={styles.txtContainer}>
-        <TitleComp title={'_Searching '} subTitle={'your pot'} />
+        <TitleComp title={title || '_Searching'} subTitle={'your pot'} />
       </View>
       <View style={{ marginTop: 40, alignItems: 'center' }}>
         <Animated.View style={{ width: w, height: h }}>

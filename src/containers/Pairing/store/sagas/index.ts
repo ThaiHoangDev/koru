@@ -5,14 +5,11 @@ import { PairActions } from '../actions';
 import * as apiService from '../services';
 import { navigate } from '@Utils/navigator';
 import { store } from '@Store/index';
-import { showErrorWithString } from '@Utils/helper';
-
-function* scanDevicesSaga({ payload }: any) {}
+import { showErrorMessage, showErrorWithString } from '@Utils/helper';
 
 function* scanNetworks() {
   EspIdfProvisioningReactNative.scanNetworks()
     .then((res: any[]) => {
-      console.log(res, 'netWorks__________');
       store.dispatch(PairActions.scanNetworks.success(res));
       ToastAndroid.show('Number of networks found: ' + res.length, ToastAndroid.LONG);
     })
@@ -20,7 +17,6 @@ function* scanNetworks() {
       store.dispatch(PairActions.scanNetworks.fail(e));
       showErrorWithString(e, () => {});
       ToastAndroid.show('Scan networks error', ToastAndroid.LONG);
-      console.log(e);
     });
 }
 
@@ -29,14 +25,14 @@ function* provCreds({ payload }: any) {
     const { ssid, passwordWifi } = payload;
     yield EspIdfProvisioningReactNative.provisionNetwork(ssid, passwordWifi)
       .then((resp: any) => {
-        navigate('TabBar');
         store.dispatch(PairActions.provCreds.success());
         ToastAndroid.show('Credentials provided with success', ToastAndroid.LONG);
+        navigate('TabBar');
       })
       .catch((e: any) => {
         store.dispatch(PairActions.provCreds.fail());
         ToastAndroid.show('Provide creds error', ToastAndroid.LONG);
-        console.log(e);
+        showErrorWithString('Provide creds error');
       });
   } catch (error) {}
 }
@@ -62,10 +58,10 @@ function* provCustomWithByteData({ payload }: any) {
         navigate('ChooseWifi');
       })
       .catch((e: { message: any }) => {
-        console.log(e && e.message ? e.message : 'error querying live data');
+        showErrorMessage(e, () => {});
       });
   } catch (error) {
-    console.log(error, 'error querying live data22');
+    showErrorMessage(error, () => {});
   }
 }
 
@@ -93,7 +89,7 @@ function* createPlantSaga({ payload }: any) {
     yield put(PairActions.provCustomWithByteData.request(data.data));
     yield;
   } catch (error) {
-    console.log(error, 'create plant errror____');
+    showErrorWithString('This plant exists!');
     yield put(PairActions.createPlant.fail(error));
   }
 }
