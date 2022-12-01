@@ -303,6 +303,8 @@ PODS:
     - React-Core
   - react-native-netinfo (9.3.6):
     - React-Core
+  - react-native-pager-view (6.1.0):
+    - React-Core
   - react-native-safe-area-context (4.4.1):
     - RCT-Folly
     - RCTRequired
@@ -389,7 +391,7 @@ PODS:
     - React-Core
   - RNKeychain (8.1.1):
     - React-Core
-  - RNReanimated (2.11.0):
+  - RNReanimated (2.12.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -478,6 +480,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-ble-plx (from `../node_modules/react-native-ble-plx`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-video (from `../node_modules/react-native-video`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -574,6 +577,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-ble-plx"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-video:
@@ -664,6 +669,7 @@ SPEC CHECKSUMS:
   React-logger: a0833912d93b36b791b7a521672d8ee89107aff1
   react-native-ble-plx: f10240444452dfb2d2a13a0e4f58d7783e92d76e
   react-native-netinfo: f80db8cac2151405633324cb645c60af098ee461
+  react-native-pager-view: 7abf89f9834d9a4021b2fb6a5ef2abff570b46fb
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
@@ -683,7 +689,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
-  RNReanimated: bd2984298b97f6a47622e65ee9fef2532d1d0dda
+  RNReanimated: 0ff5e7f619a7524d237848ecb4c47650c4946f71
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8

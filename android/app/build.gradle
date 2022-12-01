@@ -83,6 +83,8 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+//app center code push
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -141,6 +143,7 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+        resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
 
         if (isNewArchitectureEnabled()) {
             // We configure the NDK build only if you decide to opt-in for the New Architecture.
@@ -240,6 +243,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            resValue "string", "CodePushDeploymentKey", '"mXjzA5sQ61BRFp4gYpJe99HHSUxm2KATCD57A"'
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -247,6 +251,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            resValue "string", "CodePushDeploymentKey", '"4B2Zx7xc2HpM0m1OXSwe41c81hdc0g36UFJPu"'
         }
     }
 
@@ -274,6 +279,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation project(':react-native-vector-icons')
+    implementation project(path: ':react-native-code-push')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
