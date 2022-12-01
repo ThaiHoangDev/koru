@@ -4,6 +4,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 import ErrorBoundary from 'react-native-error-boundary';
 import { Amplify } from 'aws-amplify';
 import { ErrorComp } from '@Components/error-comp';
+import codePush from 'react-native-code-push';
 
 import AppContainer from '@Containers/App';
 import { store, persistor } from './store';
@@ -13,10 +14,13 @@ import { amplifyConfig } from '@Utils/amplifyConfig';
 // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 // LogBox.ignoreAllLogs(); //Ignore all log notifications
 
+// codePush.restartApp(onlyIfUpdateIsPending: Boolean = false): void;
+// codePush.sync({ updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE });
+
 Amplify.configure(amplifyConfig);
 
 if (__DEV__) {
-  import('./ReactotronConfig').then();
+  import('../ReactotronConfig').then();
 }
 
 const App = () => (
@@ -29,4 +33,4 @@ const App = () => (
   </Provider>
 );
 
-export default App;
+export default codePush(App);
