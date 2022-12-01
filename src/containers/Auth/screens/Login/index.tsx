@@ -52,7 +52,7 @@ const LoginContainer = ({ isLoading }: IProps) => {
           stylesTop={{ backgroundColor: colors.white }}
           isLeft={true}
           children={
-            <Text style={styles.titleTab}>{route.params.isLogin ? 'Wellcome Back!' : 'Create new account'}</Text>
+            <Text style={styles.titleTab}>{route.params.isLogin ? 'Welcome Back!' : 'Create new account'}</Text>
           }
         />
       ),

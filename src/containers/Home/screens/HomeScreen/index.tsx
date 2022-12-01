@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, RefreshControl, FlatListProps } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { RouteProp } from '@react-navigation/native';
+import { Auth } from 'aws-amplify';
+import { RouteProp, useIsFocused } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect, useDispatch } from 'react-redux';
-import { debounce, isEmpty } from 'lodash';
+import { debounce } from 'lodash';
 import { createStructuredSelector } from 'reselect';
 //components
 import TopNavigationBar from '@Navigators/topNavigation';
@@ -14,31 +15,44 @@ import LoaderAnimationProgress from '@Components/lottie/loader';
 import NoPlantComp from '@Containers/Home/components/NoPlantComp';
 
 import PlantBoxComp from '@Containers/Home/components/PlantBoxComp';
+import { PlantProps } from '@Containers/Home/store/interfaces';
 import { HomeActions } from '@Containers/Home/store/actions';
 import { makeSelectIsRequesting, makeSelectLoadMore, makeSelectMyPlant } from '@Containers/Home/store/selectors';
 
 import { colors, fontFamily } from '@Theme/index';
 import { HomeStackParamList } from '@Navigators/homeNavigator';
 import { MQTTActions } from '@Containers/MQTT/store/actions';
-import { PlantProps } from '@Containers/Home/store/interfaces';
+
+import { AWSActions } from '@Containers/AWS/store/actions';
+import { useInjectSaga } from '@Utils/injectSaga';
+import { useInjectReducer } from '@Utils/injectReducer';
+import awsReducer from '@Containers/AWS/store/reducers';
+import awsSaga from '@Containers/AWS/store/sagas';
+import { makeSelectIsLoggedIn } from '@Containers/App/store/selectors';
+import { makeSelectMQTTstatus } from '@Containers/MQTT/store/selectors';
 
 type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
 type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'HomeScreen'>;
 
 interface IProps {
+  isLoggin: boolean;
   isLoading: boolean;
-  myPlant: any;
   loadMore: any;
+  myPlant: PlantProps[];
+  mqttStatus: boolean;
   navigation: HomeScreenNavigationProp;
   route: HomeScreenRouteProp;
 }
 
 function HomeContainer(props: IProps) {
-  const { isLoading, myPlant, loadMore, navigation, route } = props;
+  const { isLoading, myPlant, navigation, route, isLoggin, mqttStatus, loadMore } = props;
+  // const isFocus = useIsFocused();
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
   const [searchText, setSearchText] = useState('');
+  useInjectSaga({ key: 'awsSdk', saga: awsSaga });
+  useInjectReducer({ key: 'awsSdk', reducer: awsReducer });
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -73,29 +87,13 @@ function HomeContainer(props: IProps) {
   };
   const handleRefresh = () => {
     setIsRefresh(true);
+    setPage(1);
   };
-
-  useEffect(() => {
-    const payload = {
-      page: isRefresh ? 1 : page,
-      perpage: 10,
-      search: searchText,
-    };
-    dispatch(HomeActions.getMyPlant.request(payload));
-    isRefresh &&
-      setTimeout(() => {
-        setIsRefresh(false);
-        setPage(1);
-      }, 1000);
-  }, [page, isRefresh, dispatch]);
-
-  useEffect(() => {
-    dispatch(MQTTActions.init_MQTT.request());
-  }, []);
-
-  useEffect(() => {
-    myPlant.length > 0 && dispatch(HomeActions.attachPolicy.request(myPlant));
-  }, [myPlant]);
+  //init MQTT
+  const initAWS = useCallback(async () => {
+    const data = await Auth.currentCredentials();
+    dispatch(AWSActions.awsConnectRequest.request(data));
+  }, [isLoggin]);
 
   const handleGoToPairing = () => {
     navigation.navigate('Paring');
@@ -104,8 +102,6 @@ function HomeContainer(props: IProps) {
   const handlePress = (uuid: any) => () => {
     navigation.navigate('PlantDetail', { uuid });
   };
-
-  const onAddToCard = () => {};
 
   const _renderItem = ({ item }: any) => {
     return (
@@ -116,10 +112,34 @@ function HomeContainer(props: IProps) {
           minHeight: 204,
           marginBottom: 20,
         }}>
-        <PlantBoxComp data={item} shopScreen={false} onAddToCard={onAddToCard} />
+        <PlantBoxComp data={item} shopScreen={false} />
       </TouchableOpacity>
     );
   };
+
+  useEffect(() => {
+    isLoggin && initAWS();
+  }, [initAWS, isLoggin]);
+
+  useEffect(() => {
+    !mqttStatus && dispatch(MQTTActions.init_MQTT.request());
+  }, [mqttStatus]);
+
+  useEffect(() => {
+    mqttStatus && dispatch(HomeActions.getThingShadow.request(myPlant));
+  }, [myPlant.length, mqttStatus]);
+
+  useEffect(() => {
+    const payload = {
+      page: isRefresh ? 1 : page,
+      perpage: 10,
+      search: searchText,
+    };
+    (mqttStatus || isLoading) && dispatch(HomeActions.getMyPlant.request(payload));
+    setTimeout(() => {
+      setIsRefresh(false);
+    }, 700);
+  }, [page, isRefresh, dispatch, mqttStatus]);
 
   return (
     <View style={styles.rootContainer}>
@@ -139,7 +159,7 @@ function HomeContainer(props: IProps) {
         onEndReached={loadMoreMyPlant}
         refreshControl={
           <RefreshControl
-            tintColor={'#fff'}
+            tintColor={colors.white2}
             refreshing={isRefresh}
             onRefresh={handleRefresh}
             children={
@@ -171,6 +191,8 @@ const mapStateToProps = createStructuredSelector({
   myPlant: makeSelectMyPlant(),
   loadMore: makeSelectLoadMore(),
   isLoading: makeSelectIsRequesting(),
+  isLoggin: makeSelectIsLoggedIn(),
+  mqttStatus: makeSelectMQTTstatus(),
 });
 
 export default connect(mapStateToProps)(HomeContainer);

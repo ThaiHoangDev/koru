@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Animated, Easing, ImageBackground, Platform, StatusBar } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { useDispatch } from 'react-redux';
@@ -49,7 +49,20 @@ const StartContainer = () => {
           <ButtonComp
             title="Login"
             handlePress={handleLogin}
-            stylesBtn={[styles.btn, { backgroundColor: colors.black2 }]}
+            stylesBtn={[
+              styles.btn,
+              {
+                backgroundColor: colors.black2,
+                shadowColor: colors.green1,
+                shadowOpacity: 0.33,
+                shadowOffset: {
+                  width: 1,
+                  height: 4,
+                },
+                shadowRadius: 2.22,
+                elevation: 3,
+              },
+            ]}
             stylesTitle={[styles.txtBtn, styles.fontFamily, { color: colors.white }]}
             isLoading={false}
           />
@@ -62,7 +75,7 @@ const StartContainer = () => {
           />
         </View>
         <View style={styles.socialText}>
-          <Text>Or social media below</Text>
+          <Text style={{ color: colors.green2 }}>Or social media below</Text>
         </View>
         <View style={[styles.socialBtn]}>
           <ButtonComp

@@ -35,12 +35,10 @@ function* refreshTokenSaga(): any {
   try {
     const refreshToken = yield asyncStorage.getItem(REFRESH_TOKEN);
     const { data } = yield call(apiService.refreshToken, { refresh_token: JSON.parse(refreshToken) });
-    console.log(data, 'dataaa');
     axiosClient.setHeader(data.access_token);
     asyncStorage.setItem(TOKEN_NAME, data.access_token);
     yield put(AppActions.refreshToken.success());
   } catch (error) {
-    console.log(error, 'jkljkjjIIII');
     yield put(AppActions.refreshToken.fail());
     yield put(AppActions.initApp.success({ isLoggedIn: false }));
   }

@@ -1,5 +1,5 @@
+import { ListFilterGroupProps } from 'containers/Pairing/interfaces';
 import produce from 'immer';
-import { uniqBy } from 'lodash';
 
 import { PairActions } from '../actions';
 
@@ -15,13 +15,15 @@ export interface IPayload {
   pop: string;
   netWorks: any;
   listPlant: any;
-  listPlantGroup: any;
+  loadMore: boolean;
+  listPlantGroup: ListFilterGroupProps[];
 }
 
 // The initial state of the Login container
 export const initialState: IPayload = {
   isRequesting: false,
   uuid: '',
+  loadMore: false,
   listUuid: [],
   pop: '',
   netWorks: [],
@@ -29,7 +31,7 @@ export const initialState: IPayload = {
   listPlantGroup: [],
 };
 
-const authReducer = (state = initialState, { type, payload }: ACTION) =>
+const pairReducer = (state = initialState, { type, payload }: ACTION) =>
   produce(state, draft => {
     switch (type) {
       case PairActions.Types.SCAN_DEVICES.begin:
@@ -58,11 +60,13 @@ const authReducer = (state = initialState, { type, payload }: ACTION) =>
         break;
       case PairActions.Types.GET_LIST_PLANT.succeeded:
         draft.isRequesting = false;
-        draft.listPlant = uniqBy(!!payload.next ? [...draft.listPlant, ...payload?.results] : payload?.results, []);
+        draft.listPlant = !!payload.next ? [...draft.listPlant, ...payload?.results] : payload?.results;
+        draft.loadMore = !!payload.next;
         break;
       case PairActions.Types.GET_LIST_PLANT.failed:
         draft.isRequesting = false;
         draft.listPlant = [];
+        draft.loadMore = false;
         break;
       case PairActions.Types.GET_LIST_PLANT_GROUP.begin:
         break;
@@ -89,4 +93,4 @@ const authReducer = (state = initialState, { type, payload }: ACTION) =>
     }
   });
 
-export default authReducer;
+export default pairReducer;

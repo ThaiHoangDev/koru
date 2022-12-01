@@ -11,12 +11,12 @@ export default StyleSheet.create({
   title: {
     fontFamily: fontFamily.Strawford,
     fontSize: fontSizes.xl,
-    backgroundColor: colors.white2,
+    backgroundColor: 'transparent',
   },
   label: {
     fontFamily: fontFamily.Strawford,
     color: colors.black2,
-    fontSizes: 13,
+    fontSize: 13,
     fontWeight: '400',
   },
 });

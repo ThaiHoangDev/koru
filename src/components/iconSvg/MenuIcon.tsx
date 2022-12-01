@@ -6,7 +6,6 @@ const xmlNormal = `
 <path d="M1 1H31" stroke="#737373" stroke-width="2" stroke-linecap="round"/>
 <path d="M1 13H22" stroke="#737373" stroke-width="2" stroke-linecap="round"/>
 </svg>
-
 `;
 
 export default () => <SvgXml xml={xmlNormal} width="24" height="21" />;

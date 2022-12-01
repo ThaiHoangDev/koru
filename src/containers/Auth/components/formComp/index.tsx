@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, TextStyle, View, KeyboardTypeOptions, TextInputProps, TouchableOpacity } from 'react-native';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
-import { Formik, FormikErrors, ErrorMessage } from 'formik';
+import { Formik, ErrorMessage } from 'formik';
 
 import TextInputComp from '@Components/input';
 import { ButtonComp } from '@Components/button';
@@ -46,6 +46,9 @@ export const FormComp = ({
 
   const goToSignUp = () => {
     navigation.navigate('Login', { isLogin: !isLogin });
+  };
+  const handleNavigateCode = () => {
+    navigation.navigate('Email');
   };
 
   return (
@@ -103,16 +106,20 @@ export const FormComp = ({
                 ListFooterComponentStyle={{ flexGrow: 1, minHeight: HEIGHT / 5 }}
                 ListFooterComponent={
                   <View style={styles.listFooter}>
-                    {isLogin && (
+                    {isLogin ? (
                       <TouchableOpacity>
                         <Text style={styles.txt}>Forgot Your Password?</Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity onPress={handleNavigateCode}>
+                        <Text style={styles.txt}>Send code to email.</Text>
                       </TouchableOpacity>
                     )}
                     <>
                       <View style={styles.accountView}>
                         <Text style={styles.subTitle}> {!isLogin ? 'Have an account?' : 'Don’t have an account?'}</Text>
                         <TouchableOpacity onPress={goToSignUp}>
-                          <Text>{isLogin ? 'Sign up' : 'Login'}</Text>
+                          <Text style={styles.subTitle}>{isLogin ? 'Sign up' : 'Login'}</Text>
                         </TouchableOpacity>
                       </View>
                       <ButtonComp

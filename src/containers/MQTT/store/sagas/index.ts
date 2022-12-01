@@ -1,11 +1,14 @@
 import { call, fork, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
+import moment from 'moment';
 
 import { MQTTConfig } from '@Utils/constants';
 import { AppActions } from '@Containers/App/store/actions';
 
 import MQTTClient from '../helpers/mqttClient';
 import { MQTTActions } from '../actions';
+import { store } from '@Store/index';
+import { HomeActions } from '@Containers/Home/store/actions';
 
 function subscribe() {
   const unsubscribe = () => {
@@ -14,18 +17,24 @@ function subscribe() {
 
   return eventChannel((emit: any) => {
     MQTTClient.attachMessageHandler((topic: string, message: any) => {
-      console.log('topic xxxxxxx', topic, message.toString());
       const data = JSON.parse(message.toString());
-      console.log(data, 'sub MOTT______DATA');
-
+      // console.log(data, topic.split('/')[2], 'sub MOTT______DATA');
+      store.dispatch(
+        HomeActions.updateListPlant({
+          uuid: topic.split('/')[2],
+          data: moment().diff(moment(data.state.reported.ts), 'minutes') < 3 ? data.state.reported : null,
+        }),
+      );
       try {
         if (/\$aws\/things\/ESN-\w{3,}\/shadow\/update\/accepted/.test(topic)) {
-          console.log('1');
           const thing = topic.split('/')[2];
+          console.log('thing__________1', thing);
           // emit(upgradeThingAccepted(thing, JSON.parse(message.toString())));
         }
+        console.log('thing__________ll');
         if (/\$aws\/events\/jobExecution\/Continuous-Job-Firmware-\w{4,5}-\w{1,}\/succeeded/.test(topic)) {
           const data = JSON.parse(message.toString());
+          console.log('data____', data);
         }
         if (/\$aws\/events\/jobExecution\/Continuous-Job-Firmware-\w{4,5}-\w{1,}\/failed/.test(topic)) {
           const data = JSON.parse(message.toString());
@@ -63,7 +72,6 @@ function* disconnect() {
 
 function* read(socket: any): any {
   const channel: any = yield call(subscribe);
-  console.log('read MQTT____');
   yield takeEvery(channel, function* (value) {
     yield put(value);
   });
@@ -73,14 +81,12 @@ const connect = async () => {
   return await MQTTClient.connect(MQTTConfig);
 };
 
-function* initMQTTSaga(): any {
+function* initMQTTSaga({ payload }: any): any {
   try {
     const websocketInstance = yield connect();
     yield fork(handleMQTT, websocketInstance);
-    console.log('INIT_MQTT_REQUESTED', websocketInstance);
     yield put(MQTTActions.init_MQTT.success());
   } catch (error) {
-    console.log('INIT_MQTT_REQUESTED_ERROR', error);
     yield put(MQTTActions.init_MQTT.fail());
   }
 }
@@ -95,13 +101,7 @@ function* mqttPublishSaga(action: any) {
   MQTTClient.publish(topic, message);
 }
 
-function* mqttSubscriptions(action: any) {
-  const { topic } = action.payload;
-  MQTTClient.subscribe(topic);
-}
-
 export default function* watchWebsocket() {
   yield takeLatest(MQTTActions.Types.INIT_MQTT.begin, initMQTTSaga);
   yield takeEvery(MQTTActions.Types.MQTT_PUBLISH.begin, mqttPublishSaga);
-  yield takeLatest(MQTTActions.Types.MQTT_ADD_SUBSCRIPTIONS.begin, mqttSubscriptions);
 }

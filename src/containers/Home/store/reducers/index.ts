@@ -1,5 +1,4 @@
 import produce from 'immer';
-import { uniqBy } from 'lodash';
 
 import { HomeActions } from '../actions';
 import { PlantProps } from '../interfaces';
@@ -51,23 +50,17 @@ const homeReducer = (state = initialState, { type, payload }: ACTION) =>
       case HomeActions.Types.GET_MORE_INFO.failed:
         draft.isLoading = false;
         break;
-      case HomeActions.Types.ATTACH_POLICY.begin:
+      case HomeActions.Types.GET_THING_SHADOW.begin:
         break;
-      case HomeActions.Types.ATTACH_POLICY.succeeded:
+      case HomeActions.Types.GET_THING_SHADOW.succeeded:
         break;
-      case HomeActions.Types.ATTACH_POLICY.failed:
+      case HomeActions.Types.GET_THING_SHADOW.failed:
         break;
       case HomeActions.Types.UPDATE_LIST_PLANT.default:
-        const id = payload?.uuid;
-        const newData = payload.data;
-        const dataUpdate: any = [
-          ...draft.myPlant,
-          {
-            ...draft.myPlant.filter((item: any) => item.uuid === id)[0],
-            status: newData === null ? false : true,
-          },
-        ];
-        draft.myPlant = dataUpdate;
+        draft.myPlant = draft.myPlant.map(obj =>
+          obj.uuid === payload.uuid ? { ...obj, status: !!payload.data, reported: payload.data } : obj,
+        );
+        break;
       // Plant state history
       case HomeActions.Types.GET_PLANT_STATE_HISTORY.begin:
         draft.isLoading = true;

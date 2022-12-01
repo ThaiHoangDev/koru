@@ -1,5 +1,4 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
-import { Auth } from 'aws-amplify';
+import { put, takeLatest, call, select } from 'redux-saga/effects';
 import AWSSDK from 'aws-sdk';
 
 import * as apiService from '../services';
@@ -7,12 +6,13 @@ import { HomeActions } from '../actions';
 import { MORE_INFO_DATA } from '../constants';
 import { MQTTConfig } from '@Utils/constants';
 import { store } from '@Store/index';
-import { MQTTActions } from '@Containers/MQTT/store/actions';
+import moment from 'moment';
 
 function* getMyPlantSaga({ payload }: any) {
   try {
     const { data } = yield call(apiService.getMyPlantAPI, payload);
     yield put(HomeActions.getMyPlant.success(data));
+    yield put(HomeActions.getThingShadow.request());
   } catch (error) {
     yield put(HomeActions.getMyPlant.fail(error));
   }
@@ -43,17 +43,15 @@ function* getPlantStateHistorySaga({ payload }: any) {
   }
 }
 
-function* attachPolicySaga({ payload }: any): any {
+function* getThingShadow({ payload }: any): any {
+  const username = yield select((state: any) => state.home.myPlant);
   try {
-    const data = yield Auth.currentCredentials();
-    const iotSDK = new AWSSDK.IotData({
+    const iotSDK = yield new AWSSDK.IotData({
       endpoint: MQTTConfig.host,
     });
-    yield call(apiService.attachPolicyService, data.identityId);
-    yield put(MQTTActions.subscriptionMQTT.request('$aws/things/+/shadow/update/accepted'));
     yield Promise.all(
-      Object.values(payload).map(async (product: any) => {
-        return await iotSDK.getThingShadow({ thingName: `${product.uuid}` }, async function (err, data: any) {
+      Object.values(username).map(async (product: any) => {
+        return await iotSDK.getThingShadow({ thingName: `${product.uuid}` }, async function (err: any, data: any) {
           if (err) {
             store.dispatch(
               HomeActions.updateListPlant({
@@ -61,21 +59,22 @@ function* attachPolicySaga({ payload }: any): any {
                 data: null,
               }),
             );
+            console.log(err, 'errrrorrrr');
           } else {
             const test = JSON.parse(data?.payload);
+            console.log(moment(test.state.reported.ts).format('yyyy, dd, hh:mm'), 'get shadow success');
             store.dispatch(
               HomeActions.updateListPlant({
                 uuid: product.uuid,
-                data: test.state,
+                data: moment().diff(moment(test.state.reported.ts), 'minutes') < 3 ? test.state.reported : null,
               }),
             );
           }
         });
       }),
     );
-    put(HomeActions.attachPolicy.success());
   } catch (error) {
-    put(HomeActions.attachPolicy.fail(error));
+    console.log('GET_THING_SHADOW_ errrr');
   }
 }
 
@@ -83,6 +82,6 @@ export default function* fetchData() {
   yield takeLatest(HomeActions.Types.GET_MY_PLANT.begin, getMyPlantSaga);
   yield takeLatest(HomeActions.Types.POST_FAN.begin, postFan);
   yield takeLatest(HomeActions.Types.GET_MORE_INFO.begin, getMoreInfoSaga);
-  yield takeLatest(HomeActions.Types.ATTACH_POLICY.begin, attachPolicySaga);
   yield takeLatest(HomeActions.Types.GET_PLANT_STATE_HISTORY.begin, getPlantStateHistorySaga);
+  yield takeLatest(HomeActions.Types.GET_THING_SHADOW.begin, getThingShadow);
 }

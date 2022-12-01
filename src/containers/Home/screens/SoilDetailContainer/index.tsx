@@ -1,4 +1,4 @@
-import { Dimensions, Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import React, { useRef, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp, useNavigation } from '@react-navigation/native';
@@ -15,6 +15,7 @@ import TopNavigationBar from '@Navigators/topNavigation';
 import MenuIcon from '@Components/iconSvg/MenuIcon';
 //assets
 import { colors, fontFamily } from '@Theme/index';
+import { IS_ANDROID } from '@Constants/app';
 
 type SoilDetailScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'SoilDetailScreen'>;
 type SoilDetailScreenRouteProp = RouteProp<HomeStackParamList, 'SoilDetailScreen'>;
@@ -50,7 +51,6 @@ const SoilDetailContainer = (props: IProps) => {
   let listRef: any = useRef(null);
   const navigation: any = useNavigation();
   const [index, setIndex] = useState(0);
-  const [plantId, setPlantId] = useState(route.params?.uuid);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -67,16 +67,16 @@ const SoilDetailContainer = (props: IProps) => {
   }, [navigation, index]);
 
   const navigateFanSpeed = () => {
-    navigation.navigate('FanSpeedScreen');
+    navigation.navigate('FanSpeedScreen', { plant: route.params?.plant });
   };
 
   const navigateMoreInfo = () => {
-    navigation.navigate('SoilDetailScreen');
+    navigation.navigate('SoilDetailScreen', { plant: route.params?.plant });
   };
 
   const onChangeIndex = ({ index }: { index: number }) => setIndex(index);
 
-  const renderScreen = ({ item, index }: any) => <MoreInfo data={item} plantId={plantId} />;
+  const renderScreen = ({ item, index }: any) => <MoreInfo data={item} plant={route.params?.plant} />;
 
   return (
     <SafeAreaView style={styles.safeView}>
@@ -94,7 +94,7 @@ const SoilDetailContainer = (props: IProps) => {
         keyExtractor={(item, index) => index.toString()}
         onChangeIndex={onChangeIndex}
       />
-      <View style={{ flex: 0.2, justifyContent: 'center' }}>
+      <View style={{ flex: 0.2, justifyContent: 'center', marginBottom: IS_ANDROID ? 20 : 10 }}>
         <BottomTab onClickLeft={navigateMoreInfo} onClickRight={navigateFanSpeed} />
       </View>
     </SafeAreaView>

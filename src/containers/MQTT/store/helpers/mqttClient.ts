@@ -7,7 +7,6 @@ const MQTTClient = () => {
       const iotClient = new IoTClient(true);
       const initialized = await iotClient.initClient(extend({ debug: false }, option));
       if (initialized) {
-        console.log('iotClient___', iotClient);
         resolve(iotClient);
       }
     });
@@ -53,7 +52,6 @@ const MQTTClient = () => {
   const subscribe = (topic: string) => {
     const iotClient = new IoTClient();
     iotClient.client && iotClient.subscribe(topic);
-    console.log('iotClient1_subscribe21212', iotClient);
   };
 
   const disconnect = () => {

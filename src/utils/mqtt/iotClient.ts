@@ -190,8 +190,10 @@
 // }
 
 import AWSSDK from 'aws-sdk';
-import { Auth, API, Amplify } from 'aws-amplify';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AWSIoTDeviceSdk from 'aws-iot-device-sdk';
+import { Auth } from 'aws-amplify';
+import { attachPolicyService } from '@Containers/Home/store/services';
+import { AWSConfig } from '@Utils/constants';
 
 let instance: any = null;
 let AWS_SDK = {} as any;
@@ -225,13 +227,59 @@ export default class IoTClient {
     new Promise((resolve, reject) => {
       this.options = options;
       AWS_SDK.config.region = options.region;
-      Auth.currentUserCredentials().then(user => {
-        console.log('user___1', user.identityId, user);
+      Auth.currentUserCredentials().then(async user => {
+        const data = await Auth.currentCredentials();
         AWS_SDK.config.credentials = user;
-        user.identityId && AsyncStorage.setItem('identity_id', user.identityId);
-        resolve(true);
+        try {
+          await attachPolicyService(data.identityId);
+          this.client = new AWSIoTDeviceSdk.device({
+            //
+            // Set the AWS region we will operate in.
+            //
+            region: options.region || AWSConfig.region,
+            //
+            // Set the AWS IoT Host Endpoint
+            //
+            host: options.host,
+            //
+            // Use the clientId created earlier.
+            //
+            clientId: options.clientId,
+            //
+            // Connect via secure WebSocket
+            //
+            protocol: options.protocol || 'wss',
+            //
+            // Set the maximum reconnect time to 8 seconds; this is a browser application
+            // so we don't want to leave the user waiting too long for reconnection after
+            // re-connecting to the network/re-opening their laptop/etc...
+            //
+            maximumReconnectTimeMs: 8000,
+            //
+            // Enable console debugging information (optional)
+            //
+            // debug:
+            //   typeof options.debug === 'undefined' ? true : options.debug,
+            //
+            // IMPORTANT: the AWS access key ID, secret key, and sesion token must be
+            // initialized with empty strings.
+            // //
+            accessKeyId: user.accessKeyId || ' ',
+            secretKey: user.secretAccessKey || ' ',
+            sessionToken: user.sessionToken || ' ',
+          });
+
+          this.updateWebSocketCredentials(user.accessKeyId, user.secretAccessKey, user.sessionToken);
+
+          if (typeof options.debug !== 'undefined' && options.debug) {
+            this.attachDebugHandlers();
+          }
+          resolve(true);
+        } catch (error) {
+          console.log('errrrrorrrr', error);
+          reject();
+        }
       });
-      resolve(true);
     });
 
   disconnect = () => {
@@ -260,15 +308,13 @@ export default class IoTClient {
   };
 
   attachMessageHandler = (onNewMessageHandler: any) => {
+    console.log('attachmesss_______');
     this.client?.on('message', onNewMessageHandler);
   };
 
   attachConnectHandler = (onConnectHandler: any) => {
-    console.log('attachConnectHandler_j_______');
     this.client?.on('connect', (connack: any) => {
-      this.client.subscribe('#');
       this.client.subscribe('$aws/things/+/shadow/update/accepted');
-      this.client.subscribe('request');
       if (typeof this.options.debug !== 'undefined' && this.options.debug) {
         console.log('connected_____', connack);
       }
@@ -308,8 +354,7 @@ export default class IoTClient {
   };
 
   subscribe = (topic: any) => {
-    console.log('subscribed from topic', topic);
-    this.client.subscribe(topic);
+    this.client?.subscribe(topic);
   };
 
   unsubscribe = (topic: any) => {

@@ -1,6 +1,7 @@
-import { Dimensions, FlatList, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, connect } from 'react-redux';
+import moment from 'moment';
 import { HomeActions } from '@Containers/Home/store/actions';
 import { makeSelectIsRequesting, makeSelectMyPlantHistory } from '@Containers/Home/store/selectors';
 
@@ -71,15 +72,33 @@ const Chart = (props: IProps) => {
   const [isActive, setIsActive] = useState(3);
   const { myPlantHistory, plantId } = props;
   const dispatch = useDispatch();
+  const [time, setTime] = useState({
+    fromDate: moment().subtract(24, 'h').unix(),
+    toDate: moment().unix(),
+  });
 
   useEffect(() => {
     const payload = {
-      from: 1666256999,
-      to: 1666258081,
+      from: time.fromDate,
+      to: time.toDate,
       plantId: plantId,
     };
     dispatch(HomeActions.getPlantStateHistory.request(payload));
-  }, [dispatch]);
+  }, [dispatch, time]);
+
+  const handleSetTime = (type: string) => () => {
+    if (type === 'Day') {
+      setTime({
+        fromDate: moment().subtract(24, 'h').unix(),
+        toDate: moment().unix(),
+      });
+    } else {
+      setTime({
+        fromDate: moment().subtract(7, 'days').unix(),
+        toDate: moment().unix(),
+      });
+    }
+  };
 
   const onPress = (id: number) => () => {
     setIsActive(id);
@@ -115,7 +134,14 @@ const Chart = (props: IProps) => {
         }}
       />
       <View style={styles.chart}>
-        {/* <Chartcompo /> */}
+        <View style={styles.btnDateContainer}>
+          <TouchableOpacity style={styles.btnDay} onPress={handleSetTime('Day')}>
+            <Text>Day</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnDay} onPress={handleSetTime('Week')}>
+            <Text>Week</Text>
+          </TouchableOpacity>
+        </View>
         <LineChartComp />
       </View>
       <View style={styles.footerContent}>
@@ -207,5 +233,17 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
     color: colors.black2,
+  },
+  btnDateContainer: {
+    flexDirection: 'row',
+    paddingVertical: 6,
+    justifyContent: 'flex-end',
+  },
+  btnDay: {
+    fontSize: 13,
+    fontFamily: fontFamily.Strawford,
+    marginHorizontal: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
   },
 });

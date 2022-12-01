@@ -18,7 +18,7 @@ export default StyleSheet.create({
     fontSize: 32,
   },
   subTitle: {
-    color: colors.grey06,
+    color: colors.green2,
     fontFamily: fontFamily.FreightBigProMedium,
     fontSize: 16,
     textAlign: 'center',
@@ -78,7 +78,7 @@ export default StyleSheet.create({
   socialText: {
     flexGrow: 1,
     justifyContent: 'flex-end',
-    marginBottom: 10,
+    marginBottom: 10
   },
   socialBtn: {
     flexGrow: 0.2,

@@ -158,13 +158,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     shadowOffset: {
-      width: 3,
-      height: -6,
+      width: 0,
+      height: 2,
     },
-    shadowColor: colors.yellow,
-    shadowOpacity: 0.02,
-    shadowRadius: 25,
-    elevation: 6,
+    shadowColor: colors.green2,
+    shadowOpacity: 0.33,
+    shadowRadius: 4,
     zIndex: 10,
   },
   badge: {

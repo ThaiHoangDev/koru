@@ -1,21 +1,10 @@
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useRef, useState } from 'react';
 import SwiperFlatList from 'react-native-swiper-flatlist';
-
 import { connect, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { HomeActions } from '@Containers/Home/store/actions';
 import { createStructuredSelector } from 'reselect';
+import { isEmpty } from 'lodash';
 import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/store/selectors';
 
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -24,37 +13,35 @@ import { RouteProp } from '@react-navigation/native';
 import TopNavigationBar from '@Navigators/topNavigation';
 import NetworkIcon from '@Components/iconSvg/home/NetworkIcon';
 import PlantIcon from '@Components/iconSvg/pairing/Plant';
-
-import { colors, fontFamily } from '@Theme/index';
-
-import Plant from '@Components/iconSvg/pairing/Plant';
 import { ImageBackgroundCompLayout } from '@Components/image-backgroundComp/index';
-import { HEIGHT, WIDTH } from '@Constants/app';
-import PantBox from '@Containers/Pairing/components/PlantBox';
+import NotConected from '@Components/iconSvg/home/NotConected';
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import BottomTab from '@Containers/Home/components/BottomTab';
-import NotConected from '@Components/iconSvg/home/NotConected';
 import { ButtonComp } from '@Components/button';
-import { showAlert } from '@Utils/helper';
+
+import { colors, fontFamily } from '@Theme/index';
+import { HEIGHT, WIDTH } from '@Constants/app';
+import { formatValueMQTT, qualityDay, showAlert } from '@Utils/helper';
+import { PlantProps } from '@Containers/Home/store/interfaces';
+import { ReportData } from '@Containers/Home/constants';
 
 type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'PlantDetail'>;
 type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'PlantDetail'>;
 
 interface IProps {
   isLoading: boolean;
-  myPlant: any;
+  myPlant: PlantProps[];
   navigation: HomeScreenNavigationProp;
   route: HomeScreenRouteProp;
 }
 
 const PlantDetailContainer = (props: IProps) => {
   const { navigation, route, myPlant } = props;
+  const currentIndex = myPlant.findIndex((item: any, i: any) => item.uuid === route.params?.uuid);
+  const currentPlantStatic = myPlant.filter((item: any, i: any) => item.uuid === route.params?.uuid)[0];
   let listRef: any = useRef(null);
-  const [index, setIndex] = useState(0);
-  const disconected = false;
-  const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
-  const [plantId, setPlantId] = useState('');
+  const [index, setIndex] = useState(currentIndex || 0);
+  const [currentPlant, setCurrentPlant] = useState(currentPlantStatic || {});
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -64,17 +51,14 @@ const PlantDetailContainer = (props: IProps) => {
   }, [navigation]);
 
   useEffect(() => {
-    const payload = {
-      page,
-      perpage: 10,
-      search: '',
-    };
-    dispatch(HomeActions.getMyPlant.request(payload));
-  }, [page, dispatch]);
+    setCurrentPlant(currentPlantStatic);
+  }, [myPlant]);
 
   const onChangeIndex = ({ index }: any) => {
+    const current: PlantProps = myPlant.filter((item: any, i: any) => index === i)[0];
     setIndex(index);
-    setPlantId(myPlant.filter((item: any, i: any) => index === i).uuid);
+
+    setCurrentPlant(current);
   };
 
   const handleNextPlant = () => {
@@ -91,34 +75,39 @@ const PlantDetailContainer = (props: IProps) => {
   const _renderItem = ({ item }: any) => {
     return (
       <View style={styles.containerItem}>
-        <View style={styles.image}>
-          <Image
-            source={{ uri: item?.uri || '', width: 40, height: 40 }}
-            resizeMode="contain"
-            style={{ borderRadius: 10, top: -HEIGHT / 100 }}></Image>
-        </View>
+        <View style={styles.image}>{item.image}</View>
         <View style={styles.rightContainer}>
-          <Text style={[styles.title, styles.fontFamily]}>{item?.name}</Text>
-          <Text style={[styles.subTitle, styles.fontFamily]}>{item?.type}</Text>
+          <Text style={[styles.title, styles.fontFamily]}>{item.name}</Text>
+          <Text style={[styles.subTitle, styles.fontFamily]}>
+            {!isEmpty(currentPlant?.reported) && formatValueMQTT(currentPlant?.reported, item.name)}
+          </Text>
         </View>
       </View>
     );
   };
 
   const navigateFanSpeed = () => {
-    navigation.navigate('FanSpeedScreen');
+    navigation.navigate('FanSpeedScreen', { plant: currentPlant });
   };
   const navigateMoreInfo = () => {
-    navigation.navigate('SoilDetailScreen', { uuid: plantId });
+    navigation.navigate('SoilDetailScreen', { plant: currentPlant });
   };
 
   const handleReconect = () => {};
 
-  const renderScreen = ({ item, index }: any) => (
+  const renderScreen = ({ item, index }: { item: PlantProps; index: number }) => (
     <ImageBackgroundCompLayout
       children={
         <View style={styles.imageBg}>
-          {!!item?.image_url ? <Image source={{ uri: item?.image_url }} /> : <PlantIcon />}
+          {!!item?.species_image ? (
+            <Image
+              source={{ uri: item?.species_image }}
+              style={{ width: '100%', height: '100%' }}
+              resizeMode="contain"
+            />
+          ) : (
+            <PlantIcon />
+          )}
         </View>
       }
       source={require('@Assets/image-background/box-plant.png')}
@@ -131,20 +120,22 @@ const PlantDetailContainer = (props: IProps) => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={{ flex: 2 }}>
-          <Text style={styles.headerTitle}>Balu</Text>
-          <Text style={styles.headerSubTitle}>Monstera</Text>
+          <Text style={styles.headerTitle}>{currentPlant.name}</Text>
+          <Text style={styles.headerSubTitle}>{currentPlant.species_name}</Text>
         </View>
         <View style={styles.networkStyle}>
-          {disconected && <NotConected />}
-          <Text style={[{ color: disconected ? colors.red : colors.green1 }, styles.headerTitleLeft]}>Conected</Text>
-          <NetworkIcon disconected={disconected} />
+          {!currentPlant?.status && <NotConected />}
+          <Text style={[{ color: !currentPlant?.status ? colors.red : colors.green1 }, styles.headerTitleLeft]}>
+            Conected
+          </Text>
+          <NetworkIcon isConnectDevice={!currentPlant?.status} />
         </View>
       </View>
 
       <View style={styles.middleContainer}>
         <FlatList
-          data={myPlant}
-          keyExtractor={item => item.toString()}
+          data={ReportData}
+          keyExtractor={item => item.uuid.toString()}
           renderItem={_renderItem}
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
@@ -163,10 +154,11 @@ const PlantDetailContainer = (props: IProps) => {
             width: WIDTH / 2,
             right: 0,
           }}
+          index={index}
           paginationStyleItem={styles.paginationDot}
           paginationStyleItemInactive={styles.itemInactive}
           paginationActiveColor={colors.black2}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item, index) => `${index.toString()}_${item.uuid.toString}`}
           onChangeIndex={onChangeIndex}
           style={{ flex: 1 }}
         />
@@ -178,11 +170,13 @@ const PlantDetailContainer = (props: IProps) => {
         <ImageBackgroundCompLayout
           children={
             <TouchableOpacity style={styles.bgLayout}>
-              <View style={styles.wateringText}>
-                <Text style={styles.mlText}>430 ml</Text>
-                <Text style={styles.numText}>5</Text>
-                <Text style={styles.dayText}>days</Text>
-              </View>
+              {!isEmpty(currentPlant) && (
+                <View style={styles.wateringText}>
+                  <Text style={styles.mlText}>{currentPlant?.reported?.wtl || 0} ml</Text>
+                  <Text style={styles.numText}>{!!currentPlant?.reported?.wtl ? qualityDay(currentPlant) : 0}</Text>
+                  <Text style={styles.dayText}>days</Text>
+                </View>
+              )}
               <LoaderAnimationProgress source={require('@Assets/lotties/water.json')} width={200} />
             </TouchableOpacity>
           }
@@ -190,7 +184,7 @@ const PlantDetailContainer = (props: IProps) => {
           resizeMode="contain"></ImageBackgroundCompLayout>
         <BottomTab onClickLeft={navigateMoreInfo} onClickRight={navigateFanSpeed} isDetail />
       </View>
-      {disconected && (
+      {!currentPlant?.status && (
         <View style={styles.reconnectBtn}>
           <ButtonComp
             title={'Reconnect'}
@@ -242,9 +236,12 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   image: {
-    position: 'relative',
     backgroundColor: colors.green,
     borderRadius: 10,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   imageBg: {
     flex: 1,
@@ -272,16 +269,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   title: {
-    fontSize: 16,
+    fontSize: 13,
     lineHeight: 26,
-    color: colors.black2,
+    color: colors.grey06,
   },
   fontFamily: {
     fontFamily: fontFamily.Strawford,
   },
   subTitle: {
-    fontSize: 13,
-    color: colors.grey06,
+    fontSize: 16,
+    color: colors.black2,
+    fontWeight: '500',
   },
   paginationDot: {
     width: 8,
@@ -305,7 +303,7 @@ const styles = StyleSheet.create({
   },
   mlText: {
     fontSize: 16,
-    color: colors.green,
+    color: colors.green1,
     fontFamily: fontFamily.Strawford,
   },
   numText: {
