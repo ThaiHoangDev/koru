@@ -1,5 +1,6 @@
 import { call, fork, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
+import moment from 'moment';
 
 import { MQTTConfig } from '@Utils/constants';
 import { AppActions } from '@Containers/App/store/actions';
@@ -21,7 +22,7 @@ function subscribe() {
       store.dispatch(
         HomeActions.updateListPlant({
           uuid: topic.split('/')[2],
-          data: data.state.reported,
+          data: moment().diff(moment(data.state.reported.ts), 'minutes') < 3 ? data.state.reported : null,
         }),
       );
       try {

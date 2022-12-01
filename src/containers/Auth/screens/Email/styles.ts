@@ -13,6 +13,7 @@ export default StyleSheet.create({
     color: colors.black2,
     fontFamily: fontFamily.Strawford,
     fontSize: 24,
+    fontWeight: '700'
   },
   subTitle: {
     color: colors.grey06,
@@ -57,6 +58,14 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 25,
+    shadowColor: colors.green1,
+    shadowOpacity: 0.33,
+    shadowOffset: {
+      width: 1,
+      height: 4,
+    },
+    shadowRadius: 2.22,
+    elevation: 3,
   },
 
   txtBtn: {

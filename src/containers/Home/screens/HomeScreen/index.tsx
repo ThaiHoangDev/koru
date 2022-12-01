@@ -89,36 +89,11 @@ function HomeContainer(props: IProps) {
     setIsRefresh(true);
     setPage(1);
   };
-
-  useEffect(() => {
-    const payload = {
-      page: isRefresh ? 1 : page,
-      perpage: 10,
-      search: searchText,
-    };
-    (mqttStatus || isLoading) && dispatch(HomeActions.getMyPlant.request(payload));
-    setTimeout(() => {
-      setIsRefresh(false);
-    }, 700);
-  }, [page, isRefresh, dispatch, mqttStatus]);
-
   //init MQTT
   const initAWS = useCallback(async () => {
     const data = await Auth.currentCredentials();
     dispatch(AWSActions.awsConnectRequest.request(data));
-  }, []);
-
-  useEffect(() => {
-    isLoggin && initAWS();
-  }, [initAWS]);
-
-  useEffect(() => {
-    !mqttStatus && dispatch(MQTTActions.init_MQTT.request());
-  }, [mqttStatus]);
-
-  useEffect(() => {
-    mqttStatus && dispatch(HomeActions.getThingShadow.request(myPlant));
-  }, [myPlant.length, mqttStatus]);
+  }, [isLoggin]);
 
   const handleGoToPairing = () => {
     navigation.navigate('Paring');
@@ -141,6 +116,30 @@ function HomeContainer(props: IProps) {
       </TouchableOpacity>
     );
   };
+
+  useEffect(() => {
+    isLoggin && initAWS();
+  }, [initAWS, isLoggin]);
+
+  useEffect(() => {
+    !mqttStatus && dispatch(MQTTActions.init_MQTT.request());
+  }, [mqttStatus]);
+
+  useEffect(() => {
+    mqttStatus && dispatch(HomeActions.getThingShadow.request(myPlant));
+  }, [myPlant.length, mqttStatus]);
+
+  useEffect(() => {
+    const payload = {
+      page: isRefresh ? 1 : page,
+      perpage: 10,
+      search: searchText,
+    };
+    (mqttStatus || isLoading) && dispatch(HomeActions.getMyPlant.request(payload));
+    setTimeout(() => {
+      setIsRefresh(false);
+    }, 700);
+  }, [page, isRefresh, dispatch, mqttStatus]);
 
   return (
     <View style={styles.rootContainer}>

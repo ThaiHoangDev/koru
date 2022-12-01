@@ -6,6 +6,7 @@ import { HomeActions } from '../actions';
 import { MORE_INFO_DATA } from '../constants';
 import { MQTTConfig } from '@Utils/constants';
 import { store } from '@Store/index';
+import moment from 'moment';
 
 function* getMyPlantSaga({ payload }: any) {
   try {
@@ -61,11 +62,11 @@ function* getThingShadow({ payload }: any): any {
             console.log(err, 'errrrorrrr');
           } else {
             const test = JSON.parse(data?.payload);
-            console.log(test, 'test_____');
+            console.log(moment(test.state.reported.ts).format('yyyy, dd, hh:mm'), 'get shadow success');
             store.dispatch(
               HomeActions.updateListPlant({
                 uuid: product.uuid,
-                data: test.state.reported,
+                data: moment().diff(moment(test.state.reported.ts), 'minutes') < 3 ? test.state.reported : null,
               }),
             );
           }

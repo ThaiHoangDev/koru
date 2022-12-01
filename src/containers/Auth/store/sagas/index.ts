@@ -2,7 +2,7 @@ import { AuthenticationDetails, CognitoUserAttribute, CognitoUser } from 'amazon
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { Auth } from 'aws-amplify';
 import { AppActions } from '@Containers/App/store/actions';
-import * as AWS from 'aws-sdk/global';
+// import * as AWS from 'aws-sdk/global';
 
 import axiosClient from '@Utils/axios';
 import asyncStorage from '@Utils/asyncStorage';
@@ -16,7 +16,7 @@ import * as apiService from '../services';
 import { AuthActions } from '../actions';
 import { LoginAction } from '../../interfaces';
 import { showErrorMessage, showErrorWithString } from './../../../../utils/helper';
-import { AWSConfig, MQTTConfig } from '@Utils/constants';
+// import { AWSConfig, MQTTConfig } from '@Utils/constants';
 
 function* loginApiSaga({ payload }: any) {
   const { cognitoToken } = payload;
@@ -129,14 +129,16 @@ function* confirmSignUpSaga({ payload }: any) {
     const cognitoUser = new CognitoUser(userData);
     yield cognitoUser.confirmRegistration(code, true, (err, result) => {
       if (err) {
-        console.log(payload, 'pppprrrrr', err);
+        // console.log(payload, 'pppprrrrr', err);
         store.dispatch(AuthActions.verifyCode.fail({ errors: err }));
+        showErrorWithString('Invalid Code!');
         return;
       }
       store.dispatch(AuthActions.login.request({ password, email }));
       navigate('Intro');
     });
   } catch (error) {
+    showErrorWithString('Invalid Code!');
     yield put(AuthActions.verifyCode.fail({ errors: error }));
   }
 }

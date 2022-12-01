@@ -130,7 +130,7 @@ function ChoosePlantContainer(props: IProps) {
     return (
       <View style={styles.headerContainer}>
         <View style={{ marginVertical: 10 }}>
-          <Text style={styles.subTitle}>Search for the plant you watn to grow</Text>
+          <Text style={styles.subTitle}>Search for the plant you want to grow</Text>
         </View>
         <SearchComp onChangeText={handleChangeText} />
         <View

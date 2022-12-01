@@ -38,6 +38,7 @@ export default StyleSheet.create({
     fontFamily: fontFamily.Strawford,
     fontSize: 24,
     textAlign: 'center',
+    fontWeight: '700',
   },
   textEmail: {
     color: colors.black,

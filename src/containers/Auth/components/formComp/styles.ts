@@ -20,7 +20,7 @@ export default StyleSheet.create({
     paddingHorizontal: 40,
   },
   subTitle: {
-    color: colors.black2,
+    color: colors.grey06,
     fontFamily: fontFamily.Strawford,
     fontSize: 13,
     textAlign: 'center',
@@ -50,6 +50,14 @@ export default StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 25,
     marginBottom: 20,
+    shadowColor: colors.green1,
+    shadowOpacity: 0.33,
+    shadowOffset: {
+      width: 1,
+      height: 4,
+    },
+    shadowRadius: 2.22,
+    elevation: 3,
   },
 
   txtBtn: {

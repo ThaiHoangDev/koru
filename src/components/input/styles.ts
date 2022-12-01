@@ -11,7 +11,7 @@ export default StyleSheet.create({
   title: {
     fontFamily: fontFamily.Strawford,
     fontSize: fontSizes.xl,
-    backgroundColor: colors.white2,
+    backgroundColor: 'transparent',
   },
   label: {
     fontFamily: fontFamily.Strawford,

@@ -227,6 +227,6 @@ const styles = StyleSheet.create({
   },
   scrollList: { width: '100%', flex: 0.8 },
   contenContainer: {
-    flex: 1,
+    flexGrow: 1,
   },
 });

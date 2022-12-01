@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { useNavigation, useRoute, ParamListBase, RouteProp } from '@react-navigation/native';
-import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareFlatList, KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Formik, ErrorMessage } from 'formik';
 
 // utils
@@ -13,10 +13,11 @@ import { verifyEmailValidationSchema } from '@Containers/Auth/schema';
 // components by self
 import TextInputComp from '@Components/input';
 import { ButtonComp } from '@Components/button';
+import TopNavigationBar from '@Navigators/topNavigation';
 // assets
 import styles from './styles';
-import { colors } from '@Theme/index';
-import { WIDTH } from '@Constants/app';
+import { colors, fontFamily } from '@Theme/index';
+import { HEIGHT, IS_ANDROID, WIDTH } from '@Constants/app';
 
 const VERIFY_EMAIL: any = [
   {
@@ -33,10 +34,20 @@ const initialValues: InitvalueProps = {
   code: '',
 };
 
-const EmailContainer = () => {
+interface Iprops {
+  isLoading: boolean;
+}
+
+const EmailContainer = ({ isLoading }: Iprops) => {
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
   const route: RouteProp<ParamListBase> | any = useRoute();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      header: (p: any) => <TopNavigationBar {...p} stylesTop={{ backgroundColor: colors.white }} isLeft={true} />,
+    });
+  }, [navigation]);
 
   const handleVerify = (values: InitvalueProps) => {
     dispatch(
@@ -61,20 +72,16 @@ const EmailContainer = () => {
         enableReinitialize>
         {({ handleSubmit, handleChange, values, errors }) => {
           return (
-            <KeyboardAwareFlatList
-              enableOnAndroid={true}
-              bounces={false}
-              contentContainerStyle={{ flexGrow: 1 }}
-              contentInsetAdjustmentBehavior="always"
-              overScrollMode="always"
-              data={VERIFY_EMAIL}
-              keyExtractor={item => item.label.toString()}
-              renderItem={({ item }) => (
-                <>
+            <KeyboardAwareScrollView style={{ flex: 1, height: HEIGHT / 1.12 }}>
+              <View style={{ flex: 1 }}>
+                <View style={{ width: WIDTH / 2, marginHorizontal: 40 }}>
+                  <Text style={styles.title}>Enter your verification code</Text>
+                </View>
+                <View style={{ flex: 1 }}>
                   <TextInputComp
                     label={''}
                     value={values.code}
-                    placeholder={item.placeholder}
+                    placeholder={'Verification Code'}
                     handleChangeText={handleChange('code')}
                     stylesTxt={styles.txtContainer}
                     autoFocus
@@ -85,35 +92,33 @@ const EmailContainer = () => {
                     name={values.code}
                     children={() => <Text style={styles.errorMessage}>{errors.code}</Text>}
                   />
-                </>
-              )}
-              showsVerticalScrollIndicator={false}
-              ListHeaderComponent={
-                <View>
-                  <Text style={styles.title}>Enter your verification code</Text>
                 </View>
-              }
-              ListHeaderComponentStyle={{ alignItems: 'flex-start', marginTop: 40, width: WIDTH / 2, paddingLeft: 40 }}
-              ListFooterComponentStyle={{ flex: 0.9, justifyContent: 'space-between', marginBottom: 20 }}
-              ListFooterComponent={
-                <>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'flex-start',
+                    justifyContent: 'center',
+                    flexGrow: 2,
+                    height: HEIGHT / 1.8,
+                  }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.subTitle}>Didn’t get the code? </Text>
                     <TouchableOpacity onPress={reSendCode}>
-                      <Text>Resend</Text>
+                      <Text style={{ fontFamily: fontFamily.Strawford, fontSize: 14, fontWeight: '700' }}>Resend</Text>
                     </TouchableOpacity>
                   </View>
+                </View>
 
-                  <ButtonComp
-                    title={'Verify'}
-                    handlePress={handleSubmit}
-                    stylesBtn={[styles.btn]}
-                    stylesTitle={[styles.txtBtn, styles.fontFamily]}
-                    isLoading={false}
-                  />
-                </>
-              }
-            />
+                <ButtonComp
+                  title={'Verify'}
+                  handlePress={handleSubmit}
+                  stylesBtn={[styles.btn]}
+                  stylesTitle={[styles.txtBtn, styles.fontFamily]}
+                  isLoading={isLoading}
+                />
+              </View>
+            </KeyboardAwareScrollView>
           );
         }}
       </Formik>

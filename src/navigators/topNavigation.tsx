@@ -102,7 +102,9 @@ export default function TopNavigationBar(props: IProps) {
         )}
       </View>
       <View style={[styles.content, { flex: 0.6 }]}>{children}</View>
-      <TouchableOpacity onPress={handleShowMenu} style={[styles.right, { flex: 0.2, zIndex: 20 }]}>
+      <TouchableOpacity
+        onPress={handleShowMenu}
+        style={[styles.right, { flex: 0.2, zIndex: 20, alignSelf: 'flex-end', alignContent: 'flex-end' }]}>
         {right}
       </TouchableOpacity>
 

@@ -47,6 +47,9 @@ export const FormComp = ({
   const goToSignUp = () => {
     navigation.navigate('Login', { isLogin: !isLogin });
   };
+  const handleNavigateCode = () => {
+    navigation.navigate('Email');
+  };
 
   return (
     <View style={styles.root}>
@@ -103,9 +106,13 @@ export const FormComp = ({
                 ListFooterComponentStyle={{ flexGrow: 1, minHeight: HEIGHT / 5 }}
                 ListFooterComponent={
                   <View style={styles.listFooter}>
-                    {isLogin && (
+                    {isLogin ? (
                       <TouchableOpacity>
                         <Text style={styles.txt}>Forgot Your Password?</Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity onPress={handleNavigateCode}>
+                        <Text style={styles.txt}>Send code to email.</Text>
                       </TouchableOpacity>
                     )}
                     <>
