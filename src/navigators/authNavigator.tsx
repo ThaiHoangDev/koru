@@ -22,9 +22,10 @@ export type AuthStackParamList = {
   FORGOT_PASSWORD_SUBMIT: { email: string };
   CONFIRM_SIGN_UP: { email: string; password: string };
   USER: undefined;
+  VerifyEmail: undefined;
 };
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<AuthStackParamList>();
 const AuthNavigator = () => {
   return (
     <Stack.Navigator

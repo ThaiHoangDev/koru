@@ -21,7 +21,6 @@ type SoilDetailScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'S
 type SoilDetailScreenRouteProp = RouteProp<HomeStackParamList, 'SoilDetailScreen'>;
 
 interface IProps {
-  isLoading: boolean;
   navigation: SoilDetailScreenNavigationProp;
   route: SoilDetailScreenRouteProp;
 }

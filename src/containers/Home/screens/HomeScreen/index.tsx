@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, RefreshControl } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { RouteProp, useIsFocused } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { connect, useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
 import { createStructuredSelector } from 'reselect';
@@ -30,9 +30,10 @@ import awsReducer from '@Containers/AWS/store/reducers';
 import awsSaga from '@Containers/AWS/store/sagas';
 import { makeSelectIsLoggedIn } from '@Containers/App/store/selectors';
 import { makeSelectMQTTstatus } from '@Containers/MQTT/store/selectors';
+import { HomeScreenNavigationProp } from '@Interfaces/app';
 
-type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
-type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'HomeScreen'>;
+// type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
+// type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'HomeScreen'>;
 
 interface IProps {
   isLoggin: boolean;
@@ -40,13 +41,15 @@ interface IProps {
   loadMore: any;
   myPlant: PlantProps[];
   mqttStatus: boolean;
-  navigation: HomeScreenNavigationProp;
-  route: HomeScreenRouteProp;
+  // navigation: HomeScreenNavigationProp;
+  // route: HomeScreenRouteProp;
 }
 
 function HomeContainer(props: IProps) {
-  const { isLoading, myPlant, navigation, route, isLoggin, mqttStatus, loadMore } = props;
-  // const isFocus = useIsFocused();
+  const { isLoading, myPlant, isLoggin, mqttStatus, loadMore } = props;
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const route = useRoute<RouteProp<HomeStackParamList, 'HomeScreen'>>();
+  const isFocus = useIsFocused();
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
@@ -130,16 +133,17 @@ function HomeContainer(props: IProps) {
   }, [myPlant.length, mqttStatus]);
 
   useEffect(() => {
+    const currentPage = isRefresh ? 1 : page;
     const payload = {
-      page: isRefresh ? 1 : page,
+      page: currentPage,
       perpage: 10,
       search: searchText,
     };
-    (mqttStatus || isLoading) && dispatch(HomeActions.getMyPlant.request(payload));
+    (mqttStatus || (isLoading && isFocus)) && dispatch(HomeActions.getMyPlant.request(payload));
     setTimeout(() => {
       setIsRefresh(false);
     }, 700);
-  }, [page, isRefresh, dispatch, mqttStatus]);
+  }, [page, isRefresh, dispatch, mqttStatus, isFocus]);
 
   return (
     <View style={styles.rootContainer}>

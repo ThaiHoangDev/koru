@@ -29,7 +29,13 @@ const TabBar: any = ({ isActive, index }: { isActive: boolean; index: number }) 
   }
 };
 
-const TabBarNavigator = createBottomTabNavigator();
+export type TabParamList = {
+  Home: undefined;
+  Shop: undefined;
+  Setting: undefined;
+};
+
+const TabBarNavigator = createBottomTabNavigator<TabParamList>();
 export const BottomTabNavigator = () => {
   const [visible, setVisible] = useState(true);
   React.useLayoutEffect(() => {

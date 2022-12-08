@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ShopStackParamList } from '@Navigators/shopNavigator';
@@ -20,8 +20,8 @@ type PlantOrderDetailScreenNavigationProp = StackNavigationProp<ShopStackParamLi
 type PlantOrderDetailScreenRouteProp = RouteProp<ShopStackParamList, 'PlantOrderDetailScreen'>;
 
 interface IProps {
-  isLoading: boolean;
-  data: Order;
+  // isLoading: boolean;
+  // data: Order;
   navigation: PlantOrderDetailScreenNavigationProp;
   route: PlantOrderDetailScreenRouteProp;
 }
@@ -49,7 +49,7 @@ const plantData = {
 };
 
 const ItemDetailContainer = (props: IProps) => {
-  const { isLoading, navigation, route, data } = props;
+  const { navigation, route } = props;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -96,7 +96,7 @@ const ItemDetailContainer = (props: IProps) => {
           </View>
           <View style={styles.price}>
             <Text style={styles.typeText}>{plantData.type}</Text>
-            <ChangeQuantityComp onPressDecrease={handleDecrease} onPressIncrease={handleIncrease} data={data} />
+            {/* <ChangeQuantityComp onPressDecrease={handleDecrease} onPressIncrease={handleIncrease} data={data} /> */}
           </View>
           <Text style={styles.textItemDetail}>{plantData.description}</Text>
           <FlatList
@@ -115,7 +115,7 @@ const ItemDetailContainer = (props: IProps) => {
           handlePress={handleSubmit}
           stylesBtn={[styles.btn]}
           stylesTitle={[styles.txtBtn, styles.fontFamily]}
-          isLoading={isLoading}
+          isLoading={false}
         />
       </View>
     </View>

@@ -12,9 +12,6 @@ import { useInjectSaga } from '@Utils/injectSaga';
 
 import reducer from '@Containers/MQTT/store/reducers';
 import saga from '@Containers/MQTT/store/sagas';
-import { MQTTActions } from '@Containers/MQTT/store/actions';
-import { useDispatch } from 'react-redux';
-import { Auth } from 'aws-amplify';
 
 const AppContainer = () => {
   // useEffect(() => {
@@ -26,7 +23,6 @@ const AppContainer = () => {
   // }, []);
   useInjectReducer({ key: 'mqtt', reducer });
   useInjectSaga({ key: 'mqtt', saga });
-
  
 
   useEffect(() => {

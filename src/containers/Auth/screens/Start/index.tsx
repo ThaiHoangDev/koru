@@ -43,7 +43,9 @@ const StartContainer = () => {
           <Text style={[styles.title, styles.fontFamily]}>{'Hey Boss!'}</Text>
         </View>
         <View style={styles.introView}>
-          <Text style={[styles.subTitle, styles.fontFamily]}>{'There are 1000 kinds of plants waiting for you'}</Text>
+          <Text style={[styles.subTitle, styles.fontFamily]}>
+            There are {<Text style={{ color: colors.green2 }}>1000</Text>} kinds of plants waiting for you
+          </Text>
         </View>
         <View style={[styles.doneWrap]}>
           <ButtonComp

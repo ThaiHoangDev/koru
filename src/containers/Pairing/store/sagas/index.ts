@@ -1,5 +1,5 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
-import { ToastAndroid, PermissionsAndroid } from 'react-native';
+import { ToastAndroid } from 'react-native';
 import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
 import { PairActions } from '../actions';
 import * as apiService from '../services';
@@ -73,6 +73,7 @@ function* getListPlantSaga({ payload }: any): any {
     yield put(PairActions.getListPlant.fail(error));
   }
 }
+
 function* getListPlantGroupSaga({ payload }: any): any {
   try {
     const { data } = yield call(apiService.getListPlantGroupApi, payload);

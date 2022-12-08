@@ -15,7 +15,7 @@ export default function SearchComp(props: IProps) {
         <SearchIcon />
       </TouchableOpacity>
       <View style={styles.searchBar}>
-        <TextInput {...rest} style={styles.input} />
+        <TextInput {...rest} style={styles.input} placeholder={'search'}/>
       </View>
     </View>
   );
@@ -46,9 +46,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     height: 32,
-    borderColor: colors.grey06,
+    borderColor: colors.gray04,
     borderRadius: 25,
-    borderWidth: 2,
+    borderWidth: 1,
     alignItems: 'center',
     position: 'absolute',
     zIndex: 2,

@@ -18,12 +18,15 @@ import NotConected from '@Components/iconSvg/home/NotConected';
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import BottomTab from '@Containers/Home/components/BottomTab';
 import { ButtonComp } from '@Components/button';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import { colors, fontFamily } from '@Theme/index';
 import { HEIGHT, WIDTH } from '@Constants/app';
 import { formatValueMQTT, qualityDay, showAlert } from '@Utils/helper';
 import { PlantProps } from '@Containers/Home/store/interfaces';
 import { ReportData } from '@Containers/Home/constants';
+import { HomeActions } from '@Containers/Home/store/actions';
+import ModalAlert from '@Components/modal/ModalAlert';
 
 type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'PlantDetail'>;
 type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'PlantDetail'>;
@@ -37,18 +40,42 @@ interface IProps {
 
 const PlantDetailContainer = (props: IProps) => {
   const { navigation, route, myPlant } = props;
+  const dispatch = useDispatch();
   const currentIndex = myPlant.findIndex((item: any, i: any) => item.uuid === route.params?.uuid);
   const currentPlantStatic = myPlant.filter((item: any, i: any) => item.uuid === route.params?.uuid)[0];
   let listRef: any = useRef(null);
   const [index, setIndex] = useState(currentIndex || 0);
   const [currentPlant, setCurrentPlant] = useState(currentPlantStatic || {});
+  const [isRemovePlant, setDisableReamove] = useState(false);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      header: (p: any) => <TopNavigationBar {...p} isLeft children={<Text style={styles.titleTab}>Over view</Text>} />,
+      header: (p: any) => (
+        <TopNavigationBar
+          {...p}
+          isLeft
+          children={<Text style={styles.titleTab}>Over view</Text>}
+          right={<Entypo name="dots-three-vertical" size={24} color={colors.black2} />}
+          isOverview
+          onRemove={handleShowModal}
+          onNavigation={handleNavigationEditPlant}
+        />
+      ),
     });
   }, [navigation]);
+
+  const handleNavigationEditPlant = () => {
+    navigation.navigate('EditPlantInfo', { currentPlant });
+  };
+
+  const handleShowModal = () => {
+    setDisableReamove(!isRemovePlant);
+  };
+
+  const handleRemovePlant = () => {
+    dispatch(HomeActions.removePlant.request(currentPlant.uuid));
+  };
 
   useEffect(() => {
     setCurrentPlant(currentPlantStatic);
@@ -117,85 +144,92 @@ const PlantDetailContainer = (props: IProps) => {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={{ flex: 2 }}>
-          <Text style={styles.headerTitle}>{currentPlant.name}</Text>
-          <Text style={styles.headerSubTitle}>{currentPlant.species_name}</Text>
+    <>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <View style={{ flex: 2 }}>
+            <Text style={styles.headerTitle}>{currentPlant.name}</Text>
+            <Text style={styles.headerSubTitle}>{currentPlant.species_name}</Text>
+          </View>
+          <View style={styles.networkStyle}>
+            {!currentPlant?.status && <NotConected />}
+            <Text style={[{ color: !currentPlant?.status ? colors.red : colors.green1 }, styles.headerTitleLeft]}>
+              Conected
+            </Text>
+            <NetworkIcon isConnectDevice={!currentPlant?.status} />
+          </View>
         </View>
-        <View style={styles.networkStyle}>
-          {!currentPlant?.status && <NotConected />}
-          <Text style={[{ color: !currentPlant?.status ? colors.red : colors.green1 }, styles.headerTitleLeft]}>
-            Conected
-          </Text>
-          <NetworkIcon isConnectDevice={!currentPlant?.status} />
-        </View>
-      </View>
 
-      <View style={styles.middleContainer}>
-        <FlatList
-          data={ReportData}
-          keyExtractor={item => item.uuid.toString()}
-          renderItem={_renderItem}
-          contentContainerStyle={{ flexGrow: 1 }}
-          showsVerticalScrollIndicator={false}
-          style={{ flex: 1, paddingTop: 30 }}
-          ListFooterComponent={<View style={{ height: 20 }}></View>}
-        />
-        <SwiperFlatList
-          renderAll
-          showPagination
-          ref={listRef}
-          autoplayLoopKeepAnimation
-          data={myPlant}
-          renderItem={renderScreen}
-          paginationStyle={{
-            position: 'absolute',
-            width: WIDTH / 2,
-            right: 0,
-          }}
-          index={index}
-          paginationStyleItem={styles.paginationDot}
-          paginationStyleItemInactive={styles.itemInactive}
-          paginationActiveColor={colors.black2}
-          keyExtractor={(item, index) => `${index.toString()}_${item.uuid.toString}`}
-          onChangeIndex={onChangeIndex}
-          style={{ flex: 1 }}
-        />
-      </View>
-      <View style={styles.footer}>
-        <TouchableOpacity onPress={handleNextPlant}>
-          <Text style={styles.networkWater}>Next watering</Text>
-        </TouchableOpacity>
-        <ImageBackgroundCompLayout
-          children={
-            <TouchableOpacity style={styles.bgLayout}>
-              {!isEmpty(currentPlant) && (
-                <View style={styles.wateringText}>
-                  <Text style={styles.mlText}>{currentPlant?.reported?.wtl || 0} ml</Text>
-                  <Text style={styles.numText}>{!!currentPlant?.reported?.wtl ? qualityDay(currentPlant) : 0}</Text>
-                  <Text style={styles.dayText}>days</Text>
-                </View>
-              )}
-              <LoaderAnimationProgress source={require('@Assets/lotties/water.json')} width={200} />
-            </TouchableOpacity>
-          }
-          source={require('@Assets/image-background/beach.png')}
-          resizeMode="contain"></ImageBackgroundCompLayout>
-        <BottomTab onClickLeft={navigateMoreInfo} onClickRight={navigateFanSpeed} isDetail />
-      </View>
-      {!currentPlant?.status && (
-        <View style={styles.reconnectBtn}>
-          <ButtonComp
-            title={'Reconnect'}
-            handlePress={handleReconect}
-            stylesBtn={styles.btn}
-            stylesTitle={styles.titleBtn}
-            isLoading={false}
+        <View style={styles.middleContainer}>
+          <FlatList
+            data={ReportData}
+            keyExtractor={item => item.uuid.toString()}
+            renderItem={_renderItem}
+            contentContainerStyle={{ flexGrow: 1 }}
+            showsVerticalScrollIndicator={false}
+            style={{ flex: 1, paddingTop: 30 }}
+            ListFooterComponent={<View style={{ height: 20 }}></View>}
+          />
+          <SwiperFlatList
+            renderAll
+            showPagination
+            ref={listRef}
+            autoplayLoopKeepAnimation
+            data={myPlant}
+            renderItem={renderScreen}
+            paginationStyle={{
+              position: 'absolute',
+              width: WIDTH / 2,
+              right: 0,
+            }}
+            index={index}
+            paginationStyleItem={styles.paginationDot}
+            paginationStyleItemInactive={styles.itemInactive}
+            paginationActiveColor={colors.black2}
+            keyExtractor={(item, index) => `${index.toString()}_${item.uuid.toString}`}
+            onChangeIndex={onChangeIndex}
+            style={{ flex: 1 }}
           />
         </View>
-      )}
-    </View>
+        <View style={styles.footer}>
+          <TouchableOpacity onPress={handleNextPlant}>
+            <Text style={styles.networkWater}>Next watering</Text>
+          </TouchableOpacity>
+          <ImageBackgroundCompLayout
+            children={
+              <TouchableOpacity style={styles.bgLayout}>
+                {!isEmpty(currentPlant) && (
+                  <View style={styles.wateringText}>
+                    <Text style={styles.mlText}>{currentPlant?.reported?.wtl || 0} ml</Text>
+                    <Text style={styles.numText}>{!!currentPlant?.reported?.wtl ? qualityDay(currentPlant) : 0}</Text>
+                    <Text style={styles.dayText}>days</Text>
+                  </View>
+                )}
+                <LoaderAnimationProgress source={require('@Assets/lotties/water.json')} width={200} />
+              </TouchableOpacity>
+            }
+            source={require('@Assets/image-background/beach.png')}
+            resizeMode="contain"></ImageBackgroundCompLayout>
+          <BottomTab onClickLeft={navigateMoreInfo} onClickRight={navigateFanSpeed} isDetail />
+        </View>
+        {!currentPlant?.status && (
+          <View style={styles.reconnectBtn}>
+            <ButtonComp
+              title={'Reconnect'}
+              handlePress={handleReconect}
+              stylesBtn={styles.btn}
+              stylesTitle={styles.titleBtn}
+              isLoading={false}
+            />
+          </View>
+        )}
+      </View>
+      <ModalAlert
+        visible={isRemovePlant}
+        onCancle={() => setDisableReamove(!isRemovePlant)}
+        onSub={handleRemovePlant}
+      />
+    </>
   );
 };
 const mapStateToProps = createStructuredSelector({
@@ -218,6 +252,8 @@ const styles = StyleSheet.create({
   },
   networkStyle: {
     flex: 1,
+    paddingHorizontal: 20,
+    marginRight: 20,
     flexDirection: 'row',
     alignItems: 'center',
   },

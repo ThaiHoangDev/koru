@@ -11,7 +11,6 @@ import {
   makeSelectListPlant,
   makeSelectListPlantGroup,
   makeSelectListPlantLoadMore,
-  makeSelectUuid,
 } from '../store/selectors';
 import { PairActions } from '../store/actions';
 //components

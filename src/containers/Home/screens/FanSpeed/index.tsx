@@ -23,7 +23,6 @@ type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'FanSpee
 type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'FanSpeedScreen'>;
 
 interface IProps {
-  isLoading: boolean;
   myPlants: PlantProps[];
   navigation: HomeScreenNavigationProp;
   route: HomeScreenRouteProp;

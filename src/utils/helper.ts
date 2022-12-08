@@ -1,6 +1,6 @@
 
 import dayjs from 'dayjs';
-import { Alert } from 'react-native';
+import { Alert, Modal } from 'react-native';
 
 import { PlantProps, ReportedProps } from 'containers/Home/store/interfaces';
 

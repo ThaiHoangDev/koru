@@ -9,16 +9,17 @@ export type HomeStackParamList = {
   PlantDetail: { uuid: string } | undefined;
   FanSpeedScreen: { plant?: PlantProps } | undefined;
   SoilDetailScreen: { plant?: PlantProps } | undefined;
+  EditPlantInfo: { currentPlant: PlantProps } | undefined;
 };
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<HomeStackParamList>();
 
 export const HomeNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: true, presentation: 'transparentModal' }}
       initialRouteName="HomeScreen">
-      <Stack.Screen name="HomeScreen" component={(props: any) => <HomeScreen {...props} />} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
   );
 };

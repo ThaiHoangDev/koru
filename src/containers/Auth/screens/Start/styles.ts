@@ -18,7 +18,7 @@ export default StyleSheet.create({
     fontSize: 32,
   },
   subTitle: {
-    color: colors.green2,
+    color: colors.grey06,
     fontFamily: fontFamily.FreightBigProMedium,
     fontSize: 16,
     textAlign: 'center',

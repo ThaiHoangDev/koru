@@ -1,26 +1,20 @@
 import React from 'react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import { MainLayout } from '@Layouts/index';
 import PlantDetailContainer from '@Containers/Home/screens/PlantDetail';
-
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@Navigators/homeNavigator';
-import { RouteProp } from '@react-navigation/native';
 
 type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'PlantDetail'>;
 type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'PlantDetail'>;
 
-interface IProps {
-  isLoading: boolean;
-  myPlant: any;
-  navigation: HomeScreenNavigationProp;
-  route: HomeScreenRouteProp;
-}
-
-const PlantDetailScreen = (props: IProps) => {
+const PlantDetailScreen = () => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const route = useRoute<HomeScreenRouteProp>();
   return (
     <MainLayout>
-      <PlantDetailContainer {...props} />
+      <PlantDetailContainer navigation={navigation} route={route} />
     </MainLayout>
   );
 };

@@ -9,7 +9,6 @@ import { createStructuredSelector } from 'reselect';
 import { ShopStackParamList } from '@Navigators/shopNavigator';
 import TopNavigationBar from '@Navigators/topNavigation';
 import { colors, fontFamily } from '@Theme/index';
-import { ShopActions } from '../store/actions/index';
 import { makeSelectIsRequesting, makeSelectMyOrder } from '../store/selectors/index';
 import OrderItemComp from '../components/OrderComp';
 import OrderFooterComp from '../components/OrderFooterComp';
@@ -40,9 +39,9 @@ const OrderContainer = (props: IProps) => {
     });
   }, [navigation]);
 
-  useEffect(() => {
-    dispatch(ShopActions.getMyOrder.request());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(ShopActions.getMyOrder.request());
+  // }, [dispatch]);
 
   const totalItem = () => {
     let totalItem = 0;

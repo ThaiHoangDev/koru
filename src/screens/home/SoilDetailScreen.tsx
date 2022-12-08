@@ -1,25 +1,20 @@
 import React from 'react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { MainLayout } from '@Layouts/index';
-
-import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@Navigators/homeNavigator';
-import { RouteProp } from '@react-navigation/native';
 import SoilDetailContainer from '@Containers/Home/screens/SoilDetailContainer';
 
 type SoilDetailScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'SoilDetailScreen'>;
 type SoilDetailScreenRouteProp = RouteProp<HomeStackParamList, 'SoilDetailScreen'>;
 
-interface IProps {
-  isLoading: boolean;
-  navigation: SoilDetailScreenNavigationProp;
-  route: SoilDetailScreenRouteProp;
-}
-
-const SoilDetailScreen = (props: IProps) => {
+const SoilDetailScreen = () => {
+  const navigation = useNavigation<SoilDetailScreenNavigationProp>();
+  const route = useRoute<SoilDetailScreenRouteProp>();
   return (
     <MainLayout>
-      <SoilDetailContainer {...props} />
+      <SoilDetailContainer navigation={navigation} route={route} />
     </MainLayout>
   );
 };

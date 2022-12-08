@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/Entypo';
 import HomeIcon from '@Components/iconSvg/home/HomeIcon';
 import ShopIcon from '@Components/iconSvg/home/ShopIcon';
 import SettingIcon from '@Components/iconSvg/home/SettingIcon';
+import EditIcon from '@Components/iconSvg/home/EditIcon';
+import RemoveIcon from '@Components/iconSvg/home/RemoveIcon';
 
 import { colors, fontFamily } from '@Theme/index';
 import { HEIGHT, WIDTH } from '@Constants/app';
@@ -16,17 +18,30 @@ interface IProps {
   right?: any;
   isLeft?: boolean;
   stylesTop?: any;
+  isOverview?: boolean;
+  onRemove?: () => void;
+  onNavigation?: () => void;
 }
 
-const DATA = [
+interface IPropsMenu {
+  label: string;
+  icon: React.ReactElement;
+  screen: string;
+}
+
+const DATA: IPropsMenu[] = [
   { label: 'My plant', icon: <HomeIcon isActive={false} />, screen: 'Home' },
   { label: 'Shop', icon: <ShopIcon isActive={false} />, screen: 'Shop' },
   { label: 'Setting', icon: <SettingIcon isActive={false} />, screen: 'Setting' },
 ];
+const OVERVIEW: IPropsMenu[] = [
+  { label: 'Edit Information', icon: <EditIcon />, screen: 'EditPlantInfo' },
+  { label: 'Remove Plant', icon: <RemoveIcon />, screen: '' },
+];
 
 export default function TopNavigationBar(props: IProps) {
   const navigation: any = useNavigation();
-  const { children, right, isLeft, stylesTop, ...rest } = props;
+  const { children, right, isLeft, stylesTop, isOverview, onRemove, onNavigation, ...rest } = props;
   const [showMenu, setShowMenu] = useState(false);
   const showAnimation = useRef(new Animated.Value(0)).current;
 
@@ -56,8 +71,12 @@ export default function TopNavigationBar(props: IProps) {
     navigation.goBack();
   };
 
-  const handleNavigationTab = (item: any) => () => {
-    navigation.navigate(item.screen);
+  const handleNavigationTab = (item: IPropsMenu) => () => {
+    if (item.label === 'Remove Plant') {
+      onRemove && onRemove();
+      return;
+    }
+    onNavigation ? onNavigation() : navigation.navigate(item.screen);
     handleShowMenu();
   };
 
@@ -93,21 +112,34 @@ export default function TopNavigationBar(props: IProps) {
   };
 
   return (
-    <SafeAreaView edges={['top']} style={[styles.container, stylesTop]}>
-      <View style={{ flex: 0.2, alignItems: 'flex-start' }}>
-        {isLeft && (
-          <TouchableOpacity style={styles.backButton} onPress={backButtonOnPress}>
-            <Icon name="chevron-thin-left" size={24} color={colors.black} />
-          </TouchableOpacity>
-        )}
-      </View>
-      <View style={[styles.content, { flex: 0.6 }]}>{children}</View>
-      <TouchableOpacity
-        onPress={handleShowMenu}
-        style={[styles.right, { flex: 0.2, zIndex: 20, alignSelf: 'flex-end', alignContent: 'flex-end' }]}>
-        {right}
-      </TouchableOpacity>
-
+    <>
+      <SafeAreaView edges={['top']} style={[styles.container, stylesTop]}>
+        <View style={{ flexGrow: 0.2, alignItems: 'flex-start' }}>
+          {isLeft && (
+            <TouchableOpacity style={styles.backButton} onPress={backButtonOnPress}>
+              <Icon name="chevron-thin-left" size={24} color={colors.black} />
+            </TouchableOpacity>
+          )}
+        </View>
+        <View style={[styles.content, { flexGrow: 0.6, alignItems: 'center', justifyContent: 'flex-end' }]}>
+          {children}
+        </View>
+        <TouchableOpacity
+          onPress={handleShowMenu}
+          style={[
+            styles.right,
+            {
+              flexGrow: 0.2,
+              zIndex: 20,
+              alignSelf: 'flex-end',
+              alignContent: 'flex-end',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+          ]}>
+          {right}
+        </TouchableOpacity>
+      </SafeAreaView>
       <Animated.View
         {...panResponder.panHandlers}
         style={{
@@ -137,7 +169,7 @@ export default function TopNavigationBar(props: IProps) {
         }}>
         <View {...panResponder.panHandlers} style={{ width: WIDTH / 2, height: 145 }}></View>
         <FlatList
-          data={DATA}
+          data={isOverview ? OVERVIEW : DATA}
           keyExtractor={item => item.label.toString()}
           renderItem={_renderItem}
           contentContainerStyle={{
@@ -157,14 +189,14 @@ export default function TopNavigationBar(props: IProps) {
           ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.gray04 }}></View>}
         />
       </Animated.View>
-    </SafeAreaView>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    // width: WIDTH,
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -185,6 +217,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   right: {
+    height: 100,
     alignItems: 'center',
   },
 });

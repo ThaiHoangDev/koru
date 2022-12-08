@@ -1,12 +1,13 @@
 import { put, takeLatest, call, select } from 'redux-saga/effects';
 import AWSSDK from 'aws-sdk';
+import moment from 'moment';
 
 import * as apiService from '../services';
 import { HomeActions } from '../actions';
 import { MORE_INFO_DATA } from '../constants';
 import { MQTTConfig } from '@Utils/constants';
 import { store } from '@Store/index';
-import moment from 'moment';
+import { navigate, navigationRef } from '@Utils/navigator';
 
 function* getMyPlantSaga({ payload }: any) {
   try {
@@ -62,11 +63,11 @@ function* getThingShadow({ payload }: any): any {
             console.log(err, 'errrrorrrr');
           } else {
             const test = JSON.parse(data?.payload);
-            console.log(moment(test.state.reported.ts).format('yyyy, dd, hh:mm'), 'get shadow success');
+            console.log(moment(test.state.reported.ts * 1000).format('yyyy, dd, hh:mm'), 'get shadow success');
             store.dispatch(
               HomeActions.updateListPlant({
                 uuid: product.uuid,
-                data: moment().diff(moment(test.state.reported.ts), 'minutes') < 3 ? test.state.reported : null,
+                data: moment().diff(moment(test.state.reported.ts * 1000), 'minutes') < 3 ? test.state.reported : null,
               }),
             );
           }
@@ -78,10 +79,36 @@ function* getThingShadow({ payload }: any): any {
   }
 }
 
+function* removePlantSaga({ payload }: any): any {
+  try {
+    const res = yield call(apiService.removePlantService, payload);
+    yield put(HomeActions.removePlant.success());
+  } catch (error: any) {
+    navigate('MessageAlert', { visible: true, title: error?.message || 'Remove plant failed!' });
+    yield put(HomeActions.removePlant.fail());
+  }
+}
+function* updatePlantSaga({ payload }: any): any {
+  try {
+    yield call(apiService.updatePlantService, payload);
+    yield put(HomeActions.updatePlant.success());
+    navigate('MessageAlert', {
+      visible: true,
+      title: 'Update plant success!',
+      callBack: () => navigationRef.current?.goBack(),
+    });
+  } catch (error: any) {
+    navigate('MessageAlert', { visible: true, title: error?.message || 'Update plant failed!' });
+    yield put(HomeActions.updatePlant.fail(error));
+  }
+}
+
 export default function* fetchData() {
   yield takeLatest(HomeActions.Types.GET_MY_PLANT.begin, getMyPlantSaga);
   yield takeLatest(HomeActions.Types.POST_FAN.begin, postFan);
   yield takeLatest(HomeActions.Types.GET_MORE_INFO.begin, getMoreInfoSaga);
   yield takeLatest(HomeActions.Types.GET_PLANT_STATE_HISTORY.begin, getPlantStateHistorySaga);
   yield takeLatest(HomeActions.Types.GET_THING_SHADOW.begin, getThingShadow);
+  yield takeLatest(HomeActions.Types.REMOVE_PLANT.begin, removePlantSaga);
+  yield takeLatest(HomeActions.Types.UPDATE_PLANT.begin, updatePlantSaga);
 }

@@ -19,11 +19,11 @@ function subscribe() {
     MQTTClient.attachMessageHandler((topic: string, message: any) => {
       const data = JSON.parse(message.toString());
       // console.log(data, topic.split('/')[2], 'sub MOTT______DATA');
-      console.log(moment(data.state.reported.ts).format('yyyy, dd, hh:mm'), 'get shadow success');
+      console.log(moment(data.state.reported.ts * 1000).format('yyyy, dd, hh:mm'), 'get shadow success');
       store.dispatch(
         HomeActions.updateListPlant({
           uuid: topic.split('/')[2],
-          data: moment().diff(moment(data.state.reported.ts), 'minutes') < 3 ? data.state.reported : null,
+          data: moment().diff(moment(data.state.reported.ts * 1000), 'minutes') < 3 ? data.state.reported : null,
         }),
       );
       try {

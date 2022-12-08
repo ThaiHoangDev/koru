@@ -9,7 +9,7 @@ export type ShopStackParamList = {
   PlantOrderDetailScreen: { uuid: string };
 };
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<ShopStackParamList>();
 
 export const ShopNavigator = () => {
   return (

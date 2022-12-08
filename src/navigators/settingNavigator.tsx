@@ -5,12 +5,12 @@ import SettingScreen from '@Screens/setting/SettingScreen';
 export type SettingStackParamList = {
   SettingScreen: undefined;
 };
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<SettingStackParamList>();
 
 export const SettingNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SettingScreen">
-      <Stack.Screen name="SettingScreen" component={(props: any) => <SettingScreen {...props} />} />
+      <Stack.Screen name="SettingScreen" component={SettingScreen} />
     </Stack.Navigator>
   );
 };

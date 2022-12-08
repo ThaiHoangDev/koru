@@ -7,14 +7,18 @@ import SplashScreen from '@Screens/SplashScreen';
 import MainNavigator from '@Navigators/mainNavigator';
 import AuthNavigator from '@Navigators/authNavigator';
 import { makeSelectIsInitializing, makeSelectIsLoggedIn, makeSelectIsSkipIntro } from '@Containers/App/store/selectors';
+import Message from '@Containers/Message';
 
 export type RootStackParamList = {
   Splash: undefined;
-  MainNavigator: undefined;
+  MainNavigator: { screen: string } | undefined;
   AuthNavigator: undefined;
+  MessageAlert:
+    | { visible: boolean; title: string; txtCancle?: string; txtOK: string; callBack?: () => void }
+    | undefined;
 };
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 interface Props {
   isInitializing: boolean;
@@ -36,6 +40,11 @@ const AppNavigator = ({ isInitializing, isAuthenticated, isSkipIntro }: Props) =
       ) : (
         <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
       )}
+      <Stack.Screen
+        name="MessageAlert"
+        component={Message}
+        options={{ headerShown: false, presentation: 'transparentModal' }}
+      />
     </Stack.Navigator>
   );
 };

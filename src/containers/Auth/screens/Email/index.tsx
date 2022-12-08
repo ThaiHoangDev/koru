@@ -82,6 +82,8 @@ const EmailContainer = ({ isLoading }: Iprops) => {
                     label={''}
                     value={values.code}
                     placeholder={'Verification Code'}
+                    underlineColor={colors.black}
+                    placeholderTextColor={colors.grey06}
                     handleChangeText={handleChange('code')}
                     stylesTxt={styles.txtContainer}
                     autoFocus
@@ -105,7 +107,17 @@ const EmailContainer = ({ isLoading }: Iprops) => {
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.subTitle}>Didn’t get the code? </Text>
                     <TouchableOpacity onPress={reSendCode}>
-                      <Text style={{ fontFamily: fontFamily.Strawford, fontSize: 14, fontWeight: '700' }}>Resend</Text>
+                      <Text
+                        style={{
+                          color: colors.black2,
+                          fontFamily: fontFamily.Strawford,
+                          fontSize: 13,
+                          fontWeight: '700',
+                          borderBottomWidth: 1,
+                          borderBottomColor: colors.black,
+                        }}>
+                        Resend
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 </View>

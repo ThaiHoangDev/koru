@@ -5,7 +5,7 @@ import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 // utils
-import { LginType, LoginPayload } from '@Containers/Auth/interfaces';
+import { LoginPayload } from '@Containers/Auth/interfaces';
 import { AuthActions } from '@Containers/Auth/store/actions';
 import { makeSelectIsRequesting } from '@Containers/Auth/store/selectors';
 // components by self

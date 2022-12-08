@@ -8,6 +8,7 @@ import { connect, useDispatch } from 'react-redux';
 
 import { PropsScreen } from '@Interfaces/app';
 import { PairActions } from '../store/actions';
+import { makeSelectIsRequesting, makeSelectUuid } from '../store/selectors';
 
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import NoPlantComp from '@Containers/Home/components/NoPlantComp';
@@ -16,9 +17,7 @@ import Searching from './Searching';
 import TitleComp from '../components/TitleComp';
 import TopNavigationBar from '@Navigators/topNavigation';
 
-import { makeSelectIsRequesting, makeSelectUuid } from '../store/selectors';
 import { colors, fontFamily } from '@Theme/index';
-import { showErrorMessage } from '@Utils/helper';
 import { IS_ANDROID } from '@Constants/app';
 
 interface IProps extends PropsScreen {
@@ -51,26 +50,35 @@ function SelectBLTContainer(props: IProps) {
       if (IS_ANDROID) {
         await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
         await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN);
+        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT);
       }
-      await EspIdfProvisioningReactNative.scanBleDevices('SPOT_')
+      await EspIdfProvisioningReactNative.scanBleDevices('Koru-')
         .then((res: any[]) => {
           if (res.length > 0) {
             dispatch(PairActions.scanDevices.success(res));
           } else {
             dispatch(PairActions.scanDevices.fail());
-            showErrorMessage({ message: `Don't have device!` }, () => {
-              navigation.goBack();
+            navigation.navigate('MessageAlert', {
+              visible: true,
+              title: `Don't have device!`,
+              callBack: navigation.goBack(),
             });
           }
         })
         .catch((e: any) => {
           dispatch(PairActions.scanDevices.fail());
-          showErrorMessage({ message: e?.message || 'Scan BLE failed!' }, () => {
-            navigation.goBack();
+          navigation.navigate('MessageAlert', {
+            visible: true,
+            title: e?.message || 'Scan BLE failed!',
+            callBack: navigation.goBack(),
           });
         });
-    } catch (error) {
-      showErrorMessage(error, () => {});
+    } catch (error: any) {
+      navigation.navigate('MessageAlert', {
+        visible: true,
+        title: error?.message || error || 'Scan BLE failed!',
+        callBack: navigation.goBack(),
+      });
     }
   }, [navigation]);
 
@@ -78,42 +86,51 @@ function SelectBLTContainer(props: IProps) {
     scanBLT();
   }, [navigation]);
 
-  const connectToBLEDevice = useCallback(
-    async (uuid: any) => {
-      console.log('connect BLT____');
-      try {
-        dispatch(PairActions.connectBLE.request());
-        EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
-        EspIdfProvisioningReactNative.connectToBLEDevice(uuid)
-          .then((_res: any) => {
-            dispatch(PairActions.connectBLE.success(uuid));
-            navigation.navigate('ChoosePlant', { bluetooth_uid: uuid });
-            ToastAndroid.show('Connected to device', ToastAndroid.LONG);
-          })
-          .catch((e: any) => {
-            dispatch(PairActions.connectBLE.fail(e));
-            showErrorMessage(e, () => {
-              navigation.goBack();
-            });
-            ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
-          });
-      } catch (error) {
-        showErrorMessage(error, () => {});
-      }
-    },
-    [uuid],
-  );
+  const hangeSetProof = () => {
+    EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
+  };
 
-  const handleSelectBLT = (uuid: any) => async () => {
+  const connectBLE = (item: { serviceUuid: string; deviceName: string }) => {
+    EspIdfProvisioningReactNative.connectToBLEDevice(item.serviceUuid)
+      .then((_res: any) => {
+        dispatch(PairActions.connectBLE.success(item.deviceName));
+        navigation.navigate('ChoosePlant', { bluetooth_uid: item });
+        ToastAndroid.show('Connected to device', ToastAndroid.LONG);
+      })
+      .catch((e: any) => {
+        dispatch(PairActions.connectBLE.fail(e));
+        navigation.navigate('MessageAlert', {
+          visible: true,
+          title: e?.message || e || 'Connect to device error',
+          callBack: navigation.goBack(),
+        });
+        ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
+      });
+  };
+
+  const handleSelectBLT = (item: { serviceUuid: string; deviceName: string }) => async () => {
     IS_ANDROID && (await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT));
-    connectToBLEDevice(uuid);
+    try {
+      dispatch(PairActions.connectBLE.request());
+      return new Promise(async resolve => {
+        await hangeSetProof();
+        await connectBLE(item);
+        resolve(true);
+      });
+    } catch (error: any) {
+      navigation.navigate('MessageAlert', {
+        visible: true,
+        title: error?.message || error || 'Connect to device error',
+        callBack: navigation.goBack(),
+      });
+    }
   };
 
   const _renderItem = ({ item, index }: any) => {
     return (
       <TouchableOpacity
         style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 52 }}
-        onPress={handleSelectBLT(item.serviceUuid)}>
+        onPress={handleSelectBLT(item)}>
         <Text style={{ color: colors.black2 }}>{item.deviceName || item.name}</Text>
         <SkipIcon />
       </TouchableOpacity>

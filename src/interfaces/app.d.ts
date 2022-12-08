@@ -1,3 +1,33 @@
+import { TabParamList } from '@Navigators/bottomNavigator';
+import { ShopStackParamList } from '@Navigators/shopNavigator';
+import { HomeStackParamList } from '@Navigators/homeNavigator';
+
+import type { CompositeNavigationProp, CompositeScreenProps } from '@react-navigation/native';
+import type { BottomTabScreenProps, BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type { StackScreenProps, StackNavigationProp } from '@react-navigation/stack';
+
+// screen props
+export type HomeProps = CompositeScreenProps<
+  BottomTabScreenProps<TabParamList, 'Home'>,
+  StackScreenProps<HomeStackParamList>
+>;
+export type ShopProps = CompositeScreenProps<
+  BottomTabScreenProps<TabParamList, 'Shop'>,
+  StackScreenProps<ShopStackParamList, 'ShopScreen'>
+>;
+//navigation
+export type HomeScreenNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<TabParamList, 'Home'>,
+  StackNavigationProp<HomeStackParamList, 'HomeScreen'>
+>;
+export type ShopScreenNavigationProps = CompositeNavigationProp<
+  BottomTabNavigationProp<TabParamList, 'Shop'>,
+  StackNavigationProp<ShopStackParamList, 'ShopScreen'>
+>;
+
+
+export type SettingProps = StackScreenProps<RootStackParamList, 'Setting'>;
+
 export type RootStackParamList = {
   Home: undefined;
   Shop: undefined;

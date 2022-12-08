@@ -1,26 +1,30 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, PermissionsAndroid, Pressable, Platform } from 'react-native';
-import { connect, useDispatch } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { useNavigation, useRoute, ParamListBase, RouteProp } from '@react-navigation/native';
+import React from 'react';
+import { View, StyleSheet, Pressable } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
 import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
 
 // utils
 
 // components by self
-import TopNavigationBar from '@Navigators/topNavigation';
-// assets
-
-import { colors, fontFamily } from '@Theme/index';
-
 import StartPairing from '@Components/iconSvg/pairing/StartPairing';
 import TitleComp from '../components/TitleComp';
+import TopNavigationBar from '@Navigators/topNavigation';
+// assets
+import { fontFamily } from '@Theme/index';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { PairStackParamList } from '@Navigators/paringNavigator';
 
-const PairYourPotContainer = () => {
+type PairScreenNavigationProp = StackNavigationProp<PairStackParamList, 'ParingScreen'>;
+type PairScreenRouteProp = RouteProp<PairStackParamList, 'ParingScreen'>;
+
+interface Iprops {
+  route: PairScreenRouteProp;
+  navigation: PairScreenNavigationProp;
+}
+
+const PairYourPotContainer = (props: Iprops) => {
   EspIdfProvisioningReactNative.create();
-  const navigation: any = useNavigation();
-
-  const route: RouteProp<ParamListBase> | any = useRoute();
+  const { route, navigation } = props;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -28,8 +32,6 @@ const PairYourPotContainer = () => {
       header: (p: any) => <TopNavigationBar {...p} isLeft />,
     });
   }, [navigation]);
-
-  // const scanFunc = useCallback(async () => {}, []);
 
   const handlePairing = () => {
     navigation.navigate('SelectBLT');
@@ -51,7 +53,7 @@ const PairYourPotContainer = () => {
   );
 };
 
-export default connect()(PairYourPotContainer);
+export default PairYourPotContainer;
 
 const styles = StyleSheet.create({
   root: {

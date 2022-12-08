@@ -11,11 +11,13 @@ export namespace AppActions {
     'INITIATE_CONNECTION',
     'INTRO_APP',
     'REFRESH_TOKEN',
+    'APP_ERROR',
   );
 
   export const initApp = createActionGenerator(Types.INIT_APP);
   export const refreshToken = createActionGenerator(Types.REFRESH_TOKEN);
   export const introApp = createAction<boolean>(Types.INTRO_APP.default);
+  export const appError = createAction<boolean>(Types.APP_ERROR.default);
   export const bluInitApp = createActionGenerator(Types.INITIATE_CONNECTION);
   export const connectedMQTT = createAction<boolean>(Types.CONNECTED_MQTT.default);
 }

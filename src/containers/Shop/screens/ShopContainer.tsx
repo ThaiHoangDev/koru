@@ -4,7 +4,6 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { connect, useDispatch } from 'react-redux';
 import { debounce, isEmpty } from 'lodash';
 import { createStructuredSelector } from 'reselect';
-import { StackNavigationProp } from '@react-navigation/stack';
 //components
 import TopNavigationBar from '@Navigators/topNavigation';
 import SearchComp from '@Containers/Home/components/SearchComp';
@@ -14,7 +13,6 @@ import CardIcon from '@Components/iconSvg/shop/CardIcon';
 import FilterComp from '@Containers/Pairing/components/FilterComp';
 import { ShopStackParamList } from '@Navigators/shopNavigator';
 
-// import { PropsScreen } from '@Interfaces/app';
 import PlantBoxComp from '@Containers/Home/components/PlantBoxComp';
 import { HomeActions } from '@Containers/Home/store/actions';
 import { makeSelectIsRequesting, makeSelectMyPlant } from '@Containers/Home/store/selectors';
@@ -23,21 +21,20 @@ import { makeSelectListPlantGroup } from '@Containers/Pairing/store/selectors';
 import { colors, fontFamily } from '@Theme/index';
 import { makeSelectMyOrder } from '../store/selectors';
 import { ShopActions } from '../store/actions';
-
-type ShopScreenNavigationProp = StackNavigationProp<ShopStackParamList, 'ShopScreen'>;
-type ShopScreenRouteProp = RouteProp<ShopStackParamList, 'ShopScreen'>;
+import { HEIGHT } from '@Constants/app';
+import { ShopScreenNavigationProps } from '@Interfaces/app';
 
 interface IProps {
   isLoading: boolean;
   myPlant: any;
   myOrder: any;
   listPlantGroup: any;
-  navigation: ShopScreenNavigationProp;
-  route: ShopScreenRouteProp;
 }
 
 function ShopContainer(props: IProps) {
-  const { isLoading, myPlant, myOrder, listPlantGroup, navigation, route } = props;
+  const navigation = useNavigation<ShopScreenNavigationProps>();
+  const route = useRoute<RouteProp<ShopStackParamList, 'ShopScreen'>>();
+  const { isLoading, myPlant, myOrder, listPlantGroup } = props;
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
@@ -45,7 +42,7 @@ function ShopContainer(props: IProps) {
   const [filterGroup, setFilterGroup] = useState({
     group: '',
     ordering: '',
-  })
+  });
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -71,11 +68,15 @@ function ShopContainer(props: IProps) {
   };
 
   const loadMoreMyPlant = () => {
-    dispatch(ShopActions.getMyOrder.request());
+    // dispatch(ShopActions.getMyOrder.request());
   };
   const handleRefresh = () => {
     setIsRefresh(true);
   };
+
+  useEffect(() => {
+    dispatch(ShopActions.getMyOrder.request());
+  }, []);
 
   useEffect(() => {
     const payload = {
@@ -120,8 +121,8 @@ function ShopContainer(props: IProps) {
             <CardIcon />
           </TouchableOpacity>
         </View>
-        <View style={{ paddingVertical: 10, flex: 1, }}>
-          <FilterComp data={listPlantGroup} onFilter={handleFilter} filterGroup={filterGroup}/>
+        <View style={{ paddingVertical: 10, flex: 1 }}>
+          <FilterComp data={listPlantGroup} onFilter={handleFilter} filterGroup={filterGroup} />
         </View>
       </View>
       <FlatList
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   headerContainer: {
-    flexGrow: 0.16,
+    height: HEIGHT / 8,
   },
   searchContainer: {
     flex: 1,
