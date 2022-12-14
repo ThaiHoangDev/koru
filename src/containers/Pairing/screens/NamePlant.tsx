@@ -25,7 +25,7 @@ interface InitvalueProps {
 }
 
 interface IProps extends PropsScreen {
-  bluetooth_uid: string;
+  bluetooth_uid: any;
   isLoading: boolean;
 }
 const initialValues: InitvalueProps = {

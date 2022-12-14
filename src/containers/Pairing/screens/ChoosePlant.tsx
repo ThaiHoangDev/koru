@@ -1,7 +1,6 @@
 import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
 import { createStructuredSelector } from 'reselect';
 import { connect, useDispatch } from 'react-redux';
 import { debounce, isEmpty } from 'lodash';
@@ -40,7 +39,6 @@ export interface IPropsFilterGroup {
 }
 
 function ChoosePlantContainer(props: IProps) {
-  EspIdfProvisioningReactNative.create();
   const { isLoading, listPlant, listPlantGroup, loadMore, ...rest } = props;
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
@@ -62,24 +60,28 @@ function ChoosePlantContainer(props: IProps) {
     });
   }, [navigation]);
 
-  useEffect(() => {
+  const getPlantSpecies = useCallback(() => {
     const payload = {
-      page: page,
+      page: isRefresh ? 1 : page,
       perpage: PERPAGE,
       search: searchText,
       group: filterGroup.group,
       ordering: filterGroup.ordering,
     };
     dispatch(PairActions.getListPlant.request(payload));
+  }, [page, filterGroup, isRefresh]);
+
+  useEffect(() => {
+    getPlantSpecies();
     isRefresh &&
       setTimeout(() => {
         setIsRefresh(false);
-      }, 1000);
-  }, [page, isRefresh, filterGroup]);
+      }, 500);
+  }, [page]);
 
   useEffect(() => {
-    setPage(1);
-  }, [isRefresh]);
+    isRefresh && handleRefresh();
+  }, [filterGroup, isRefresh]);
 
   useEffect(() => {
     const payload = {
@@ -92,12 +94,36 @@ function ChoosePlantContainer(props: IProps) {
 
   const loadMorePlant = () => {
     if (loadMore) {
+      console.log('load more1');
       setPage(page + 1);
     }
   };
+
   const handleRefresh = () => {
     setIsRefresh(true);
+    setPage(1);
+    new Promise<void>((resolve, reject) => {
+      try {
+        getPlantSpecies();
+      } catch (error) {
+        console.log(error, 'get plant error');
+      } finally {
+        setTimeout(() => {
+          setIsRefresh(false);
+        }, 500);
+      }
+      resolve();
+    });
   };
+
+  useEffect(() => {
+    const payload = {
+      page,
+      perpage: PERPAGE,
+      search: '',
+    };
+    dispatch(PairActions.getListPlantGroup.request(payload));
+  }, []);
 
   const handleChangeText = (text: string) => {
     setSearchText(text);

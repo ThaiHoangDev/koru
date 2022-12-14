@@ -3,10 +3,10 @@ import { View } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { StyleSheet } from 'react-native';
+import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
 
 // utils
 import { makeSelectIsRequesting } from '../store/selectors';
-import { PropsScreen } from '@Interfaces/app';
 // components by self
 import ConnectingComp from '../components/ConnectingComp';
 // assets
@@ -15,12 +15,8 @@ import { colors, fontFamily } from '@Theme/index';
 import { PairActions } from '../store/actions';
 import { useRoute } from '@react-navigation/native';
 
-interface Iprops extends PropsScreen {
-  isLoading: boolean;
-  netWorks: any;
-}
-
-const ConnectingWifiContainer = ({ isLoading }: Iprops) => {
+const ConnectingWifiContainer = () => {
+  EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
   const dispatch = useDispatch();
   const route: any = useRoute();
   useEffect(() => {

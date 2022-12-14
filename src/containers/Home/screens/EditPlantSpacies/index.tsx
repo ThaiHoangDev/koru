@@ -15,7 +15,6 @@ import {
 import { IPropsFilterGroup } from '@Containers/Pairing/screens/ChoosePlant';
 import { PairActions } from '@Containers/Pairing/store/actions';
 
-import TopNavigationBar from '@Navigators/topNavigation';
 import SearchComp from '@Containers/Home/components/SearchComp';
 import FilterComp from '@Containers/Pairing/components/FilterComp';
 import LoaderAnimationProgress from '@Components/lottie/loader';
@@ -48,24 +47,28 @@ const EditPlantSpaciesContainer = (props: IProps) => {
   const [speciesSelected, setSpeciesSelected] = useState('');
   const [searchText, setSearchText] = useState('');
 
-  useEffect(() => {
+  const getPlantSpecies = useCallback(() => {
     const payload = {
-      page: page,
+      page: isRefresh ? 1 : page,
       perpage: PERPAGE,
       search: searchText,
       group: filterGroup.group,
       ordering: filterGroup.ordering,
     };
     dispatch(PairActions.getListPlant.request(payload));
+  }, [page, filterGroup, isRefresh]);
+
+  useEffect(() => {
+    getPlantSpecies();
     isRefresh &&
       setTimeout(() => {
         setIsRefresh(false);
-      }, 1000);
-  }, [page, isRefresh, filterGroup]);
+      }, 500);
+  }, [page]);
 
   useEffect(() => {
-    setPage(1);
-  }, [isRefresh]);
+    isRefresh && handleRefresh();
+  }, [filterGroup, isRefresh]);
 
   useEffect(() => {
     const payload = {
@@ -78,11 +81,26 @@ const EditPlantSpaciesContainer = (props: IProps) => {
 
   const loadMorePlant = () => {
     if (loadMore) {
+      console.log('load more1');
       setPage(page + 1);
     }
   };
+
   const handleRefresh = () => {
     setIsRefresh(true);
+    setPage(1);
+    new Promise<void>((resolve, reject) => {
+      try {
+        getPlantSpecies();
+      } catch (error) {
+        console.log(error, 'get plant error');
+      } finally {
+        setTimeout(() => {
+          setIsRefresh(false);
+        }, 500);
+      }
+      resolve();
+    });
   };
 
   const handleChangeText = (text: string) => {
@@ -108,9 +126,10 @@ const EditPlantSpaciesContainer = (props: IProps) => {
     onClick(item);
   };
 
-  const handleFilter = (item: any) => {
+  const handleFilter = useCallback((item: any) => {
     setFilterGroup(item);
-  };
+    setIsRefresh(true);
+  }, []);
 
   const _renderHeader = () => {
     return (
@@ -157,6 +176,7 @@ const EditPlantSpaciesContainer = (props: IProps) => {
       <FlatList
         data={listPlant}
         renderItem={_renderItem}
+        extraData={listPlant}
         refreshControl={
           <RefreshControl
             tintColor={'#fff'}
@@ -183,7 +203,7 @@ const EditPlantSpaciesContainer = (props: IProps) => {
           ) : null
         }
         ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.gray04 }}></View>}
-        keyExtractor={item => item.uuid.toString()}
+        keyExtractor={(item, index) => `${item.uuid.toString()}_${index.toString()}`}
         showsVerticalScrollIndicator={false}
         style={{ flex: 1 }}
       />

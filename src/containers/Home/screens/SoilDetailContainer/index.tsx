@@ -16,6 +16,9 @@ import MenuIcon from '@Components/iconSvg/MenuIcon';
 //assets
 import { colors, fontFamily } from '@Theme/index';
 import { IS_ANDROID } from '@Constants/app';
+import AboutPlant from '@Containers/Home/components/MoreInfo/AboutPlantComp';
+import ChartComp from '@Containers/Home/components/MoreInfo/ChartComp';
+import MoreInfoComp from '@Containers/Home/components/MoreInfo/MoreInfoComp';
 
 type SoilDetailScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'SoilDetailScreen'>;
 type SoilDetailScreenRouteProp = RouteProp<HomeStackParamList, 'SoilDetailScreen'>;
@@ -73,9 +76,18 @@ const SoilDetailContainer = (props: IProps) => {
     navigation.navigate('SoilDetailScreen', { plant: route.params?.plant });
   };
 
-  const onChangeIndex = ({ index }: { index: number }) => setIndex(index);
+  const onChangeIndex = ({ index }: any) => setIndex(index);
 
-  const renderScreen = ({ item, index }: any) => <MoreInfo data={item} plant={route.params?.plant} />;
+  const renderScreen = ({ item }: any) => {
+    switch (item.uuid) {
+      case 1:
+        return <AboutPlant key={index} />;
+      case 2:
+        return <MoreInfoComp plant={route.params?.plant} key={index} />;
+      default:
+        return <ChartComp plantId={route.params?.plant?.uuid} key={index} />;
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeView}>
@@ -85,12 +97,13 @@ const SoilDetailContainer = (props: IProps) => {
         ref={listRef}
         autoplayLoopKeepAnimation
         data={DATA}
+        index={index}
         renderItem={renderScreen}
         paginationStyle={{ top: 0 }}
         paginationStyleItem={styles.paginationDot}
         paginationStyleItemInactive={styles.itemInactive}
         paginationActiveColor={colors.black2}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => `${item.uuid.toString()}_${index.toString()}`}
         onChangeIndex={onChangeIndex}
       />
       <View style={{ flex: 0.2, justifyContent: 'center', marginBottom: IS_ANDROID ? 20 : 10 }}>

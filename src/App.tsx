@@ -11,8 +11,8 @@ import { store, persistor } from './store';
 import { LogBox } from 'react-native';
 import { amplifyConfig } from '@Utils/amplifyConfig';
 
-// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-// LogBox.ignoreAllLogs(); //Ignore all log notifications
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 // codePush.restartApp(onlyIfUpdateIsPending: Boolean = false): void;
 // codePush.sync({ updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE });

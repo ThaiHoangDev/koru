@@ -33,7 +33,8 @@ const homeReducer = (state = initialState, { type, payload }: ACTION) =>
         break;
       case HomeActions.Types.GET_MY_PLANT.succeeded:
         draft.isLoading = false;
-        draft.myPlant = !!payload.next ? [...draft.myPlant, ...payload?.results] : payload?.results;
+        draft.myPlant =
+          draft.myPlant.length < payload.count ? [...draft.myPlant, ...payload?.results] : payload?.results;
         draft.loadMore = !!payload.next;
         break;
       case HomeActions.Types.GET_MY_PLANT.failed:
@@ -53,10 +54,13 @@ const homeReducer = (state = initialState, { type, payload }: ACTION) =>
       case HomeActions.Types.GET_THING_SHADOW.begin:
         break;
       case HomeActions.Types.GET_THING_SHADOW.succeeded:
+        draft.isLoading = false;
         break;
       case HomeActions.Types.GET_THING_SHADOW.failed:
+        draft.isLoading = false;
         break;
       case HomeActions.Types.UPDATE_LIST_PLANT.default:
+        draft.isLoading = false;
         draft.myPlant = draft.myPlant.map(obj =>
           obj.uuid === payload.uuid ? { ...obj, status: !!payload.data, reported: payload.data } : obj,
         );

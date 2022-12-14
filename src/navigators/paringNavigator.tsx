@@ -27,40 +27,24 @@ export const ParingNavigator = () => {
     <Stack.Navigator
       screenOptions={{ headerShown: false, presentation: 'transparentModal' }}
       initialRouteName="ParingScreen">
-      <Stack.Screen
-        name="ParingScreen"
-        component={(props: any) => <PairYourPot {...props} />}
-        options={{ headerShown: true }}
-      />
-      <Stack.Screen name="Searching" component={(props: any) => <Searching {...props} />} />
-      <Stack.Screen
-        name="SelectBLT"
-        component={(props: any) => <SelectBLTScreen {...props} />}
-        options={{ headerShown: true }}
-      />
+      <Stack.Screen name="ParingScreen" component={PairYourPot} options={{ headerShown: true }} />
+      {/* <Stack.Screen name="Searching" component={Searching} /> */}
+      <Stack.Screen name="SelectBLT" component={SelectBLTScreen} options={{ headerShown: true }} />
       <Stack.Screen
         name="ChooseWifi"
-        component={(props: any) => <ChooseYourWifi {...props} />}
+        component={ChooseYourWifi}
         options={{ headerShown: true, presentation: 'transparentModal' }}
       />
-      <Stack.Screen
-        name="ChoosePlant"
-        component={(props: any) => <ChoosePlant {...props} />}
-        options={{ headerShown: true, presentation: 'card' }}
-      />
-      <Stack.Screen
-        name="NamePlant"
-        component={(props: any) => <NamePlant {...props} />}
-        options={{ headerShown: true, presentation: 'card' }}
-      />
+      <Stack.Screen name="ChoosePlant" component={ChoosePlant} options={{ headerShown: true, presentation: 'card' }} />
+      <Stack.Screen name="NamePlant" component={NamePlant} options={{ headerShown: true, presentation: 'card' }} />
       <Stack.Screen
         name="TypePassword"
-        component={(props: any) => <TypePassword {...props} />}
+        component={TypePassword}
         options={{ headerShown: true, presentation: 'card' }}
       />
       <Stack.Screen
         name="ConnectingWifi"
-        component={(props: any) => <ConnectingWifi {...props} />}
+        component={ConnectingWifi}
         options={{ headerShown: false, presentation: 'transparentModal' }}
       />
     </Stack.Navigator>

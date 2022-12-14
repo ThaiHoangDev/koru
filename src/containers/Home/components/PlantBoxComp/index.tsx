@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
+import React, { memo } from 'react';
 
 import { ImageBackgroundCompLayout } from '@Components/image-backgroundComp';
 import PlantIcon from '@Components/iconSvg/pairing/Plant';
@@ -18,8 +18,6 @@ interface IProps {
 }
 
 const PlantBoxComp = ({ data, shopScreen, onAddToCard }: IProps) => {
-  const handleNotConected = () => {};
-
   return (
     <View>
       {!data?.status && !shopScreen && (
@@ -29,7 +27,7 @@ const PlantBoxComp = ({ data, shopScreen, onAddToCard }: IProps) => {
           </View>
           <ButtonComp
             title={'Not Conected'}
-            handlePress={handleNotConected}
+            handlePress={() => {}}
             stylesBtn={styles.btn}
             stylesTitle={styles.titleBtn}
             isLoading={false}
@@ -75,7 +73,7 @@ const PlantBoxComp = ({ data, shopScreen, onAddToCard }: IProps) => {
   );
 };
 
-export default PlantBoxComp;
+export default memo(PlantBoxComp);
 
 const styles = StyleSheet.create({
   root: {

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { BottomTabNavigator } from './bottomNavigator';
+import BottomTabNavigator from './bottomNavigator';
 import { ParingNavigator } from './paringNavigator';
 import { useRoute } from '@react-navigation/native';
 
@@ -43,4 +43,4 @@ const MainNavigator = () => {
   );
 };
 
-export default MainNavigator;
+export default memo(MainNavigator);

@@ -13,12 +13,13 @@ import ShowPassword from '@Components/showPassword';
 
 import { colors, fontFamily } from '@Theme/index';
 import { HEIGHT } from '@Constants/app';
+// import { PairActions } from '../store/actions';
 
 
 const TypePasswordContainer = (props: PropsScreen) => {
   const navigation: any = useNavigation();
   const route: any = useRoute();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [passwordWifi, setPasswordWifi] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [showPassword, setShowPassword] = useState(false);

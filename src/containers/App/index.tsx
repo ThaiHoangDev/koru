@@ -1,11 +1,14 @@
-import React, { createRef, useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import NetInfo from '@react-native-community/netinfo';
+import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
+import { useDispatch } from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AppState, NativeModules, Platform } from 'react-native';
 
 import { navigationRef, isMountedRef } from '@Utils/navigator';
 import { AppNavigator } from '../../navigators';
-import { AppState, NativeModules, Platform } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import { HEIGHT, WIDTH } from '@Constants/app';
 import { useInjectReducer } from '@Utils/injectReducer';
 import { useInjectSaga } from '@Utils/injectSaga';
@@ -13,7 +16,10 @@ import { useInjectSaga } from '@Utils/injectSaga';
 import reducer from '@Containers/MQTT/store/reducers';
 import saga from '@Containers/MQTT/store/sagas';
 
+import { MQTTActions } from '@Containers/MQTT/store/actions';
+
 const AppContainer = () => {
+  EspIdfProvisioningReactNative.create();
   // useEffect(() => {
   //   isMountedRef.current = true;
 
@@ -23,7 +29,6 @@ const AppContainer = () => {
   // }, []);
   useInjectReducer({ key: 'mqtt', reducer });
   useInjectSaga({ key: 'mqtt', saga });
- 
 
   useEffect(() => {
     const subAppState = AppState.addEventListener('change', async nextAppState => {

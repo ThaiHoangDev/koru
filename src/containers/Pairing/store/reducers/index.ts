@@ -60,7 +60,10 @@ const pairReducer = (state = initialState, { type, payload }: ACTION) =>
         break;
       case PairActions.Types.GET_LIST_PLANT.succeeded:
         draft.isRequesting = false;
-        draft.listPlant = !!payload.next ? [...draft.listPlant, ...payload?.results] : payload?.results;
+        draft.listPlant =
+          draft.listPlant.length < payload.count && !!payload.previous
+            ? [...draft.listPlant, ...payload?.results]
+            : payload?.results;
         draft.loadMore = !!payload.next;
         break;
       case PairActions.Types.GET_LIST_PLANT.failed:

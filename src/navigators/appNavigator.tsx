@@ -14,7 +14,7 @@ export type RootStackParamList = {
   MainNavigator: { screen: string } | undefined;
   AuthNavigator: undefined;
   MessageAlert:
-    | { visible: boolean; title: string; txtCancle?: string; txtOK: string; callBack?: () => void }
+    | { visible: boolean; title: string; txtCancle?: string; txtOK: string; callBack?: () => void | any }
     | undefined;
 };
 

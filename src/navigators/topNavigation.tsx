@@ -129,11 +129,9 @@ export default function TopNavigationBar(props: IProps) {
           style={[
             styles.right,
             {
-              flexGrow: 0.2,
-              zIndex: 20,
-              alignSelf: 'flex-end',
-              alignContent: 'flex-end',
-              alignItems: 'center',
+              flexGrow: 0.1,
+              alignItems: 'flex-end',
+              paddingRight: 10,
               justifyContent: 'center',
             },
           ]}>
@@ -195,7 +193,6 @@ export default function TopNavigationBar(props: IProps) {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -210,14 +207,14 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   backButton: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
   },
   content: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   right: {
-    height: 100,
+    height: 40,
     alignItems: 'center',
   },
 });

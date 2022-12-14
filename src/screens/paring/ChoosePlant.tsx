@@ -2,16 +2,14 @@ import React from 'react';
 
 import { MainLayout } from '@Layouts/index';
 import ChoosePlantContainer from '@Containers/Pairing/screens/ChoosePlant';
-import { PropsScreen } from '@Interfaces/app';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-interface Iprops extends PropsScreen {
-  isLoading: boolean;
-}
-
-const ChooseWifiScreen = (props: Iprops) => {
+const ChooseWifiScreen = () => {
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
   return (
     <MainLayout>
-      <ChoosePlantContainer {...props} />
+      <ChoosePlantContainer navigation={navigation} route={route} />
     </MainLayout>
   );
 };

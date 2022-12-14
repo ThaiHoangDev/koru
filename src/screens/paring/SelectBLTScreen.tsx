@@ -1,18 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { MainLayout } from '@Layouts/index';
-import { PropsScreen } from '@Interfaces/app';
 
 import SelectBLTContainer from '@Containers/Pairing/screens/SelectBLT';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-interface IProps extends PropsScreen {
-  isLoading: boolean;
-}
-
-export default function SelectBLTScreen(props: IProps) {
+export default function SelectBLTScreen() {
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
   return (
     <MainLayout>
-      <SelectBLTContainer {...props} />
+      <SelectBLTContainer navigation={navigation} route={route} />
     </MainLayout>
   );
 }

@@ -1,18 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { MainLayout } from '@Layouts/index';
-import { PropsScreen } from '@Interfaces/app';
 
 import TypePasswordContainer from '@Containers/Pairing/screens/TypePassword';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-interface IProps extends PropsScreen {
-  isLoading: boolean;
-}
-
-export default function TypePasswordScreen(props: IProps) {
+export default function TypePasswordScreen() {
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
   return (
     <MainLayout>
-      <TypePasswordContainer {...props} />
+      <TypePasswordContainer navigation={navigation} route={route} />
     </MainLayout>
   );
 }

@@ -74,7 +74,9 @@ const PlantDetailContainer = (props: IProps) => {
   };
 
   const handleRemovePlant = () => {
-    dispatch(HomeActions.removePlant.request(currentPlant.uuid));
+    dispatch(HomeActions.removePlant.request(currentPlant?.uuid));
+    setDisableReamove(!isRemovePlant);
+    navigation.goBack();
   };
 
   useEffect(() => {
@@ -84,7 +86,6 @@ const PlantDetailContainer = (props: IProps) => {
   const onChangeIndex = ({ index }: any) => {
     const current: PlantProps = myPlant.filter((item: any, i: any) => index === i)[0];
     setIndex(index);
-
     setCurrentPlant(current);
   };
 
@@ -148,8 +149,8 @@ const PlantDetailContainer = (props: IProps) => {
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <View style={{ flex: 2 }}>
-            <Text style={styles.headerTitle}>{currentPlant.name}</Text>
-            <Text style={styles.headerSubTitle}>{currentPlant.species_name}</Text>
+            <Text style={styles.headerTitle}>{currentPlant?.name || ''}</Text>
+            <Text style={styles.headerSubTitle}>{currentPlant?.species_name || ''}</Text>
           </View>
           <View style={styles.networkStyle}>
             {!currentPlant?.status && <NotConected />}

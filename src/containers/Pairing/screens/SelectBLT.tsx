@@ -1,5 +1,5 @@
 import { FlatList, PermissionsAndroid, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
 import { createStructuredSelector } from 'reselect';
@@ -19,6 +19,7 @@ import TopNavigationBar from '@Navigators/topNavigation';
 
 import { colors, fontFamily } from '@Theme/index';
 import { IS_ANDROID } from '@Constants/app';
+// import { showErrorWithString } from '@Utils/helper';
 
 interface IProps extends PropsScreen {
   isLoading: boolean;
@@ -26,9 +27,10 @@ interface IProps extends PropsScreen {
 }
 
 function SelectBLTContainer(props: IProps) {
-  EspIdfProvisioningReactNative.create();
+  // EspIdfProvisioningReactNative.create();
   const { isLoading = true, uuid, ...rest } = props;
   const navigation: any = useNavigation();
+  const [txtSearch, setTxtSearch] = useState('_Searching');
   const dispatch = useDispatch();
 
   React.useLayoutEffect(() => {
@@ -44,58 +46,13 @@ function SelectBLTContainer(props: IProps) {
     }
   }, [navigation, isLoading]);
 
-  const scanBLT = useCallback(async () => {
-    try {
-      dispatch(PairActions.scanDevices.request());
-      if (IS_ANDROID) {
-        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
-        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN);
-        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT);
-      }
-      await EspIdfProvisioningReactNative.scanBleDevices('Koru-')
-        .then((res: any[]) => {
-          if (res.length > 0) {
-            dispatch(PairActions.scanDevices.success(res));
-          } else {
-            dispatch(PairActions.scanDevices.fail());
-            navigation.navigate('MessageAlert', {
-              visible: true,
-              title: `Don't have device!`,
-              callBack: navigation.goBack(),
-            });
-          }
-        })
-        .catch((e: any) => {
-          dispatch(PairActions.scanDevices.fail());
-          navigation.navigate('MessageAlert', {
-            visible: true,
-            title: e?.message || 'Scan BLE failed!',
-            callBack: navigation.goBack(),
-          });
-        });
-    } catch (error: any) {
-      navigation.navigate('MessageAlert', {
-        visible: true,
-        title: error?.message || error || 'Scan BLE failed!',
-        callBack: navigation.goBack(),
-      });
-    }
-  }, [navigation]);
-
-  useEffect(() => {
-    scanBLT();
-  }, [navigation]);
-
-  const hangeSetProof = () => {
-    EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
-  };
-
-  const connectBLE = (item: { serviceUuid: string; deviceName: string }) => {
+  const connectBLE = async (item: any) => {
+    await EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
     EspIdfProvisioningReactNative.connectToBLEDevice(item.serviceUuid)
       .then((_res: any) => {
-        dispatch(PairActions.connectBLE.success(item.deviceName));
+        dispatch(PairActions.connectBLE.success(item?.deviceName || item?.name));
         navigation.navigate('ChoosePlant', { bluetooth_uid: item });
-        ToastAndroid.show('Connected to device', ToastAndroid.LONG);
+        IS_ANDROID && ToastAndroid.show('Connected to device', ToastAndroid.LONG);
       })
       .catch((e: any) => {
         dispatch(PairActions.connectBLE.fail(e));
@@ -104,23 +61,24 @@ function SelectBLTContainer(props: IProps) {
           title: e?.message || e || 'Connect to device error',
           callBack: navigation.goBack(),
         });
-        ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
+        IS_ANDROID && ToastAndroid.show('Connect to device error', ToastAndroid.LONG);
       });
   };
 
-  const handleSelectBLT = (item: { serviceUuid: string; deviceName: string }) => async () => {
+  const handleSelectBLT = (item: any) => async () => {
     IS_ANDROID && (await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT));
+    setTxtSearch('_Paring...');
     try {
       dispatch(PairActions.connectBLE.request());
       return new Promise(async resolve => {
-        await hangeSetProof();
-        await connectBLE(item);
+        // await EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
+        connectBLE(item);
         resolve(true);
       });
     } catch (error: any) {
       navigation.navigate('MessageAlert', {
         visible: true,
-        title: error?.message || error || 'Connect to device error',
+        title: error?.message || 'Connect to device error',
         callBack: navigation.goBack(),
       });
     }
@@ -138,7 +96,7 @@ function SelectBLTContainer(props: IProps) {
   };
 
   if (isLoading) {
-    return <Searching title="" />;
+    return <Searching title={txtSearch} />;
   }
 
   return (

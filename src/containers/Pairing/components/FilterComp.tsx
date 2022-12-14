@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet} from 'react-native';
-import React from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import React, { memo } from 'react';
 import { ButtonComp } from '@Components/button';
 import { colors } from '@Theme/index';
 import { isEmpty } from 'lodash';
@@ -14,7 +14,7 @@ interface IProps {
 
 const FilterComp = ({ data, onFilter, filterGroup }: IProps) => {
   const handleFilter = (item: any) => () => {
-    onFilter({ group: item?.uuid, ordering: item?.created_at });
+    onFilter({ group: !!item?.uuid ? item.uuid : '', ordering: !!item?.created_at ? item.created_at : '' });
   };
 
   const _header = () => {
@@ -54,7 +54,7 @@ const FilterComp = ({ data, onFilter, filterGroup }: IProps) => {
   );
 };
 
-export default FilterComp;
+export default memo(FilterComp);
 
 const styles = StyleSheet.create({
   btn: {

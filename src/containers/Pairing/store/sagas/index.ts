@@ -3,44 +3,54 @@ import { ToastAndroid } from 'react-native';
 import EspIdfProvisioningReactNative from '@digitalfortress-dev/esp-idf-provisioning-react-native';
 import { PairActions } from '../actions';
 import * as apiService from '../services';
-import { navigate } from '@Utils/navigator';
+import { navigate, navigationRef } from '@Utils/navigator';
 import { store } from '@Store/index';
 import { showErrorMessage, showErrorWithString } from '@Utils/helper';
+import { IS_ANDROID } from '@Constants/app';
 
 function* scanNetworks() {
   EspIdfProvisioningReactNative.scanNetworks()
     .then((res: any[]) => {
       store.dispatch(PairActions.scanNetworks.success(res));
-      ToastAndroid.show('Number of networks found: ' + res.length, ToastAndroid.LONG);
+      IS_ANDROID && ToastAndroid.show('Number of networks found: ' + res.length, ToastAndroid.LONG);
     })
     .catch((e: any) => {
       store.dispatch(PairActions.scanNetworks.fail(e));
       showErrorWithString(e, () => {});
-      ToastAndroid.show('Scan networks error', ToastAndroid.LONG);
+      IS_ANDROID && ToastAndroid.show('Scan networks error', ToastAndroid.LONG);
     });
 }
 
 function* provCreds({ payload }: any) {
-  try {
-    const { ssid, passwordWifi } = payload;
-    yield EspIdfProvisioningReactNative.provisionNetwork(ssid, passwordWifi)
+  const { ssid, passwordWifi: password } = payload;
+  console.log(payload, "____wifi")
+  // try {
+    yield EspIdfProvisioningReactNative.provisionNetwork(ssid, password)
       .then((resp: any) => {
         store.dispatch(PairActions.provCreds.success());
-        ToastAndroid.show('Credentials provided with success', ToastAndroid.LONG);
         navigate('TabBar');
       })
       .catch((e: any) => {
+        console.log(e)
         store.dispatch(PairActions.provCreds.fail());
-        ToastAndroid.show('Provide creds error', ToastAndroid.LONG);
-        showErrorWithString('Provide creds error');
+        navigate('MessageAlert', {
+          visible: true,
+          title: e?.message || 'Connect wifi error!',
+          callBack: () => navigate('TabBar'),
+        });
       });
-  } catch (error) {}
+  // } catch (error: any) {
+  //   navigate('MessageAlert', {
+  //     visible: true,
+  //     title: error?.message || 'Connect wifi error!',
+  //     callBack: () => navigationRef.current?.goBack(),
+  //   });
+  // }
 }
 
 function* provCustomWithByteData({ payload }: any) {
   const { uuid, secret } = payload;
   try {
-    yield EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
     const string = `https://dev.api.plantkoru.com/plant/v1/plants/${uuid}/certificate?secret=${secret}`;
     const strToBuf = (str: string) => {
       var buf = new ArrayBuffer(str.length);
@@ -54,8 +64,11 @@ function* provCustomWithByteData({ payload }: any) {
     const hexArrayOfCmdContent = Object.keys(stringAsByteArray).map(i => stringAsByteArray[Number(i)]!.toString(16));
     yield EspIdfProvisioningReactNative.sendCustomDataWithByteData('certificatePem', hexArrayOfCmdContent)
       .then((resp: any) => {
-        ToastAndroid.show('Custom data with byte accuracy provisioned successfully', ToastAndroid.LONG);
-        navigate('ChooseWifi');
+        IS_ANDROID && ToastAndroid.show('Custom data with byte accuracy provisioned successfully', ToastAndroid.LONG);
+        new Promise<void>((resolve, reject) => {
+          navigate('ChooseWifi');
+          resolve();
+        });
       })
       .catch((e: { message: any }) => {
         showErrorMessage(e, () => {});
@@ -87,10 +100,14 @@ function* createPlantSaga({ payload }: any) {
   try {
     const { data } = yield call(apiService.createPlantApi, payload);
     yield put(PairActions.createPlant.success(data));
+    yield EspIdfProvisioningReactNative.setProofOfPossession('abcd1234');
     yield put(PairActions.provCustomWithByteData.request(data.data));
-    yield;
-  } catch (error) {
-    showErrorWithString('This plant exists!');
+  } catch (error: any) {
+    navigate('MessageAlert', {
+      visible: true,
+      title: error?.message || 'Create plant failed!',
+      callBack: () => navigationRef.current?.goBack(),
+    });
     yield put(PairActions.createPlant.fail(error));
   }
 }

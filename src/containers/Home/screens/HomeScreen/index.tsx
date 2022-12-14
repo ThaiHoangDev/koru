@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, RefreshControl } fr
 import React, { useCallback, useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+// import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { connect, useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
 import { createStructuredSelector } from 'reselect';
@@ -32,17 +32,12 @@ import { makeSelectIsLoggedIn } from '@Containers/App/store/selectors';
 import { makeSelectMQTTstatus } from '@Containers/MQTT/store/selectors';
 import { HomeScreenNavigationProp } from '@Interfaces/app';
 
-// type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'HomeScreen'>;
-// type HomeScreenRouteProp = RouteProp<HomeStackParamList, 'HomeScreen'>;
-
 interface IProps {
   isLoggin: boolean;
   isLoading: boolean;
   loadMore: any;
   myPlant: PlantProps[];
   mqttStatus: boolean;
-  // navigation: HomeScreenNavigationProp;
-  // route: HomeScreenRouteProp;
 }
 
 function HomeContainer(props: IProps) {
@@ -63,7 +58,7 @@ function HomeContainer(props: IProps) {
         <TopNavigationBar {...p} children={<Text style={styles.titleTab}>{'My Koru'}</Text>} right={<MenuIcon />} />
       ),
     });
-  }, [navigation, route]);
+  }, []);
 
   const handleSearch = (value: string) => {
     const payload = {
@@ -84,13 +79,15 @@ function HomeContainer(props: IProps) {
   const loadMoreMyPlant = () => {
     if (loadMore) {
       setPage(page + 1);
-    } else {
-      setPage(page);
     }
   };
+
   const handleRefresh = () => {
     setIsRefresh(true);
     setPage(1);
+    setTimeout(() => {
+      setIsRefresh(false);
+    }, 700);
   };
   //init MQTT
   const initAWS = useCallback(async () => {
@@ -102,9 +99,12 @@ function HomeContainer(props: IProps) {
     navigation.navigate('Paring');
   };
 
-  const handlePress = (uuid: any) => () => {
-    navigation.navigate('PlantDetail', { uuid });
-  };
+  const handlePress = useCallback(
+    (uuid: any) => () => {
+      navigation.navigate('PlantDetail', { uuid });
+    },
+    [],
+  );
 
   const _renderItem = ({ item }: any) => {
     return (
@@ -120,30 +120,33 @@ function HomeContainer(props: IProps) {
     );
   };
 
-  useEffect(() => {
-    isLoggin && initAWS();
-  }, [initAWS, isLoggin]);
-
-  useEffect(() => {
-    !mqttStatus && dispatch(MQTTActions.init_MQTT.request());
-  }, [mqttStatus]);
-
-  useEffect(() => {
-    mqttStatus && dispatch(HomeActions.getThingShadow.request(myPlant));
-  }, [myPlant.length, mqttStatus]);
-
-  useEffect(() => {
+  const getMyPlantCallBack = useCallback(() => {
     const currentPage = isRefresh ? 1 : page;
     const payload = {
       page: currentPage,
       perpage: 10,
       search: searchText,
     };
-    (mqttStatus || (isLoading && isFocus)) && dispatch(HomeActions.getMyPlant.request(payload));
-    setTimeout(() => {
-      setIsRefresh(false);
-    }, 700);
-  }, [page, isRefresh, dispatch, mqttStatus, isFocus]);
+    dispatch(HomeActions.getMyPlant.request(payload));
+  }, [searchText, page, isRefresh]);
+
+  useEffect(() => {
+    isLoggin && initAWS();
+  }, [initAWS, isLoggin]);
+
+  useEffect(() => {
+    dispatch(MQTTActions.init_MQTT.request());
+  }, []);
+
+  useEffect(() => {
+    mqttStatus && dispatch(HomeActions.getThingShadow.request(myPlant));
+  }, [myPlant.length, mqttStatus]);
+
+  useEffect(() => {
+    if ((mqttStatus || isLoading) && isFocus) {
+      mqttStatus && isFocus && getMyPlantCallBack();
+    }
+  }, [page, mqttStatus, isFocus]);
 
   return (
     <View style={styles.rootContainer}>

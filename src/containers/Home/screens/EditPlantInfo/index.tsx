@@ -43,8 +43,8 @@ const EditPlantInfoContainer = (props: IProps) => {
   const { navigation, route } = props;
   const dispatch = useDispatch();
   const initialValues: FormValues = {
-    name: route.params?.currentPlant.name || '',
-    species: route.params?.currentPlant.species || '',
+    name: route.params?.currentPlant?.name || '',
+    species: route.params?.currentPlant?.species || '',
   };
 
   const [isVisible, setVisible] = useState(false);

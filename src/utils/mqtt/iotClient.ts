@@ -194,6 +194,8 @@ import AWSIoTDeviceSdk from 'aws-iot-device-sdk';
 import { Auth } from 'aws-amplify';
 import { attachPolicyService } from '@Containers/Home/store/services';
 import { AWSConfig } from '@Utils/constants';
+import { store } from '@Store/index';
+import { MQTTActions } from '@Containers/MQTT/store/actions';
 
 let instance: any = null;
 let AWS_SDK = {} as any;
@@ -289,6 +291,7 @@ export default class IoTClient {
   attachDebugHandlers = () => {
     this.client?.on('reconnect', () => {
       console.log('reconnect');
+      // store.dispatch(MQTTActions.init_MQTT.request());
     });
 
     this.client?.on('offline', () => {

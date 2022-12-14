@@ -45,11 +45,8 @@ const DATA: IPropIntro[] = [
 export default function IntroScreen() {
   const dispatch = useDispatch();
   let listRef: any = useRef(null);
-  const navigation: any = useNavigation();
 
   const [index, setIndex] = useState(0);
-
-  const getStarted = () => {};
 
   const handleNext = () => {
     setIndex(listRef.current.getCurrentIndex() + 1);
@@ -138,7 +135,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '500',
-    color: colors.black2
+    color: colors.black2,
   },
   subtitle: {
     fontSize: 16,

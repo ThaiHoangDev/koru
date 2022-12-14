@@ -2,16 +2,14 @@ import React from 'react';
 
 import { MainLayout } from '@Layouts/index';
 import ChooseWifiContainer from '@Containers/Pairing/screens/ChooseYourWifi';
-import { PropsScreen } from '@Interfaces/app';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-interface Iprops extends PropsScreen {
-  step: number;
-}
-
-const ChooseWifiScreen = (props: Iprops) => {
+const ChooseWifiScreen = () => {
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
   return (
     <MainLayout>
-      <ChooseWifiContainer {...props} />
+      <ChooseWifiContainer navigation={navigation} route={route} />
     </MainLayout>
   );
 };

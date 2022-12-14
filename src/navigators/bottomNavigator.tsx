@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View, Pressable, Platform, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -36,7 +36,7 @@ export type TabParamList = {
 };
 
 const TabBarNavigator = createBottomTabNavigator<TabParamList>();
-export const BottomTabNavigator = () => {
+const BottomTabNavigator = () => {
   const [visible, setVisible] = useState(true);
   React.useLayoutEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -128,6 +128,8 @@ export const BottomTabNavigator = () => {
     </TabBarNavigator.Navigator>
   );
 };
+
+export default memo(BottomTabNavigator);
 
 const styles = StyleSheet.create({
   bottomTabContainer: {
