@@ -26,9 +26,6 @@ const xmlNormal = `
 </filter>
 </defs>
 </svg>
-
-
-
 `;
 
 export default () => <SvgXml xml={xmlNormal} />;

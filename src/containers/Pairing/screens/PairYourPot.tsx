@@ -48,7 +48,7 @@ const PairYourPotContainer = (props: Iprops) => {
         await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN);
         await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT);
       }
-      await EspIdfProvisioningReactNative.scanBleDevices('KORU_')
+      await EspIdfProvisioningReactNative.scanBleDevices('Koru-')
         .then((res: any[]) => {
           if (res.length > 0) {
             dispatch(PairActions.scanDevices.success(res));

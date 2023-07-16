@@ -57,7 +57,8 @@ const AboutPlant = () => {
 
           return (
             <TouchableOpacity style={[styles.tabItem]} onPress={() => setIndex(i)}>
-              <Animated.Text style={{ opacity, fontFamily: fontFamily.Strawford, width: WIDTH / 1.8 }}>
+              <Animated.Text
+                style={{ opacity, fontFamily: fontFamily.Strawford, width: WIDTH / 1.8, color: colors.black2 }}>
                 {route.title}
               </Animated.Text>
               <Animated.View

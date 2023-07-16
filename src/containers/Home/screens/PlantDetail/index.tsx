@@ -55,7 +55,7 @@ const PlantDetailContainer = (props: IProps) => {
         <TopNavigationBar
           {...p}
           isLeft
-          children={<Text style={styles.titleTab}>Over view</Text>}
+          children={<Text style={styles.titleTab}>Overview</Text>}
           right={<Entypo name="dots-three-vertical" size={24} color={colors.black2} />}
           isOverview
           onRemove={handleShowModal}
@@ -148,14 +148,14 @@ const PlantDetailContainer = (props: IProps) => {
     <>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <View style={{ flex: 2 }}>
+          <View style={{ marginRight: 10 }}>
             <Text style={styles.headerTitle}>{currentPlant?.name || ''}</Text>
             <Text style={styles.headerSubTitle}>{currentPlant?.species_name || ''}</Text>
           </View>
           <View style={styles.networkStyle}>
             {!currentPlant?.status && <NotConected />}
             <Text style={[{ color: !currentPlant?.status ? colors.red : colors.green1 }, styles.headerTitleLeft]}>
-              Conected
+              {!currentPlant?.status ? 'Not Conected' : 'Conected'}
             </Text>
             <NetworkIcon isConnectDevice={!currentPlant?.status} />
           </View>
@@ -252,13 +252,18 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   networkStyle: {
-    flex: 1,
-    paddingHorizontal: 20,
-    marginRight: 20,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  headerContainer: { flexDirection: 'row', alignItems: 'center', marginVertical: 20, paddingHorizontal: 20 },
+  headerContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between'
+  },
   middleContainer: { flex: 1, justifyContent: 'space-between', flexDirection: 'row', paddingHorizontal: 20 },
   containerScreen: {
     flex: 1,

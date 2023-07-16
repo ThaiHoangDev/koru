@@ -59,7 +59,11 @@ const EditPlantInfoContainer = (props: IProps) => {
   }, [navigation]);
 
   const handleEditPlant = (values: FormValues) => {
-    dispatch(HomeActions.updatePlant.request(values));
+    const body = {
+      uuid: route.params?.currentPlant?.uuid,
+      ...values,
+    };
+    dispatch(HomeActions.updatePlant.request(body));
   };
 
   return (

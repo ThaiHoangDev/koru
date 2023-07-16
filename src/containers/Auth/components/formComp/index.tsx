@@ -114,7 +114,7 @@ export const FormComp = ({
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity onPress={handleNavigateCode}>
-                        <Text style={styles.txt}>Send code to email.</Text>
+                        <Text style={styles.txt}>Re-Send code to email.</Text>
                       </TouchableOpacity>
                     )}
                     <>

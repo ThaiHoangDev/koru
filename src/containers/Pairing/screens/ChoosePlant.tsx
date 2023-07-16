@@ -1,4 +1,4 @@
-import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { createStructuredSelector } from 'reselect';
@@ -19,6 +19,7 @@ import SearchComp from '@Containers/Home/components/SearchComp';
 import FilterComp from '../components/FilterComp';
 import LoaderAnimationProgress from '@Components/lottie/loader';
 import NoPlantComp from '@Containers/Home/components/NoPlantComp';
+import SkipIcon from '@Components/iconSvg/SkipIcon';
 //util
 import { PropsScreen } from '@Interfaces/app';
 import { colors, fontFamily } from '@Theme/index';
@@ -156,6 +157,27 @@ function ChoosePlantContainer(props: IProps) {
       <View style={styles.headerContainer}>
         <View style={{ marginVertical: 10 }}>
           <Text style={styles.subTitle}>Search for the plant you want to grow</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ChooseWifi')}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              borderRadius: 20,
+              borderColor: colors.green,
+              borderWidth: 1,
+              backgroundColor: colors.green1,
+              width: 100,
+              paddingHorizontal: 10,
+              alignSelf: 'flex-end',
+            }}>
+            <Text
+              style={{ color: colors.black2, fontFamily: fontFamily.Strawford, fontSize: 18, paddingHorizontal: 10 }}>
+              {' '}
+              Skip
+            </Text>
+            <SkipIcon />
+          </TouchableOpacity>
         </View>
         <SearchComp onChangeText={handleChangeText} />
         <View
@@ -172,11 +194,12 @@ function ChoosePlantContainer(props: IProps) {
 
   const _renderItem = ({ item, index }: any) => {
     return (
-      <TouchableOpacity
+      <TouchableHighlight
+        underlayColor={'rgba(139, 210, 66, 0.1)'}
         style={[styles.element, { borderTopWidth: index === 0 ? 1 : 0, borderTopColor: colors.gray04 }]}
         onPress={handleChoosePlant(item)}>
         <PlantBox name={item?.name} type={item?.latin_name} uri={item?.image_url} />
-      </TouchableOpacity>
+      </TouchableHighlight>
     );
   };
 
@@ -211,7 +234,9 @@ function ChoosePlantContainer(props: IProps) {
             <NoPlantComp />
           ) : null
         }
-        ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: colors.gray04 }}></View>}
+        ItemSeparatorComponent={() => (
+          <View style={{ height: 1, backgroundColor: colors.gray04, marginHorizontal: 20 }}></View>
+        )}
         keyExtractor={item => item.name.toString()}
         showsVerticalScrollIndicator={false}
         style={{ flex: 1 }}
@@ -231,10 +256,11 @@ export default connect(mapStateToProps)(ChoosePlantContainer);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
   },
   headerContainer: {
-    height: HEIGHT / 6,
+    height: 190,
+    paddingHorizontal: 20,
   },
   txtTitle: {
     fontFamily: fontFamily.FreightBigProMedium,
@@ -251,7 +277,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 20,
-    marginVertical: 10,
+    paddingHorizontal: 20,
     borderTopColor: colors.grey06,
   },
 });

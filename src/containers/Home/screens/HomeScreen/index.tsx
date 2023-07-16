@@ -143,8 +143,8 @@ function HomeContainer(props: IProps) {
   }, [myPlant.length, mqttStatus]);
 
   useEffect(() => {
-    if ((mqttStatus || isLoading) && isFocus) {
-      mqttStatus && isFocus && getMyPlantCallBack();
+    if (mqttStatus || isLoading || isFocus) {
+      getMyPlantCallBack();
     }
   }, [page, mqttStatus, isFocus]);
 
@@ -172,7 +172,7 @@ function HomeContainer(props: IProps) {
             children={
               isRefresh && (
                 <View style={{ alignItems: 'center', justifyContent: 'center', zIndex: 3 }}>
-                  <LoaderAnimationProgress source={require('@Assets/lotties/refreshing.json')} width={30} />
+                  <LoaderAnimationProgress source={require('@Assets/lotties/refreshing.json')} width={30} speed={5} />
                 </View>
               )
             }
@@ -182,7 +182,7 @@ function HomeContainer(props: IProps) {
         ListEmptyComponent={
           isLoading && !isRefresh ? (
             <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <LoaderAnimationProgress source={require('@Assets/lotties/loading.json')} width={200} />
+              <LoaderAnimationProgress source={require('@Assets/lotties/loading.json')} width={200} speed={2} />
             </View>
           ) : myPlant.length <= 0 ? (
             <NoPlantComp />

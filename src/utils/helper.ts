@@ -145,7 +145,7 @@ export const formatValueMQTT = (value: ReportedProps, type: string) => {
     case 'Air Quality':
       return `${value.tvoc} ug/m3`;
     case 'Temperature':
-      return `${value.temp} C`;
+      return `${value.temp} oC`;
     case 'Light':
       return `${Math.max(value.br1, value.br2, value.br3)} lux`;
     default:

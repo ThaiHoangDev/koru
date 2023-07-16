@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: colors.white2,
     paddingBottom: Platform.OS === 'android' ? 20 : 0,
+    marginBottom: 10,
   },
   tabBadge: {
     fontSize: 8,

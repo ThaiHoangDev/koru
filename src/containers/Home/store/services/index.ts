@@ -13,7 +13,8 @@ export const removePlantService = async (uuid: any) => {
 };
 
 export const updatePlantService = async (payload: any) => {
-  return await axiosClient.put('/plants/165a26ff-93ab-45ae-8f0a-f0f7bb655509', payload);
+  const { uuid, ...rest } = payload;
+  return await axiosClient.put(`/plants/${uuid}`, { ...rest });
 };
 
 export const attachPolicyService = async (data: any) => {

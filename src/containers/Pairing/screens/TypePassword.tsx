@@ -4,7 +4,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import { PropsScreen } from '@Interfaces/app';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
 import TopNavigationBar from '@Navigators/topNavigation';
 import TitleComp from '../components/TitleComp';
 import TextInputComp from '@Components/input';
@@ -13,7 +12,7 @@ import ShowPassword from '@Components/showPassword';
 
 import { colors, fontFamily } from '@Theme/index';
 import { HEIGHT } from '@Constants/app';
-// import { PairActions } from '../store/actions';
+
 
 
 const TypePasswordContainer = (props: PropsScreen) => {

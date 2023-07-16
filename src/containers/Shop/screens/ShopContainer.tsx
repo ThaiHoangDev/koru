@@ -121,7 +121,7 @@ function ShopContainer(props: IProps) {
             <CardIcon />
           </TouchableOpacity>
         </View>
-        <View style={{ paddingVertical: 10, flex: 1 }}>
+        <View style={{ height: 60, marginVertical: 6 }}>
           <FilterComp data={listPlantGroup} onFilter={handleFilter} filterGroup={filterGroup} />
         </View>
       </View>
@@ -180,9 +180,9 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     height: HEIGHT / 8,
+    marginBottom: 20,
   },
   searchContainer: {
-    flex: 1,
     flexDirection: 'row',
     marginVertical: 10,
   },
